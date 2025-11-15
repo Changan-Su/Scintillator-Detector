@@ -1,0 +1,3 @@
+D:/Geant4/Projects/Scintillator-Detector-master/build/CMakeFiles/exampleB1.dir
+D:/Geant4/Projects/Scintillator-Detector-master/build/CMakeFiles/ALL_BUILD.dir
+D:/Geant4/Projects/Scintillator-Detector-master/build/CMakeFiles/ZERO_CHECK.dir

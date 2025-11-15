@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\7956d0b237b3374f5ae9be567dd79788\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{E1619410-9CF6-37C2-9379-8ED9CDFE37C7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

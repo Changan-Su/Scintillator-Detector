@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/Geant4/Projects/Scintillator-Detector-master/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

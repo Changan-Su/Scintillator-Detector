@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F4EA3295-F0CF-31D4-B850-12C851B2C3C2}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>exampleB1</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Geant4\Projects\Scintillator-Detector-master\build\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">exampleB1.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">exampleB1</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Geant4\Projects\Scintillator-Detector-master\build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">exampleB1.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">exampleB1</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Geant4\Projects\Scintillator-Detector-master\build\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">exampleB1.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">exampleB1</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Geant4\Projects\Scintillator-Detector-master\build\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">exampleB1.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">exampleB1</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Geant4/geant4-install/include/Geant4" /external:I "D:/Qt2/5.15.2/msvc2019_64/include" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtCore" /external:I "D:/Qt2/5.15.2/msvc2019_64/./mkspecs/win32-msvc" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtGui" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtANGLE" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtWidgets"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;G4LIB_BUILD_DLL;PTL_BUILD_DLL;G4VIS_USE_TOOLSSG_QT_GLES;G4VIS_USE_TOOLSSG_QT_ZB;G4VIS_USE_TOOLSSG_WINDOWS_GLES;G4VIS_USE_TOOLSSG_WINDOWS_ZB;G4VIS_USE_OPENGLQT;G4VIS_USE_OPENGLWIN32;G4VIS_USE_QT3D;G4UI_USE_QT;G4UI_USE_WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;G4LIB_BUILD_DLL;PTL_BUILD_DLL;G4VIS_USE_TOOLSSG_QT_GLES;G4VIS_USE_TOOLSSG_QT_ZB;G4VIS_USE_TOOLSSG_WINDOWS_GLES;G4VIS_USE_TOOLSSG_WINDOWS_ZB;G4VIS_USE_OPENGLQT;G4VIS_USE_OPENGLWIN32;G4VIS_USE_QT3D;G4UI_USE_QT;G4UI_USE_WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;D:\Geant4\geant4-install\include\Geant4;D:\Qt2\5.15.2\msvc2019_64\include;D:\Qt2\5.15.2\msvc2019_64\include\QtCore;D:\Qt2\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;D:\Qt2\5.15.2\msvc2019_64\include\QtGui;D:\Qt2\5.15.2\msvc2019_64\include\QtANGLE;D:\Qt2\5.15.2\msvc2019_64\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;D:\Geant4\geant4-install\include\Geant4;D:\Qt2\5.15.2\msvc2019_64\include;D:\Qt2\5.15.2\msvc2019_64\include\QtCore;D:\Qt2\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;D:\Qt2\5.15.2\msvc2019_64\include\QtGui;D:\Qt2\5.15.2\msvc2019_64\include\QtANGLE;D:\Qt2\5.15.2\msvc2019_64\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>D:\Geant4\geant4-install\lib\G4Tree.lib;D:\Geant4\geant4-install\lib\G4FR.lib;D:\Geant4\geant4-install\lib\G4GMocren.lib;D:\Geant4\geant4-install\lib\G4visHepRep.lib;D:\Geant4\geant4-install\lib\G4RayTracer.lib;D:\Geant4\geant4-install\lib\G4VRML.lib;D:\Geant4\geant4-install\lib\G4ToolsSG.lib;D:\Geant4\geant4-install\lib\G4OpenGL.lib;D:\Geant4\geant4-install\lib\G4visQt3D.lib;D:\Geant4\geant4-install\lib\G4vis_management.lib;D:\Geant4\geant4-install\lib\G4modeling.lib;D:\Geant4\geant4-install\lib\G4interfaces.lib;D:\Geant4\geant4-install\lib\G4mctruth.lib;D:\Geant4\geant4-install\lib\G4geomtext.lib;D:\Geant4\geant4-install\lib\G4error_propagation.lib;D:\Geant4\geant4-install\lib\G4readout.lib;D:\Geant4\geant4-install\lib\G4physicslists.lib;D:\Geant4\geant4-install\lib\G4run.lib;D:\Geant4\geant4-install\lib\G4event.lib;D:\Geant4\geant4-install\lib\G4tracking.lib;D:\Geant4\geant4-install\lib\G4parmodels.lib;D:\Geant4\geant4-install\lib\G4processes.lib;D:\Geant4\geant4-install\lib\G4digits_hits.lib;D:\Geant4\geant4-install\lib\G4track.lib;D:\Geant4\geant4-install\lib\G4particles.lib;D:\Geant4\geant4-install\lib\G4geometry.lib;D:\Geant4\geant4-install\lib\G4materials.lib;D:\Geant4\geant4-install\lib\G4graphics_reps.lib;COMCTL32.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Widgetsd.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Guid.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Cored.lib;D:\Geant4\geant4-install\lib\G4analysis.lib;D:\Geant4\geant4-install\lib\G4expat.lib;D:\Geant4\geant4-install\lib\G4zlib.lib;D:\Geant4\geant4-install\lib\G4intercoms.lib;D:\Geant4\geant4-install\lib\G4global.lib;D:\Geant4\geant4-install\lib\G4clhep.lib;D:\Geant4\geant4-install\lib\G4ptl.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Geant4/Projects/Scintillator-Detector-master/build/Debug/exampleB1.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Geant4/Projects/Scintillator-Detector-master/build/Debug/exampleB1.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Geant4/geant4-install/include/Geant4" /external:I "D:/Qt2/5.15.2/msvc2019_64/include" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtCore" /external:I "D:/Qt2/5.15.2/msvc2019_64/./mkspecs/win32-msvc" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtGui" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtANGLE" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtWidgets"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;G4LIB_BUILD_DLL;PTL_BUILD_DLL;G4VIS_USE_TOOLSSG_QT_GLES;G4VIS_USE_TOOLSSG_QT_ZB;G4VIS_USE_TOOLSSG_WINDOWS_GLES;G4VIS_USE_TOOLSSG_WINDOWS_ZB;G4VIS_USE_OPENGLQT;G4VIS_USE_OPENGLWIN32;G4VIS_USE_QT3D;G4UI_USE_QT;G4UI_USE_WIN32;QT_CORE_LIB;QT_NO_DEBUG;QT_GUI_LIB;QT_WIDGETS_LIB;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;G4LIB_BUILD_DLL;PTL_BUILD_DLL;G4VIS_USE_TOOLSSG_QT_GLES;G4VIS_USE_TOOLSSG_QT_ZB;G4VIS_USE_TOOLSSG_WINDOWS_GLES;G4VIS_USE_TOOLSSG_WINDOWS_ZB;G4VIS_USE_OPENGLQT;G4VIS_USE_OPENGLWIN32;G4VIS_USE_QT3D;G4UI_USE_QT;G4UI_USE_WIN32;QT_CORE_LIB;QT_NO_DEBUG;QT_GUI_LIB;QT_WIDGETS_LIB;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;D:\Geant4\geant4-install\include\Geant4;D:\Qt2\5.15.2\msvc2019_64\include;D:\Qt2\5.15.2\msvc2019_64\include\QtCore;D:\Qt2\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;D:\Qt2\5.15.2\msvc2019_64\include\QtGui;D:\Qt2\5.15.2\msvc2019_64\include\QtANGLE;D:\Qt2\5.15.2\msvc2019_64\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;D:\Geant4\geant4-install\include\Geant4;D:\Qt2\5.15.2\msvc2019_64\include;D:\Qt2\5.15.2\msvc2019_64\include\QtCore;D:\Qt2\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;D:\Qt2\5.15.2\msvc2019_64\include\QtGui;D:\Qt2\5.15.2\msvc2019_64\include\QtANGLE;D:\Qt2\5.15.2\msvc2019_64\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>D:\Geant4\geant4-install\lib\G4Tree.lib;D:\Geant4\geant4-install\lib\G4FR.lib;D:\Geant4\geant4-install\lib\G4GMocren.lib;D:\Geant4\geant4-install\lib\G4visHepRep.lib;D:\Geant4\geant4-install\lib\G4RayTracer.lib;D:\Geant4\geant4-install\lib\G4VRML.lib;D:\Geant4\geant4-install\lib\G4ToolsSG.lib;D:\Geant4\geant4-install\lib\G4OpenGL.lib;D:\Geant4\geant4-install\lib\G4visQt3D.lib;D:\Geant4\geant4-install\lib\G4vis_management.lib;D:\Geant4\geant4-install\lib\G4modeling.lib;D:\Geant4\geant4-install\lib\G4interfaces.lib;D:\Geant4\geant4-install\lib\G4mctruth.lib;D:\Geant4\geant4-install\lib\G4geomtext.lib;D:\Geant4\geant4-install\lib\G4error_propagation.lib;D:\Geant4\geant4-install\lib\G4readout.lib;D:\Geant4\geant4-install\lib\G4physicslists.lib;D:\Geant4\geant4-install\lib\G4run.lib;D:\Geant4\geant4-install\lib\G4event.lib;D:\Geant4\geant4-install\lib\G4tracking.lib;D:\Geant4\geant4-install\lib\G4parmodels.lib;D:\Geant4\geant4-install\lib\G4processes.lib;D:\Geant4\geant4-install\lib\G4digits_hits.lib;D:\Geant4\geant4-install\lib\G4track.lib;D:\Geant4\geant4-install\lib\G4particles.lib;D:\Geant4\geant4-install\lib\G4geometry.lib;D:\Geant4\geant4-install\lib\G4materials.lib;D:\Geant4\geant4-install\lib\G4graphics_reps.lib;COMCTL32.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Widgets.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Gui.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Core.lib;D:\Geant4\geant4-install\lib\G4analysis.lib;D:\Geant4\geant4-install\lib\G4expat.lib;D:\Geant4\geant4-install\lib\G4zlib.lib;D:\Geant4\geant4-install\lib\G4intercoms.lib;D:\Geant4\geant4-install\lib\G4global.lib;D:\Geant4\geant4-install\lib\G4clhep.lib;D:\Geant4\geant4-install\lib\G4ptl.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Geant4/Projects/Scintillator-Detector-master/build/Release/exampleB1.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Geant4/Projects/Scintillator-Detector-master/build/Release/exampleB1.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Geant4/geant4-install/include/Geant4" /external:I "D:/Qt2/5.15.2/msvc2019_64/include" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtCore" /external:I "D:/Qt2/5.15.2/msvc2019_64/./mkspecs/win32-msvc" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtGui" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtANGLE" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtWidgets"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;G4LIB_BUILD_DLL;PTL_BUILD_DLL;G4VIS_USE_TOOLSSG_QT_GLES;G4VIS_USE_TOOLSSG_QT_ZB;G4VIS_USE_TOOLSSG_WINDOWS_GLES;G4VIS_USE_TOOLSSG_WINDOWS_ZB;G4VIS_USE_OPENGLQT;G4VIS_USE_OPENGLWIN32;G4VIS_USE_QT3D;G4UI_USE_QT;G4UI_USE_WIN32;QT_CORE_LIB;QT_NO_DEBUG;QT_GUI_LIB;QT_WIDGETS_LIB;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;G4LIB_BUILD_DLL;PTL_BUILD_DLL;G4VIS_USE_TOOLSSG_QT_GLES;G4VIS_USE_TOOLSSG_QT_ZB;G4VIS_USE_TOOLSSG_WINDOWS_GLES;G4VIS_USE_TOOLSSG_WINDOWS_ZB;G4VIS_USE_OPENGLQT;G4VIS_USE_OPENGLWIN32;G4VIS_USE_QT3D;G4UI_USE_QT;G4UI_USE_WIN32;QT_CORE_LIB;QT_NO_DEBUG;QT_GUI_LIB;QT_WIDGETS_LIB;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;D:\Geant4\geant4-install\include\Geant4;D:\Qt2\5.15.2\msvc2019_64\include;D:\Qt2\5.15.2\msvc2019_64\include\QtCore;D:\Qt2\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;D:\Qt2\5.15.2\msvc2019_64\include\QtGui;D:\Qt2\5.15.2\msvc2019_64\include\QtANGLE;D:\Qt2\5.15.2\msvc2019_64\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;D:\Geant4\geant4-install\include\Geant4;D:\Qt2\5.15.2\msvc2019_64\include;D:\Qt2\5.15.2\msvc2019_64\include\QtCore;D:\Qt2\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;D:\Qt2\5.15.2\msvc2019_64\include\QtGui;D:\Qt2\5.15.2\msvc2019_64\include\QtANGLE;D:\Qt2\5.15.2\msvc2019_64\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>D:\Geant4\geant4-install\lib\G4Tree.lib;D:\Geant4\geant4-install\lib\G4FR.lib;D:\Geant4\geant4-install\lib\G4GMocren.lib;D:\Geant4\geant4-install\lib\G4visHepRep.lib;D:\Geant4\geant4-install\lib\G4RayTracer.lib;D:\Geant4\geant4-install\lib\G4VRML.lib;D:\Geant4\geant4-install\lib\G4ToolsSG.lib;D:\Geant4\geant4-install\lib\G4OpenGL.lib;D:\Geant4\geant4-install\lib\G4visQt3D.lib;D:\Geant4\geant4-install\lib\G4vis_management.lib;D:\Geant4\geant4-install\lib\G4modeling.lib;D:\Geant4\geant4-install\lib\G4interfaces.lib;D:\Geant4\geant4-install\lib\G4mctruth.lib;D:\Geant4\geant4-install\lib\G4geomtext.lib;D:\Geant4\geant4-install\lib\G4error_propagation.lib;D:\Geant4\geant4-install\lib\G4readout.lib;D:\Geant4\geant4-install\lib\G4physicslists.lib;D:\Geant4\geant4-install\lib\G4run.lib;D:\Geant4\geant4-install\lib\G4event.lib;D:\Geant4\geant4-install\lib\G4tracking.lib;D:\Geant4\geant4-install\lib\G4parmodels.lib;D:\Geant4\geant4-install\lib\G4processes.lib;D:\Geant4\geant4-install\lib\G4digits_hits.lib;D:\Geant4\geant4-install\lib\G4track.lib;D:\Geant4\geant4-install\lib\G4particles.lib;D:\Geant4\geant4-install\lib\G4geometry.lib;D:\Geant4\geant4-install\lib\G4materials.lib;D:\Geant4\geant4-install\lib\G4graphics_reps.lib;COMCTL32.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Widgets.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Gui.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Core.lib;D:\Geant4\geant4-install\lib\G4analysis.lib;D:\Geant4\geant4-install\lib\G4expat.lib;D:\Geant4\geant4-install\lib\G4zlib.lib;D:\Geant4\geant4-install\lib\G4intercoms.lib;D:\Geant4\geant4-install\lib\G4global.lib;D:\Geant4\geant4-install\lib\G4clhep.lib;D:\Geant4\geant4-install\lib\G4ptl.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Geant4/Projects/Scintillator-Detector-master/build/MinSizeRel/exampleB1.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Geant4/Projects/Scintillator-Detector-master/build/MinSizeRel/exampleB1.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Geant4/geant4-install/include/Geant4" /external:I "D:/Qt2/5.15.2/msvc2019_64/include" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtCore" /external:I "D:/Qt2/5.15.2/msvc2019_64/./mkspecs/win32-msvc" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtGui" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtANGLE" /external:I "D:/Qt2/5.15.2/msvc2019_64/include/QtWidgets"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;G4LIB_BUILD_DLL;PTL_BUILD_DLL;G4VIS_USE_TOOLSSG_QT_GLES;G4VIS_USE_TOOLSSG_QT_ZB;G4VIS_USE_TOOLSSG_WINDOWS_GLES;G4VIS_USE_TOOLSSG_WINDOWS_ZB;G4VIS_USE_OPENGLQT;G4VIS_USE_OPENGLWIN32;G4VIS_USE_QT3D;G4UI_USE_QT;G4UI_USE_WIN32;QT_CORE_LIB;QT_NO_DEBUG;QT_GUI_LIB;QT_WIDGETS_LIB;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;G4LIB_BUILD_DLL;PTL_BUILD_DLL;G4VIS_USE_TOOLSSG_QT_GLES;G4VIS_USE_TOOLSSG_QT_ZB;G4VIS_USE_TOOLSSG_WINDOWS_GLES;G4VIS_USE_TOOLSSG_WINDOWS_ZB;G4VIS_USE_OPENGLQT;G4VIS_USE_OPENGLWIN32;G4VIS_USE_QT3D;G4UI_USE_QT;G4UI_USE_WIN32;QT_CORE_LIB;QT_NO_DEBUG;QT_GUI_LIB;QT_WIDGETS_LIB;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;D:\Geant4\geant4-install\include\Geant4;D:\Qt2\5.15.2\msvc2019_64\include;D:\Qt2\5.15.2\msvc2019_64\include\QtCore;D:\Qt2\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;D:\Qt2\5.15.2\msvc2019_64\include\QtGui;D:\Qt2\5.15.2\msvc2019_64\include\QtANGLE;D:\Qt2\5.15.2\msvc2019_64\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Geant4\Projects\Scintillator-Detector-master\include;D:\Geant4\geant4-install\include\Geant4;D:\Qt2\5.15.2\msvc2019_64\include;D:\Qt2\5.15.2\msvc2019_64\include\QtCore;D:\Qt2\5.15.2\msvc2019_64\.\mkspecs\win32-msvc;D:\Qt2\5.15.2\msvc2019_64\include\QtGui;D:\Qt2\5.15.2\msvc2019_64\include\QtANGLE;D:\Qt2\5.15.2\msvc2019_64\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>D:\Geant4\geant4-install\lib\G4Tree.lib;D:\Geant4\geant4-install\lib\G4FR.lib;D:\Geant4\geant4-install\lib\G4GMocren.lib;D:\Geant4\geant4-install\lib\G4visHepRep.lib;D:\Geant4\geant4-install\lib\G4RayTracer.lib;D:\Geant4\geant4-install\lib\G4VRML.lib;D:\Geant4\geant4-install\lib\G4ToolsSG.lib;D:\Geant4\geant4-install\lib\G4OpenGL.lib;D:\Geant4\geant4-install\lib\G4visQt3D.lib;D:\Geant4\geant4-install\lib\G4vis_management.lib;D:\Geant4\geant4-install\lib\G4modeling.lib;D:\Geant4\geant4-install\lib\G4interfaces.lib;D:\Geant4\geant4-install\lib\G4mctruth.lib;D:\Geant4\geant4-install\lib\G4geomtext.lib;D:\Geant4\geant4-install\lib\G4error_propagation.lib;D:\Geant4\geant4-install\lib\G4readout.lib;D:\Geant4\geant4-install\lib\G4physicslists.lib;D:\Geant4\geant4-install\lib\G4run.lib;D:\Geant4\geant4-install\lib\G4event.lib;D:\Geant4\geant4-install\lib\G4tracking.lib;D:\Geant4\geant4-install\lib\G4parmodels.lib;D:\Geant4\geant4-install\lib\G4processes.lib;D:\Geant4\geant4-install\lib\G4digits_hits.lib;D:\Geant4\geant4-install\lib\G4track.lib;D:\Geant4\geant4-install\lib\G4particles.lib;D:\Geant4\geant4-install\lib\G4geometry.lib;D:\Geant4\geant4-install\lib\G4materials.lib;D:\Geant4\geant4-install\lib\G4graphics_reps.lib;COMCTL32.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Widgets.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Gui.lib;D:\Qt2\5.15.2\msvc2019_64\lib\Qt5Core.lib;D:\Geant4\geant4-install\lib\G4analysis.lib;D:\Geant4\geant4-install\lib\G4expat.lib;D:\Geant4\geant4-install\lib\G4zlib.lib;D:\Geant4\geant4-install\lib\G4intercoms.lib;D:\Geant4\geant4-install\lib\G4global.lib;D:\Geant4\geant4-install\lib\G4clhep.lib;D:\Geant4\geant4-install\lib\G4ptl.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Geant4/Projects/Scintillator-Detector-master/build/RelWithDebInfo/exampleB1.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Geant4/Projects/Scintillator-Detector-master/build/RelWithDebInfo/exampleB1.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Geant4\Projects\Scintillator-Detector-master\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/Geant4/Projects/Scintillator-Detector-master/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Cmake\bin\cmake.exe -SD:/Geant4/Projects/Scintillator-Detector-master -BD:/Geant4/Projects/Scintillator-Detector-master/build --check-stamp-file D:/Geant4/Projects/Scintillator-Detector-master/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Cmake\share\cmake-4.0\Modules\CMakeCInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeFindDependencyMacro.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeParseArguments.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckCSourceCompiles.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckIncludeFile.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckLibraryExists.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\FindOpenGL.cmake;D:\Cmake\share\cmake-4.0\Modules\FindPackageHandleStandardArgs.cmake;D:\Cmake\share\cmake-4.0\Modules\FindPackageMessage.cmake;D:\Cmake\share\cmake-4.0\Modules\FindThreads.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeCCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeCXXCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeRCCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeSystem.cmake;D:\Geant4\Projects\Scintillator-Detector-master\exampleB1.in;D:\Geant4\Projects\Scintillator-Detector-master\exampleB1.out;D:\Geant4\Projects\Scintillator-Detector-master\init_vis.mac;D:\Geant4\Projects\Scintillator-Detector-master\run1.mac;D:\Geant4\Projects\Scintillator-Detector-master\run2.mac;D:\Geant4\Projects\Scintillator-Detector-master\vis.mac;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4Config.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4ConfigVersion.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4LibraryDepends-release.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4LibraryDepends.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Modules\IntelCompileFeatures.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Modules\MSVCCompileFeatures.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLConfig.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLConfigVersion.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLTargets-release.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLTargets.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\UseGeant4.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DCore\Qt53DCoreConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DCore\Qt53DCoreConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DExtras\Qt53DExtrasConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DExtras\Qt53DExtrasConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DInput\Qt53DInputConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DInput\Qt53DInputConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DLogic\Qt53DLogicConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DLogic\Qt53DLogicConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRenderConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRenderConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_DefaultGeometryLoaderPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFGeometryLoaderPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFSceneExportPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFSceneImportPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_OpenGLRendererPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_Scene2DPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigExtrasMkspecDir.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreMacros.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5GamepadConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5GamepadConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5Gamepad_QXInputGamepadBackendPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QGifPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QICNSPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QICOPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QInsightTrackerPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QJpegPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QMinimalIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QOffscreenIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QSvgIconPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QSvgPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTgaPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTiffPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTuioTouchPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QVirtualKeyboardPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWbmpPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWebGLIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWebpPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWindowsDirect2DIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWindowsIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QXdgDesktopPortalThemePlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5NetworkConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5NetworkConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5Network_QGenericEnginePlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5OpenGL\Qt5OpenGLConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5OpenGL\Qt5OpenGLConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsMacros.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5Widgets_QWindowsVistaStylePlugin.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/Geant4/Projects/Scintillator-Detector-master/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Cmake\bin\cmake.exe -SD:/Geant4/Projects/Scintillator-Detector-master -BD:/Geant4/Projects/Scintillator-Detector-master/build --check-stamp-file D:/Geant4/Projects/Scintillator-Detector-master/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Cmake\share\cmake-4.0\Modules\CMakeCInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeFindDependencyMacro.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeParseArguments.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckCSourceCompiles.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckIncludeFile.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckLibraryExists.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\FindOpenGL.cmake;D:\Cmake\share\cmake-4.0\Modules\FindPackageHandleStandardArgs.cmake;D:\Cmake\share\cmake-4.0\Modules\FindPackageMessage.cmake;D:\Cmake\share\cmake-4.0\Modules\FindThreads.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeCCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeCXXCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeRCCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeSystem.cmake;D:\Geant4\Projects\Scintillator-Detector-master\exampleB1.in;D:\Geant4\Projects\Scintillator-Detector-master\exampleB1.out;D:\Geant4\Projects\Scintillator-Detector-master\init_vis.mac;D:\Geant4\Projects\Scintillator-Detector-master\run1.mac;D:\Geant4\Projects\Scintillator-Detector-master\run2.mac;D:\Geant4\Projects\Scintillator-Detector-master\vis.mac;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4Config.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4ConfigVersion.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4LibraryDepends-release.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4LibraryDepends.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Modules\IntelCompileFeatures.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Modules\MSVCCompileFeatures.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLConfig.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLConfigVersion.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLTargets-release.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLTargets.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\UseGeant4.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DCore\Qt53DCoreConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DCore\Qt53DCoreConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DExtras\Qt53DExtrasConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DExtras\Qt53DExtrasConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DInput\Qt53DInputConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DInput\Qt53DInputConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DLogic\Qt53DLogicConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DLogic\Qt53DLogicConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRenderConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRenderConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_DefaultGeometryLoaderPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFGeometryLoaderPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFSceneExportPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFSceneImportPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_OpenGLRendererPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_Scene2DPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigExtrasMkspecDir.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreMacros.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5GamepadConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5GamepadConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5Gamepad_QXInputGamepadBackendPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QGifPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QICNSPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QICOPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QInsightTrackerPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QJpegPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QMinimalIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QOffscreenIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QSvgIconPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QSvgPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTgaPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTiffPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTuioTouchPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QVirtualKeyboardPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWbmpPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWebGLIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWebpPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWindowsDirect2DIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWindowsIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QXdgDesktopPortalThemePlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5NetworkConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5NetworkConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5Network_QGenericEnginePlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5OpenGL\Qt5OpenGLConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5OpenGL\Qt5OpenGLConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsMacros.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5Widgets_QWindowsVistaStylePlugin.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/Geant4/Projects/Scintillator-Detector-master/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Cmake\bin\cmake.exe -SD:/Geant4/Projects/Scintillator-Detector-master -BD:/Geant4/Projects/Scintillator-Detector-master/build --check-stamp-file D:/Geant4/Projects/Scintillator-Detector-master/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Cmake\share\cmake-4.0\Modules\CMakeCInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeFindDependencyMacro.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeParseArguments.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckCSourceCompiles.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckIncludeFile.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckLibraryExists.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\FindOpenGL.cmake;D:\Cmake\share\cmake-4.0\Modules\FindPackageHandleStandardArgs.cmake;D:\Cmake\share\cmake-4.0\Modules\FindPackageMessage.cmake;D:\Cmake\share\cmake-4.0\Modules\FindThreads.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeCCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeCXXCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeRCCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeSystem.cmake;D:\Geant4\Projects\Scintillator-Detector-master\exampleB1.in;D:\Geant4\Projects\Scintillator-Detector-master\exampleB1.out;D:\Geant4\Projects\Scintillator-Detector-master\init_vis.mac;D:\Geant4\Projects\Scintillator-Detector-master\run1.mac;D:\Geant4\Projects\Scintillator-Detector-master\run2.mac;D:\Geant4\Projects\Scintillator-Detector-master\vis.mac;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4Config.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4ConfigVersion.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4LibraryDepends-release.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4LibraryDepends.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Modules\IntelCompileFeatures.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Modules\MSVCCompileFeatures.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLConfig.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLConfigVersion.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLTargets-release.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLTargets.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\UseGeant4.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DCore\Qt53DCoreConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DCore\Qt53DCoreConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DExtras\Qt53DExtrasConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DExtras\Qt53DExtrasConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DInput\Qt53DInputConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DInput\Qt53DInputConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DLogic\Qt53DLogicConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DLogic\Qt53DLogicConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRenderConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRenderConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_DefaultGeometryLoaderPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFGeometryLoaderPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFSceneExportPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFSceneImportPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_OpenGLRendererPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_Scene2DPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigExtrasMkspecDir.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreMacros.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5GamepadConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5GamepadConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5Gamepad_QXInputGamepadBackendPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QGifPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QICNSPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QICOPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QInsightTrackerPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QJpegPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QMinimalIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QOffscreenIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QSvgIconPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QSvgPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTgaPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTiffPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTuioTouchPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QVirtualKeyboardPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWbmpPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWebGLIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWebpPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWindowsDirect2DIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWindowsIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QXdgDesktopPortalThemePlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5NetworkConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5NetworkConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5Network_QGenericEnginePlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5OpenGL\Qt5OpenGLConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5OpenGL\Qt5OpenGLConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsMacros.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5Widgets_QWindowsVistaStylePlugin.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/Geant4/Projects/Scintillator-Detector-master/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Cmake\bin\cmake.exe -SD:/Geant4/Projects/Scintillator-Detector-master -BD:/Geant4/Projects/Scintillator-Detector-master/build --check-stamp-file D:/Geant4/Projects/Scintillator-Detector-master/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Cmake\share\cmake-4.0\Modules\CMakeCInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeFindDependencyMacro.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeParseArguments.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckCSourceCompiles.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckIncludeFile.cmake;D:\Cmake\share\cmake-4.0\Modules\CheckLibraryExists.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\FindOpenGL.cmake;D:\Cmake\share\cmake-4.0\Modules\FindPackageHandleStandardArgs.cmake;D:\Cmake\share\cmake-4.0\Modules\FindPackageMessage.cmake;D:\Cmake\share\cmake-4.0\Modules\FindThreads.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;D:\Cmake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Linker\MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\Windows.cmake;D:\Cmake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeCCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeCXXCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeRCCompiler.cmake;D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\4.0.1\CMakeSystem.cmake;D:\Geant4\Projects\Scintillator-Detector-master\exampleB1.in;D:\Geant4\Projects\Scintillator-Detector-master\exampleB1.out;D:\Geant4\Projects\Scintillator-Detector-master\init_vis.mac;D:\Geant4\Projects\Scintillator-Detector-master\run1.mac;D:\Geant4\Projects\Scintillator-Detector-master\run2.mac;D:\Geant4\Projects\Scintillator-Detector-master\vis.mac;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4Config.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4ConfigVersion.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4LibraryDepends-release.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Geant4LibraryDepends.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Modules\IntelCompileFeatures.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\Modules\MSVCCompileFeatures.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLConfig.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLConfigVersion.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLTargets-release.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\PTL\PTLTargets.cmake;D:\Geant4\geant4-install\lib\cmake\Geant4\UseGeant4.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DCore\Qt53DCoreConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DCore\Qt53DCoreConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DExtras\Qt53DExtrasConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DExtras\Qt53DExtrasConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DInput\Qt53DInputConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DInput\Qt53DInputConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DLogic\Qt53DLogicConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DLogic\Qt53DLogicConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRenderConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRenderConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_DefaultGeometryLoaderPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFGeometryLoaderPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFSceneExportPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_GLTFSceneImportPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_OpenGLRendererPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt53DRender\Qt53DRender_Scene2DPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigExtrasMkspecDir.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Core\Qt5CoreMacros.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5GamepadConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5GamepadConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gamepad\Qt5Gamepad_QXInputGamepadBackendPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5GuiConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QGifPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QICNSPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QICOPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QInsightTrackerPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QJpegPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QMinimalIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QOffscreenIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QSvgIconPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QSvgPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTgaPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTiffPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QTuioTouchPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QVirtualKeyboardPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWbmpPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWebGLIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWebpPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWindowsDirect2DIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QWindowsIntegrationPlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Gui\Qt5Gui_QXdgDesktopPortalThemePlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5NetworkConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5NetworkConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Network\Qt5Network_QGenericEnginePlugin.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5OpenGL\Qt5OpenGLConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5OpenGL\Qt5OpenGLConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfig.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfigExtras.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsConfigVersion.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5WidgetsMacros.cmake;D:\Qt2\5.15.2\msvc2019_64\lib\cmake\Qt5Widgets\Qt5Widgets_QWindowsVistaStylePlugin.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Geant4\Projects\Scintillator-Detector-master\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\Geant4\Projects\Scintillator-Detector-master\exampleB1.cc" />
+    <ClCompile Include="D:\Geant4\Projects\Scintillator-Detector-master\src\ActionInitialization.cc" />
+    <ClCompile Include="D:\Geant4\Projects\Scintillator-Detector-master\src\DetectorConstruction.cc" />
+    <ClCompile Include="D:\Geant4\Projects\Scintillator-Detector-master\src\EventAction.cc" />
+    <ClCompile Include="D:\Geant4\Projects\Scintillator-Detector-master\src\HistoManager.cc" />
+    <ClCompile Include="D:\Geant4\Projects\Scintillator-Detector-master\src\MyPhysicsList.cc" />
+    <ClCompile Include="D:\Geant4\Projects\Scintillator-Detector-master\src\PrimaryGeneratorAction.cc" />
+    <ClCompile Include="D:\Geant4\Projects\Scintillator-Detector-master\src\RunAction.cc" />
+    <ClCompile Include="D:\Geant4\Projects\Scintillator-Detector-master\src\SteppingAction.cc" />
+    <ClInclude Include="D:\Geant4\Projects\Scintillator-Detector-master\include\ActionInitialization.hh" />
+    <ClInclude Include="D:\Geant4\Projects\Scintillator-Detector-master\include\DetectorConstruction.hh" />
+    <ClInclude Include="D:\Geant4\Projects\Scintillator-Detector-master\include\EventAction.hh" />
+    <ClInclude Include="D:\Geant4\Projects\Scintillator-Detector-master\include\HistoManager.hh" />
+    <ClInclude Include="D:\Geant4\Projects\Scintillator-Detector-master\include\MyPhysicsList.hh" />
+    <ClInclude Include="D:\Geant4\Projects\Scintillator-Detector-master\include\PrimaryGeneratorAction.hh" />
+    <ClInclude Include="D:\Geant4\Projects\Scintillator-Detector-master\include\RunAction.hh" />
+    <ClInclude Include="D:\Geant4\Projects\Scintillator-Detector-master\include\SteppingAction.hh" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="D:\Geant4\Projects\Scintillator-Detector-master\build\ZERO_CHECK.vcxproj">
+      <Project>{73E84CD0-2620-3093-ADA5-BAA6BDE516B8}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
