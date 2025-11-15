@@ -1,0 +1,10 @@
+^D:\GEANT4\GEANT4-INSTALL\SHARE\GEANT4\EXAMPLES\BASIC\B1\CMAKELISTS.TXT
+setlocal
+D:\Cmake\bin\cmake.exe -SD:/Geant4/geant4-install/share/Geant4/examples/basic/B1 -BD:/Geant4/geant4-install/share/Geant4/examples/basic/B1 --check-stamp-file D:/Geant4/geant4-install/share/Geant4/examples/basic/B1/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

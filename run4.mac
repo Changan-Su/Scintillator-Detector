@@ -1,0 +1,14 @@
+/control/verbose 0
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+/run/printProgress 100
+
+# /run/numberOfThreads 4
+
+/vis/disable       
+/run/initialize     
+
+/gun/particle gamma
+/gun/energy 662 keV
+/run/beamOn 100000

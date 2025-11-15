@@ -1,0 +1,15 @@
+/var/spool/slurmd/job2341669/slurm_script: line 9: /pulbic1/home/a8s001349/soft/g4data.sh: No such file or directory
+
+-------- EEEE ------- G4Exception-START -------- EEEE -------
+*** G4Exception : PART70000
+      issued by : G4NuclideTable
+G4ENSDFSTATEDATA environment variable must be set
+*** Fatal Exception *** core dump ***
+ **** Track information is not available at this moment
+ **** Step information is not available at this moment
+
+-------- EEEE -------- G4Exception-END --------- EEEE -------
+
+
+*** G4Exception: Aborting execution ***
+/var/spool/slurmd/job2341669/slurm_script: line 10: 57094 Aborted                 (core dumped) ./exampleB1 ../../run4.mac

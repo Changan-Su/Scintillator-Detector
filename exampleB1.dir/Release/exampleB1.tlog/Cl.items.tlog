@@ -1,0 +1,9 @@
+D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\exampleB1.cc;D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\exampleB1.dir\Release\exampleB1.obj
+D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\src\ActionInitialization.cc;D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\exampleB1.dir\Release\ActionInitialization.obj
+D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\src\DetectorConstruction.cc;D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\exampleB1.dir\Release\DetectorConstruction.obj
+D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\src\EventAction.cc;D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\exampleB1.dir\Release\EventAction.obj
+D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\src\HistoManager.cc;D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\exampleB1.dir\Release\HistoManager.obj
+D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\src\MyPhysicsList.cc;D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\exampleB1.dir\Release\MyPhysicsList.obj
+D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\src\PrimaryGeneratorAction.cc;D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\exampleB1.dir\Release\PrimaryGeneratorAction.obj
+D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\src\RunAction.cc;D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\exampleB1.dir\Release\RunAction.obj
+D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\src\SteppingAction.cc;D:\Geant4\geant4-install\share\Geant4\examples\basic\B1\exampleB1.dir\Release\SteppingAction.obj
