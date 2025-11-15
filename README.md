@@ -1,4 +1,4 @@
-# Scintillator Detector
+# Scintillator Detector Single Rod
 
 SSLE is a project written primarily in C++ and C, utilizing CMake for its build process. This repository aims to provide efficient and robust functionality for its intended purpose (please update this section with a specific project description).
 

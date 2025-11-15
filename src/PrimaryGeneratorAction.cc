@@ -98,17 +98,18 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
     msg << "The gun will be place at the center.";
     G4Exception("PrimaryGeneratorAction::GeneratePrimaries()", "MyCode0002", JustWarning, msg);
   }
-
+  //range of the area
   G4double rx = fDetectorConstruction->GetCrystal_nx() * fDetectorConstruction->Getcrystal_l() + fDetectorConstruction->GetCrystal_gap() * (fDetectorConstruction->GetCrystal_nx() - 1); // Get the crystal length from DetectorConstruction
   G4double ry = fDetectorConstruction->GetCrystal_ny() * fDetectorConstruction->Getcrystal_ly() + fDetectorConstruction->GetCrystal_gap() * (fDetectorConstruction->GetCrystal_ny() - 1); // Assuming square cross-section for simplicity
+  G4double rz = fDetectorConstruction->GetCrystal_nz() * fDetectorConstruction->Getcrystal_l() + fDetectorConstruction->GetCrystal_gap() * (fDetectorConstruction->GetCrystal_nz() - 1); // Get the crystal length from DetectorConstruction
   // G4double rx = 24.7 * cm; 
   // G4double ry = 24.7 * cm;
   G4double size = 1;
   // G4double x0 = rx/2 - G4RandFlat::shootInt(fDetectorConstruction->GetCrystal_nx())*(fDetectorConstruction->Getcrystal_l()+fDetectorConstruction->GetCrystal_gap())-fDetectorConstruction->Getcrystal_l()/2;
   // G4double y0 = -ry/2 + G4RandFlat::shootInt(fDetectorConstruction->GetCrystal_ny())*(fDetectorConstruction->Getcrystal_ly()+fDetectorConstruction->GetCrystal_gap())+fDetectorConstruction->Getcrystal_ly()/2;
   
-  // G4double x0 = -rx/2 + rx * G4UniformRand();
-  // G4double y0 = -ry/2 + ry * G4UniformRand();
+  G4double x0 = -rx/2 + rx * G4UniformRand();
+  G4double y0 = -ry/2 + ry * G4UniformRand();
   
   G4double z0 = -20 * cm;
   G4double r0 = 20 * cm;
@@ -119,8 +120,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
   G4double Dir_z = G4UniformRand()-0.5;
 
   // Build a random 3D vector from Dir_x, Dir_y, Dir_z and normalize it.
-  // G4ThreeVector Ramdom_Dir = G4ThreeVector(Dir_x,Dir_y,Dir_z);
-  // G4ThreeVector UniRam_Dir = Ramdom_Dir / Ramdom_Dir.mag();
+  G4ThreeVector Ramdom_Dir = G4ThreeVector(Dir_x,Dir_y,Dir_z);
+  G4ThreeVector UniRam_Dir = Ramdom_Dir / Ramdom_Dir.mag();
   
 
 
