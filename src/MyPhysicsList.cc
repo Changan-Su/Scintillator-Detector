@@ -1,5 +1,4 @@
 #include "MyPhysicsList.hh"
-
 #include "G4DecayPhysics.hh"
 #include "G4EmLivermorePhysics.hh"
 #include "G4OpticalPhysics.hh"
@@ -13,6 +12,7 @@
 #include "FTFP_BERT.hh"
 #include "G4EmStandardPhysics_option4.hh"
 #include "G4HadronPhysicsFTFP_BERT.hh"
+
 MyPhysicsList::MyPhysicsList()
 {
     SetVerboseLevel(1);
@@ -40,12 +40,11 @@ MyPhysicsList::MyPhysicsList()
     atomDeexcitation->SetFluo(true);//原子退激发
     atomDeexcitation->SetAuger(true);
     atomDeexcitation->SetPIXE(true);
+    
+    G4int FuckU = 1;
     G4LossTableManager::Instance()->SetAtomDeexcitation(atomDeexcitation);
+    //Fuck you
 }
-
-MyPhysicsList::~MyPhysicsList()
-{ }
-
 
 
 

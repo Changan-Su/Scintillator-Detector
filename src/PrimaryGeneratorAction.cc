@@ -114,19 +114,26 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
   G4double z0 = -20 * cm;
   G4double r0 = 20 * cm;
 
+  G4double Pos_x = G4UniformRand()-0.5;
+  G4double Pos_y = G4UniformRand()-0.5;
+  G4double Pos_z = G4UniformRand()-0.5;
 
   G4double Dir_x = G4UniformRand()-0.5;
   G4double Dir_y = G4UniformRand()-0.5;
   G4double Dir_z = G4UniformRand()-0.5;
 
+  G4ThreeVector Ram_Pos = G4ThreeVector(Pos_x ,Pos_y ,Pos_z);
+  G4ThreeVector URam_Pos = Ram_Pos / Ram_Pos.mag();
   // Build a random 3D vector from Dir_x, Dir_y, Dir_z and normalize it.
-  G4ThreeVector Ramdom_Dir = G4ThreeVector(Dir_x,Dir_y,Dir_z);
-  G4ThreeVector UniRam_Dir = Ramdom_Dir / Ramdom_Dir.mag();
+  G4ThreeVector Ram_Dir = G4ThreeVector(Dir_x,Dir_y,Dir_z);
+  G4ThreeVector URam_Dir = Ram_Dir / Ram_Dir.mag();
   
+  G4ThreeVector Pos_Planar = G4ThreeVector(x0, y0, z0);
+  G4ThreeVector Dir_Planar = G4ThreeVector(0,0, -z0);
 
 
-  fParticleGun->SetParticlePosition(UniRam_Dir * r0);
-  fParticleGun->SetParticleMomentumDirection(-UniRam_Dir);
+  fParticleGun->SetParticlePosition(Pos_Planar);
+  fParticleGun->SetParticleMomentumDirection(Dir_Planar);
   fParticleGun->GeneratePrimaryVertex(event);
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -30,6 +30,11 @@ namespace B1
   
   G4VPhysicalVolume* DetectorConstruction::Construct()
   {
+    G4double Fillter_Gap_Ratio_Y = 0.3;
+    G4double Fillter_Gap_Ratio_Z = 1;
+    //Ratio between Position From Centre of Crystal to Centre of Fillter and the half length of the Crystal
+    G4double Fillter_Gap_PosRatio_Y = 0.7;
+    G4double Fillter_Gap_PosRatio_Z = 0;
 
     G4double Surface_Sigma = 0.5;
 
@@ -189,8 +194,9 @@ namespace B1
 
       //Crystal Fillter
       G4double Fillter_x = Crystal_gap;
-      G4double Fillter_y = crystal_ly * 0.3;
-      G4double Fillter_z = crystal_l * 0.2;
+      G4double Fillter_y = crystal_ly * Fillter_Gap_Ratio_Y;
+      G4double Fillter_z = crystal_l * Fillter_Gap_Ratio_Z;
+
       G4bool IfFillter = true;
 
       auto solidFillter = new G4Box("Fillter", Fillter_x/2, Fillter_y/2, Fillter_z/2);
@@ -217,9 +223,11 @@ namespace B1
       for (int iz = 0; iz < Crystal_nz; ++iz)
       {
       G4double posZ = -Crystal_z/2 + iz * (crystal_l + Crystal_gap) + crystal_l / 2;
+      G4double Fillter_Pos_Z = posZ + crystal_l * Fillter_Gap_PosRatio_Z/2;
         for (int iy = 0; iy < Crystal_ny; ++iy)
         {
           G4double posY = -Crystal_y/2 + iy * (crystal_ly + Crystal_gap) + crystal_ly / 2;
+          G4double Fillter_Pos_Y = posY + crystal_ly*Fillter_Gap_PosRatio_Y/2;
           for (int ix = 0; ix < Crystal_nx; ++ix)
           {
             G4double posX = -Crystal_x/2 + ix * (crystal_l + Crystal_gap) + crystal_l / 2;
@@ -235,8 +243,8 @@ namespace B1
                                                   checkOverlaps);  // overlaps checking
             if(ix != 0 && IfFillter)
             {
-              G4double pos_fillter_x = -Crystal_x/2 + (crystal_l + Fillter_x) * ix - Fillter_x/2;
-              G4ThreeVector pos_fillter = G4ThreeVector(pos_fillter_x, posY, posZ);
+              G4double Fillter_Pos_X = -Crystal_x/2 + (crystal_l + Fillter_x) * ix - Fillter_x/2;
+              G4ThreeVector pos_fillter = G4ThreeVector(Fillter_Pos_X, Fillter_Pos_Y, Fillter_Pos_Z);
               auto physFillter = new G4PVPlacement(nullptr,
                                                    pos_fillter,
                                                    logicFillter,
