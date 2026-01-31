@@ -3,8 +3,8 @@
 按 (iy, iz) 选择单条 rod，画 DOI (R/(L+R)) 直方图 + 平滑 + 多峰高斯拟合。
 数据源：AnaEx01_nt_PhotonLRPerRod.csv（应包含列：EventID, iz, iy, Left, Right）
 用法：
-    python Histo6.py --iy 5 --iz 7
-    python Histo6.py --iy 1 --iz 1 --csv AnaEx01_nt_PhotonLRPerRod.csv
+    python Histo7.py --iy 5 --iz 7
+    python Histo7.py --iy 1 --iz 1 --csv AnaEx01_nt_PhotonLRPerRod.csv
 """
 import argparse
 import numpy as np
@@ -139,15 +139,21 @@ def analyze_one_rod(df: pd.DataFrame, iy: int, iz: int):
                 multi_gaussian, hist_x, hist_y_smooth,
                 p0=init_params, bounds=(lb, ub), maxfev=20000
             )
-        except Exception:
-            ub2 = ub[:]
-            for i in range(2, len(ub2), 3):
-                ub2[i] = max(0.08, ub2[i])
-            popt, _ = curve_fit(
-                multi_gaussian, hist_x, hist_y_smooth,
-                p0=init_params, bounds=(lb, ub2), maxfev=40000
-            )
-        fitted_y = multi_gaussian(hist_x, *popt)
+            fitted_y = multi_gaussian(hist_x, *popt)
+        except Exception as e1:
+            # 放宽 sigma 上界重试
+            try:
+                ub2 = ub[:]
+                for i in range(2, len(ub2), 3):
+                    ub2[i] = max(0.08, ub2[i])
+                popt, _ = curve_fit(
+                    multi_gaussian, hist_x, hist_y_smooth,
+                    p0=init_params, bounds=(lb, ub2), maxfev=40000
+                )
+                fitted_y = multi_gaussian(hist_x, *popt)
+            except Exception as e2:
+                print(f"Warning: 拟合失败 - {str(e2)}")
+                print("将继续显示未拟合的直方图")
 
     # 绘图
     title = f"Rod (iy={iy}, iz={iz}) • Events={len(asym)}"
@@ -166,8 +172,7 @@ def analyze_one_rod(df: pd.DataFrame, iy: int, iz: int):
     plt.tight_layout()
     plt.show()
 
-    # 打印拟合结果（可选）
-        # 打印拟合结果 + 平均 FWHM
+    # 打印拟合结果 + 平均 FWHM
     if popt is not None:
         print("\n== Gaussian Peak Fit Results ==")
         fwhm_list = []

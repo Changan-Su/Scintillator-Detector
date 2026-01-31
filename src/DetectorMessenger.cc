@@ -19,6 +19,7 @@
 #include "G4UIcommand.hh"
 #include "G4UIcmdWithAnInteger.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
+#include "G4UIcmdWithADouble.hh"
 #include "G4UIcmdWithoutParameter.hh"
 #include "G4RunManager.hh"
 #include "G4SystemOfUnits.hh"
@@ -71,6 +72,30 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction* det)
   fCrystalSizeYCmd->SetDefaultValue(3.);
   fCrystalSizeYCmd->SetDefaultUnit("mm");
 
+  fFillterRatioYCmd = new G4UIcmdWithADouble("/detector/fillterRatioY", this);
+  fFillterRatioYCmd->SetGuidance("Fillter size ratio in Y direction (0-1, relative to crystal_ly).");
+  fFillterRatioYCmd->SetParameterName("RatioY", false);
+  fFillterRatioYCmd->SetRange("RatioY >= 0. && RatioY <= 1.");
+  fFillterRatioYCmd->SetDefaultValue(0.3);
+
+  fFillterRatioZCmd = new G4UIcmdWithADouble("/detector/fillterRatioZ", this);
+  fFillterRatioZCmd->SetGuidance("Fillter size ratio in Z direction (0-1, relative to crystal_l).");
+  fFillterRatioZCmd->SetParameterName("RatioZ", false);
+  fFillterRatioZCmd->SetRange("RatioZ >= 0. && RatioZ <= 1.");
+  fFillterRatioZCmd->SetDefaultValue(1.0);
+
+  fFillterPosRatioYCmd = new G4UIcmdWithADouble("/detector/fillterPosRatioY", this);
+  fFillterPosRatioYCmd->SetGuidance("Fillter position ratio in Y (0-1, from center of crystal to center of fillter).");
+  fFillterPosRatioYCmd->SetParameterName("PosRatioY", false);
+  fFillterPosRatioYCmd->SetRange("PosRatioY >= 0. && PosRatioY <= 1.");
+  fFillterPosRatioYCmd->SetDefaultValue(0.7);
+
+  fFillterPosRatioZCmd = new G4UIcmdWithADouble("/detector/fillterPosRatioZ", this);
+  fFillterPosRatioZCmd->SetGuidance("Fillter position ratio in Z (0-1, from center of crystal to center of fillter).");
+  fFillterPosRatioZCmd->SetParameterName("PosRatioZ", false);
+  fFillterPosRatioZCmd->SetRange("PosRatioZ >= 0. && PosRatioZ <= 1.");
+  fFillterPosRatioZCmd->SetDefaultValue(0.0);
+
   fUpdateCmd = new G4UIcmdWithoutParameter("/detector/update", this);
   fUpdateCmd->SetGuidance("Update geometry: rebuild detector with current parameters.");
   fUpdateCmd->SetGuidance("Use this after changing array size, gap, or crystal dimensions.");
@@ -79,6 +104,10 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction* det)
 DetectorMessenger::~DetectorMessenger()
 {
   delete fUpdateCmd;
+  delete fFillterPosRatioZCmd;
+  delete fFillterPosRatioYCmd;
+  delete fFillterRatioZCmd;
+  delete fFillterRatioYCmd;
   delete fArrayNxCmd;
   delete fArrayNyCmd;
   delete fArrayNzCmd;
@@ -102,6 +131,14 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
     fDetector->SetCrystalSize(fCrystalSizeCmd->GetNewDoubleValue(newValue));
   else if (command == fCrystalSizeYCmd)
     fDetector->SetCrystalSizeY(fCrystalSizeYCmd->GetNewDoubleValue(newValue));
+  else if (command == fFillterRatioYCmd)
+    fDetector->SetFillterRatioY(fFillterRatioYCmd->GetNewDoubleValue(newValue));
+  else if (command == fFillterRatioZCmd)
+    fDetector->SetFillterRatioZ(fFillterRatioZCmd->GetNewDoubleValue(newValue));
+  else if (command == fFillterPosRatioYCmd)
+    fDetector->SetFillterPosRatioY(fFillterPosRatioYCmd->GetNewDoubleValue(newValue));
+  else if (command == fFillterPosRatioZCmd)
+    fDetector->SetFillterPosRatioZ(fFillterPosRatioZCmd->GetNewDoubleValue(newValue));
   else if (command == fUpdateCmd) {
     G4RunManager::GetRunManager()->ReinitializeGeometry();
     G4cout << "Geometry updated with current parameters." << G4endl;

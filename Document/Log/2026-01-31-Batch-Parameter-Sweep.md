@@ -2,13 +2,13 @@
 
 **日期**: 2026-01-31  
 **项目**: Scintillator-Detector-Single Rod  
-**版本**: v1.0
+**版本**: v1.1
 
 ---
 
 ## 开发内容
 
-创建参数扫描批量运行脚本（Windows `run_batch.bat` 和 Linux `run_batch.sh`），支持自定义几何参数循环（arrayNx/Ny/Nz、crystalGap、crystalSize、crystalSizeY），自动运行模拟并将结果按循环次数+参数命名存储到 `Results/` 目录，每个结果文件夹包含当次运行的 `geometry.mac` 副本。
+创建参数扫描批量运行脚本（Windows `run_batch.bat` 和 Linux `run_batch.sh`），支持自定义几何参数循环（arrayNx/Ny/Nz、crystalGap、crystalSize、crystalSizeY、fillterRatioY/Z、fillterPosRatioY/Z），自动运行模拟并将结果按循环次数+参数命名存储到 `Results/` 目录，每个结果文件夹包含当次运行的 `geometry.mac` 副本。
 
 ---
 
@@ -38,6 +38,14 @@
 | `SIZE_START`, `SIZE_END`, `SIZE_STEP` | crystalSize 起始值、终止值、步长（mm） | `2`, `4`, `1` |
 | `LOOP_CRYSTAL_SIZE_Y` | 是否循环 crystalSizeY | `true` / `false` |
 | `SIZE_Y_START`, `SIZE_Y_END`, `SIZE_Y_STEP` | crystalSizeY 起始值、终止值、步长（mm） | `2`, `4`, `1` |
+| `LOOP_FILLTER_RATIO_Y` | 是否循环 fillterRatioY | `true` / `false` |
+| `FILLTER_RATIO_Y_START`, `FILLTER_RATIO_Y_END`, `FILLTER_RATIO_Y_STEP` | fillterRatioY 起始值、终止值、步长（0-1） | `0.1`, `0.9`, `0.2` |
+| `LOOP_FILLTER_RATIO_Z` | 是否循环 fillterRatioZ | `true` / `false` |
+| `FILLTER_RATIO_Z_START`, `FILLTER_RATIO_Z_END`, `FILLTER_RATIO_Z_STEP` | fillterRatioZ 起始值、终止值、步长（0-1） | `0.5`, `1.0`, `0.25` |
+| `LOOP_FILLTER_POS_RATIO_Y` | 是否循环 fillterPosRatioY | `true` / `false` |
+| `FILLTER_POS_RATIO_Y_START`, `FILLTER_POS_RATIO_Y_END`, `FILLTER_POS_RATIO_Y_STEP` | fillterPosRatioY 起始值、终止值、步长（0-1） | `0.5`, `0.9`, `0.1` |
+| `LOOP_FILLTER_POS_RATIO_Z` | 是否循环 fillterPosRatioZ | `true` / `false` |
+| `FILLTER_POS_RATIO_Z_START`, `FILLTER_POS_RATIO_Z_END`, `FILLTER_POS_RATIO_Z_STEP` | fillterPosRatioZ 起始值、终止值、步长（0-1） | `0.0`, `0.5`, `0.25` |
 
 #### 默认值配置（不循环时使用的固定值）
 
@@ -49,6 +57,10 @@
 | `DEFAULT_GAP` | crystalGap 默认值（mm） | `0.1` |
 | `DEFAULT_SIZE` | crystalSize 默认值（mm） | `3` |
 | `DEFAULT_SIZE_Y` | crystalSizeY 默认值（mm） | `3` |
+| `DEFAULT_FILLTER_RATIO_Y` | fillterRatioY 默认值（0-1） | `0.3` |
+| `DEFAULT_FILLTER_RATIO_Z` | fillterRatioZ 默认值（0-1） | `1.0` |
+| `DEFAULT_FILLTER_POS_RATIO_Y` | fillterPosRatioY 默认值（0-1） | `0.7` |
+| `DEFAULT_FILLTER_POS_RATIO_Z` | fillterPosRatioZ 默认值（0-1） | `0.0` |
 
 #### 运行配置
 
@@ -67,6 +79,10 @@
 | `NAME_INCLUDE_GAP` | 文件夹名是否包含 Gap | `true` |
 | `NAME_INCLUDE_SIZE` | 文件夹名是否包含 Size | `false` |
 | `NAME_INCLUDE_SIZE_Y` | 文件夹名是否包含 SizeY | `false` |
+| `NAME_INCLUDE_FILLTER_RATIO_Y` | 文件夹名是否包含 FillterRatioY | `false` |
+| `NAME_INCLUDE_FILLTER_RATIO_Z` | 文件夹名是否包含 FillterRatioZ | `false` |
+| `NAME_INCLUDE_FILLTER_POS_RATIO_Y` | 文件夹名是否包含 FillterPosRatioY | `false` |
+| `NAME_INCLUDE_FILLTER_POS_RATIO_Z` | 文件夹名是否包含 FillterPosRatioZ | `false` |
 
 ### 3. 脚本执行流程
 

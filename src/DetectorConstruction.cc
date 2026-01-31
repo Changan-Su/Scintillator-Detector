@@ -40,11 +40,11 @@ namespace B1
 
   G4VPhysicalVolume* DetectorConstruction::Construct()
   {
-    G4double Fillter_Gap_Ratio_Y = 0.3;
-    G4double Fillter_Gap_Ratio_Z = 1;
-    //Ratio between Position From Centre of Crystal to Centre of Fillter and the half length of the Crystal
-    G4double Fillter_Gap_PosRatio_Y = 0.7;
-    G4double Fillter_Gap_PosRatio_Z = 0;
+    // Use member variables for fillter parameters
+    G4double Fillter_Gap_Ratio_Y = fFillter_Gap_Ratio_Y;
+    G4double Fillter_Gap_Ratio_Z = fFillter_Gap_Ratio_Z;
+    G4double Fillter_Gap_PosRatio_Y = fFillter_Gap_PosRatio_Y;
+    G4double Fillter_Gap_PosRatio_Z = fFillter_Gap_PosRatio_Z;
 
     G4double Surface_Sigma = 0.5;
 

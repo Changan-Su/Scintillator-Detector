@@ -22,6 +22,10 @@ LOOP_ARRAY_NZ=false
 LOOP_CRYSTAL_GAP=true
 LOOP_CRYSTAL_SIZE=false
 LOOP_CRYSTAL_SIZE_Y=false
+LOOP_FILLTER_RATIO_Y=false
+LOOP_FILLTER_RATIO_Z=false
+LOOP_FILLTER_POS_RATIO_Y=false
+LOOP_FILLTER_POS_RATIO_Z=false
 
 # --- Parameter Range Configuration ---
 # Array Nx (crystal count in x direction)
@@ -54,6 +58,26 @@ SIZE_Y_START=3
 SIZE_Y_END=3
 SIZE_Y_STEP=1
 
+# Fillter Ratio Y (0-1, size ratio in Y)
+FILLTER_RATIO_Y_START=0.3
+FILLTER_RATIO_Y_END=0.3
+FILLTER_RATIO_Y_STEP=0.1
+
+# Fillter Ratio Z (0-1, size ratio in Z)
+FILLTER_RATIO_Z_START=1.0
+FILLTER_RATIO_Z_END=1.0
+FILLTER_RATIO_Z_STEP=0.1
+
+# Fillter Position Ratio Y (0-1, position ratio in Y)
+FILLTER_POS_RATIO_Y_START=0.7
+FILLTER_POS_RATIO_Y_END=0.7
+FILLTER_POS_RATIO_Y_STEP=0.1
+
+# Fillter Position Ratio Z (0-1, position ratio in Z)
+FILLTER_POS_RATIO_Z_START=0.0
+FILLTER_POS_RATIO_Z_END=0.0
+FILLTER_POS_RATIO_Z_STEP=0.1
+
 # --- Default Values (used when parameter is not looping) ---
 DEFAULT_NX=11
 DEFAULT_NY=7
@@ -61,6 +85,10 @@ DEFAULT_NZ=7
 DEFAULT_GAP=0.1
 DEFAULT_SIZE=3
 DEFAULT_SIZE_Y=3
+DEFAULT_FILLTER_RATIO_Y=0.3
+DEFAULT_FILLTER_RATIO_Z=1.0
+DEFAULT_FILLTER_POS_RATIO_Y=0.7
+DEFAULT_FILLTER_POS_RATIO_Z=0.0
 
 # --- Run Configuration ---
 RUN_MACRO=run4.mac
@@ -73,6 +101,10 @@ NAME_INCLUDE_NZ=false
 NAME_INCLUDE_GAP=true
 NAME_INCLUDE_SIZE=false
 NAME_INCLUDE_SIZE_Y=false
+NAME_INCLUDE_FILLTER_RATIO_Y=false
+NAME_INCLUDE_FILLTER_RATIO_Z=false
+NAME_INCLUDE_FILLTER_POS_RATIO_Y=false
+NAME_INCLUDE_FILLTER_POS_RATIO_Z=false
 
 # --- Geant4 Environment (adjust to your installation) ---
 # Uncomment and adjust the path if needed:
@@ -121,6 +153,10 @@ generate_geometry_mac() {
     local gap=$4
     local size=$5
     local size_y=$6
+    local fillter_ratio_y=$7
+    local fillter_ratio_z=$8
+    local fillter_pos_ratio_y=$9
+    local fillter_pos_ratio_z=${10}
     
     cat > geometry.mac <<EOF
 # Geometry macro: crystal array and gap (run before /run/initialize)
@@ -139,6 +175,12 @@ generate_geometry_mac() {
 #
 # Single crystal size in y, in mm
 /detector/crystalSizeY $size_y mm
+#
+# Fillter (gap filler) parameters (ratios 0-1)
+/detector/fillterRatioY $fillter_ratio_y
+/detector/fillterRatioZ $fillter_ratio_z
+/detector/fillterPosRatioY $fillter_pos_ratio_y
+/detector/fillterPosRatioZ $fillter_pos_ratio_z
 EOF
 }
 
@@ -183,6 +225,30 @@ else
     SIZE_Y_LIST=$DEFAULT_SIZE_Y
 fi
 
+if [ "$LOOP_FILLTER_RATIO_Y" = "true" ]; then
+    FILLTER_RATIO_Y_LIST=$(generate_decimal_seq $FILLTER_RATIO_Y_START $FILLTER_RATIO_Y_END $FILLTER_RATIO_Y_STEP)
+else
+    FILLTER_RATIO_Y_LIST=$DEFAULT_FILLTER_RATIO_Y
+fi
+
+if [ "$LOOP_FILLTER_RATIO_Z" = "true" ]; then
+    FILLTER_RATIO_Z_LIST=$(generate_decimal_seq $FILLTER_RATIO_Z_START $FILLTER_RATIO_Z_END $FILLTER_RATIO_Z_STEP)
+else
+    FILLTER_RATIO_Z_LIST=$DEFAULT_FILLTER_RATIO_Z
+fi
+
+if [ "$LOOP_FILLTER_POS_RATIO_Y" = "true" ]; then
+    FILLTER_POS_RATIO_Y_LIST=$(generate_decimal_seq $FILLTER_POS_RATIO_Y_START $FILLTER_POS_RATIO_Y_END $FILLTER_POS_RATIO_Y_STEP)
+else
+    FILLTER_POS_RATIO_Y_LIST=$DEFAULT_FILLTER_POS_RATIO_Y
+fi
+
+if [ "$LOOP_FILLTER_POS_RATIO_Z" = "true" ]; then
+    FILLTER_POS_RATIO_Z_LIST=$(generate_decimal_seq $FILLTER_POS_RATIO_Z_START $FILLTER_POS_RATIO_Z_END $FILLTER_POS_RATIO_Z_STEP)
+else
+    FILLTER_POS_RATIO_Z_LIST=$DEFAULT_FILLTER_POS_RATIO_Z
+fi
+
 # Nested loops through all parameter combinations
 for nx in $NX_LIST; do
     for ny in $NY_LIST; do
@@ -190,42 +256,56 @@ for nx in $NX_LIST; do
             for gap in $GAP_LIST; do
                 for size in $SIZE_LIST; do
                     for size_y in $SIZE_Y_LIST; do
-                        LOOP_COUNT=$((LOOP_COUNT + 1))
-                        
-                        # Build folder name with zero-padded counter
-                        FOLDER_NAME=$(printf "%03d" $LOOP_COUNT)
-                        
-                        [ "$NAME_INCLUDE_NX" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_Nx${nx}"
-                        [ "$NAME_INCLUDE_NY" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_Ny${ny}"
-                        [ "$NAME_INCLUDE_NZ" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_Nz${nz}"
-                        [ "$NAME_INCLUDE_GAP" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_Gap${gap}"
-                        [ "$NAME_INCLUDE_SIZE" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_Size${size}"
-                        [ "$NAME_INCLUDE_SIZE_Y" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_SizeY${size_y}"
-                        
-                        RESULT_DIR="Results/$FOLDER_NAME"
-                        
-                        echo "[$LOOP_COUNT] Running: Nx=$nx Ny=$ny Nz=$nz Gap=$gap Size=$size SizeY=$size_y"
-                        echo "   Output: $RESULT_DIR"
-                        
-                        # Generate geometry.mac
-                        generate_geometry_mac $nx $ny $nz $gap $size $size_y
-                        
-                        # Create result folder
-                        mkdir -p "$RESULT_DIR"
-                        
-                        # Copy geometry.mac to result folder
-                        cp geometry.mac "$RESULT_DIR/geometry.mac"
-                        
-                        # Run simulation
-                        ./"$EXE_PATH" "$RUN_MACRO" > /dev/null 2>&1
-                        
-                        # Move CSV files to result folder
-                        if ls AnaEx01_nt_*.csv 1> /dev/null 2>&1; then
-                            mv AnaEx01_nt_*.csv "$RESULT_DIR/" 2> /dev/null
-                        fi
-                        
-                        echo "   Completed."
-                        echo ""
+                        for fillter_ratio_y in $FILLTER_RATIO_Y_LIST; do
+                            for fillter_ratio_z in $FILLTER_RATIO_Z_LIST; do
+                                for fillter_pos_ratio_y in $FILLTER_POS_RATIO_Y_LIST; do
+                                    for fillter_pos_ratio_z in $FILLTER_POS_RATIO_Z_LIST; do
+                                        LOOP_COUNT=$((LOOP_COUNT + 1))
+                                        
+                                        # Build folder name with zero-padded counter
+                                        FOLDER_NAME=$(printf "%03d" $LOOP_COUNT)
+                                        
+                                        [ "$NAME_INCLUDE_NX" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_Nx${nx}"
+                                        [ "$NAME_INCLUDE_NY" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_Ny${ny}"
+                                        [ "$NAME_INCLUDE_NZ" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_Nz${nz}"
+                                        [ "$NAME_INCLUDE_GAP" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_Gap${gap}"
+                                        [ "$NAME_INCLUDE_SIZE" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_Size${size}"
+                                        [ "$NAME_INCLUDE_SIZE_Y" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_SizeY${size_y}"
+                                        [ "$NAME_INCLUDE_FILLTER_RATIO_Y" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_FRY${fillter_ratio_y}"
+                                        [ "$NAME_INCLUDE_FILLTER_RATIO_Z" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_FRZ${fillter_ratio_z}"
+                                        [ "$NAME_INCLUDE_FILLTER_POS_RATIO_Y" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_FPRY${fillter_pos_ratio_y}"
+                                        [ "$NAME_INCLUDE_FILLTER_POS_RATIO_Z" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_FPRZ${fillter_pos_ratio_z}"
+                                        
+                                        RESULT_DIR="Results/$FOLDER_NAME"
+                                        
+                                        echo "[$LOOP_COUNT] Running: Nx=$nx Ny=$ny Nz=$nz Gap=$gap Size=$size SizeY=$size_y FillterY=$fillter_ratio_y FillterZ=$fillter_ratio_z FPosY=$fillter_pos_ratio_y FPosZ=$fillter_pos_ratio_z"
+                                        echo "   Output: $RESULT_DIR"
+                                        
+                                        # Generate geometry.mac
+                                        generate_geometry_mac $nx $ny $nz $gap $size $size_y $fillter_ratio_y $fillter_ratio_z $fillter_pos_ratio_y $fillter_pos_ratio_z
+                                        
+                                        # Create result folder
+                                        mkdir -p "$RESULT_DIR"
+                                        
+                                        # Copy geometry.mac to result folder
+                                        cp geometry.mac "$RESULT_DIR/geometry.mac"
+                                        
+                                        # Run simulation
+                                        ./"$EXE_PATH" "$RUN_MACRO" > /dev/null 2>&1
+                                        
+                                        # Move CSV files to result folder
+                                        for csv_file in AnaEx01_nt_*.csv; do
+                                            if [ -f "$csv_file" ]; then
+                                                mv "$csv_file" "$RESULT_DIR/" 2> /dev/null
+                                            fi
+                                        done
+                                        
+                                        echo "   Completed."
+                                        echo ""
+                                    done
+                                done
+                            done
+                        done
                     done
                 done
             done

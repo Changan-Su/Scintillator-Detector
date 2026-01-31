@@ -19,11 +19,15 @@ REM ============================================================================
 
 REM --- Parameter Loop Configuration (true/false) ---
 set LOOP_ARRAY_NX=false
-set LOOP_ARRAY_NY=false
+set LOOP_ARRAY_NY=true
 set LOOP_ARRAY_NZ=false
-set LOOP_CRYSTAL_GAP=true
+set LOOP_CRYSTAL_GAP=false
 set LOOP_CRYSTAL_SIZE=false
 set LOOP_CRYSTAL_SIZE_Y=false
+set LOOP_FILLTER_RATIO_Y=false
+set LOOP_FILLTER_RATIO_Z=false
+set LOOP_FILLTER_POS_RATIO_Y=false
+set LOOP_FILLTER_POS_RATIO_Z=false
 
 REM --- Parameter Range Configuration ---
 REM Array Nx (crystal count in x direction)
@@ -32,8 +36,8 @@ set NX_END=11
 set NX_STEP=1
 
 REM Array Ny (crystal count in y direction)
-set NY_START=7
-set NY_END=7
+set NY_START=1
+set NY_END=3
 set NY_STEP=1
 
 REM Array Nz (crystal count in z direction)
@@ -43,7 +47,7 @@ set NZ_STEP=1
 
 REM Crystal Gap (in mm)
 set GAP_START=0.1
-set GAP_END=0.5
+set GAP_END=0.1
 set GAP_STEP=0.1
 
 REM Crystal Size (x/z dimension, in mm)
@@ -56,13 +60,37 @@ set SIZE_Y_START=3
 set SIZE_Y_END=3
 set SIZE_Y_STEP=1
 
+REM Fillter Ratio Y (0-1, size ratio in Y)
+set FILLTER_RATIO_Y_START=0.3
+set FILLTER_RATIO_Y_END=0.3
+set FILLTER_RATIO_Y_STEP=0.1
+
+REM Fillter Ratio Z (0-1, size ratio in Z)
+set FILLTER_RATIO_Z_START=1.0
+set FILLTER_RATIO_Z_END=1.0
+set FILLTER_RATIO_Z_STEP=0.1
+
+REM Fillter Position Ratio Y (0-1, position ratio in Y)
+set FILLTER_POS_RATIO_Y_START=0.7
+set FILLTER_POS_RATIO_Y_END=0.7
+set FILLTER_POS_RATIO_Y_STEP=0.1
+
+REM Fillter Position Ratio Z (0-1, position ratio in Z)
+set FILLTER_POS_RATIO_Z_START=0.0
+set FILLTER_POS_RATIO_Z_END=0.0
+set FILLTER_POS_RATIO_Z_STEP=0.1
+
 REM --- Default Values (used when parameter is not looping) ---
 set DEFAULT_NX=11
-set DEFAULT_NY=7
-set DEFAULT_NZ=7
+set DEFAULT_NY=3
+set DEFAULT_NZ=3
 set DEFAULT_GAP=0.1
 set DEFAULT_SIZE=3
 set DEFAULT_SIZE_Y=3
+set DEFAULT_FILLTER_RATIO_Y=0.3
+set DEFAULT_FILLTER_RATIO_Z=1.0
+set DEFAULT_FILLTER_POS_RATIO_Y=0.7
+set DEFAULT_FILLTER_POS_RATIO_Z=0.0
 
 REM --- Run Configuration ---
 set RUN_MACRO=run4.mac
@@ -70,11 +98,15 @@ set EXE_PATH=build\Release\exampleB1.exe
 
 REM --- Folder Naming Configuration (true/false) ---
 set NAME_INCLUDE_NX=false
-set NAME_INCLUDE_NY=false
+set NAME_INCLUDE_NY=true
 set NAME_INCLUDE_NZ=false
-set NAME_INCLUDE_GAP=true
+set NAME_INCLUDE_GAP=false
 set NAME_INCLUDE_SIZE=false
 set NAME_INCLUDE_SIZE_Y=false
+set NAME_INCLUDE_FILLTER_RATIO_Y=false
+set NAME_INCLUDE_FILLTER_RATIO_Z=false
+set NAME_INCLUDE_FILLTER_POS_RATIO_Y=false
+set NAME_INCLUDE_FILLTER_POS_RATIO_Z=false
 
 REM ============================================================================
 REM END OF CONFIGURATION - Do not edit below unless you know what you're doing
@@ -162,6 +194,38 @@ if "%LOOP_CRYSTAL_SIZE_Y%"=="true" (
     set "SIZE_Y_LIST=%DEFAULT_SIZE_Y%"
 )
 
+REM Loop through Fillter Ratio Y
+set "FILLTER_RATIO_Y_LIST="
+if "%LOOP_FILLTER_RATIO_Y%"=="true" (
+    call :generate_decimal_list FILLTER_RATIO_Y_LIST %FILLTER_RATIO_Y_START% %FILLTER_RATIO_Y_END% %FILLTER_RATIO_Y_STEP%
+) else (
+    set "FILLTER_RATIO_Y_LIST=%DEFAULT_FILLTER_RATIO_Y%"
+)
+
+REM Loop through Fillter Ratio Z
+set "FILLTER_RATIO_Z_LIST="
+if "%LOOP_FILLTER_RATIO_Z%"=="true" (
+    call :generate_decimal_list FILLTER_RATIO_Z_LIST %FILLTER_RATIO_Z_START% %FILLTER_RATIO_Z_END% %FILLTER_RATIO_Z_STEP%
+) else (
+    set "FILLTER_RATIO_Z_LIST=%DEFAULT_FILLTER_RATIO_Z%"
+)
+
+REM Loop through Fillter Position Ratio Y
+set "FILLTER_POS_RATIO_Y_LIST="
+if "%LOOP_FILLTER_POS_RATIO_Y%"=="true" (
+    call :generate_decimal_list FILLTER_POS_RATIO_Y_LIST %FILLTER_POS_RATIO_Y_START% %FILLTER_POS_RATIO_Y_END% %FILLTER_POS_RATIO_Y_STEP%
+) else (
+    set "FILLTER_POS_RATIO_Y_LIST=%DEFAULT_FILLTER_POS_RATIO_Y%"
+)
+
+REM Loop through Fillter Position Ratio Z
+set "FILLTER_POS_RATIO_Z_LIST="
+if "%LOOP_FILLTER_POS_RATIO_Z%"=="true" (
+    call :generate_decimal_list FILLTER_POS_RATIO_Z_LIST %FILLTER_POS_RATIO_Z_START% %FILLTER_POS_RATIO_Z_END% %FILLTER_POS_RATIO_Z_STEP%
+) else (
+    set "FILLTER_POS_RATIO_Z_LIST=%DEFAULT_FILLTER_POS_RATIO_Z%"
+)
+
 REM Nested loops through all parameter combinations
 for %%x in (%NX_LIST%) do (
     for %%y in (%NY_LIST%) do (
@@ -169,44 +233,56 @@ for %%x in (%NX_LIST%) do (
             for %%g in (%GAP_LIST%) do (
                 for %%s in (%SIZE_LIST%) do (
                     for %%t in (%SIZE_Y_LIST%) do (
-                        set /a LOOP_COUNT+=1
-                        
-                        REM Build folder name
-                        set "FOLDER_NAME=!LOOP_COUNT!"
-                        if !LOOP_COUNT! LSS 10 set "FOLDER_NAME=00!LOOP_COUNT!"
-                        if !LOOP_COUNT! GEQ 10 if !LOOP_COUNT! LSS 100 set "FOLDER_NAME=0!LOOP_COUNT!"
-                        
-                        if "%NAME_INCLUDE_NX%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_Nx%%x"
-                        if "%NAME_INCLUDE_NY%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_Ny%%y"
-                        if "%NAME_INCLUDE_NZ%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_Nz%%z"
-                        if "%NAME_INCLUDE_GAP%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_Gap%%g"
-                        if "%NAME_INCLUDE_SIZE%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_Size%%s"
-                        if "%NAME_INCLUDE_SIZE_Y%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_SizeY%%t"
-                        
-                        set "RESULT_DIR=Results\!FOLDER_NAME!"
-                        
-                        echo [!LOOP_COUNT!] Running: Nx=%%x Ny=%%y Nz=%%z Gap=%%g Size=%%s SizeY=%%t
-                        echo    Output: !RESULT_DIR!
-                        
-                        REM Generate geometry.mac
-                        call :generate_geometry_mac %%x %%y %%z %%g %%s %%t
-                        
-                        REM Create result folder
-                        if not exist "!RESULT_DIR!\" mkdir "!RESULT_DIR!"
-                        
-                        REM Copy geometry.mac to result folder
-                        copy /Y geometry.mac "!RESULT_DIR!\geometry.mac" >nul
-                        
-                        REM Run simulation
-                        "%EXE_PATH%" "%RUN_MACRO%" >nul 2>&1
-                        
-                        REM Move CSV files to result folder
-                        if exist AnaEx01_nt_*.csv (
-                            move /Y AnaEx01_nt_*.csv "!RESULT_DIR!\" >nul 2>&1
+                        for %%1 in (%FILLTER_RATIO_Y_LIST%) do (
+                            for %%2 in (%FILLTER_RATIO_Z_LIST%) do (
+                                for %%3 in (%FILLTER_POS_RATIO_Y_LIST%) do (
+                                    for %%4 in (%FILLTER_POS_RATIO_Z_LIST%) do (
+                                        set /a LOOP_COUNT+=1
+                                        
+                                        REM Build folder name
+                                        set "FOLDER_NAME=!LOOP_COUNT!"
+                                        if !LOOP_COUNT! LSS 10 set "FOLDER_NAME=00!LOOP_COUNT!"
+                                        if !LOOP_COUNT! GEQ 10 if !LOOP_COUNT! LSS 100 set "FOLDER_NAME=0!LOOP_COUNT!"
+                                        
+                                        if "%NAME_INCLUDE_NX%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_Nx%%x"
+                                        if "%NAME_INCLUDE_NY%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_Ny%%y"
+                                        if "%NAME_INCLUDE_NZ%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_Nz%%z"
+                                        if "%NAME_INCLUDE_GAP%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_Gap%%g"
+                                        if "%NAME_INCLUDE_SIZE%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_Size%%s"
+                                        if "%NAME_INCLUDE_SIZE_Y%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_SizeY%%t"
+                                        if "%NAME_INCLUDE_FILLTER_RATIO_Y%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_FRY%%1"
+                                        if "%NAME_INCLUDE_FILLTER_RATIO_Z%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_FRZ%%2"
+                                        if "%NAME_INCLUDE_FILLTER_POS_RATIO_Y%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_FPRY%%3"
+                                        if "%NAME_INCLUDE_FILLTER_POS_RATIO_Z%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_FPRZ%%4"
+                                        
+                                        set "RESULT_DIR=Results\!FOLDER_NAME!"
+                                        
+                                        echo [!LOOP_COUNT!] Running: Nx=%%x Ny=%%y Nz=%%z Gap=%%g Size=%%s SizeY=%%t FillterY=%%1 FillterZ=%%2 FPosY=%%3 FPosZ=%%4
+                                        echo    Output: !RESULT_DIR!
+                                        
+                                        REM Generate geometry.mac
+                                        call :generate_geometry_mac %%x %%y %%z %%g %%s %%t %%1 %%2 %%3 %%4
+                                        
+                                        REM Create result folder
+                                        if not exist "!RESULT_DIR!\" mkdir "!RESULT_DIR!"
+                                        
+                                        REM Copy geometry.mac to result folder
+                                        copy /Y geometry.mac "!RESULT_DIR!\geometry.mac" >nul
+                                        
+                                        REM Run simulation
+                                        "%EXE_PATH%" "%RUN_MACRO%" >nul 2>&1
+                                        
+                                        REM Move CSV files to result folder
+                                        for %%f in (AnaEx01_nt_*.csv) do (
+                                            if exist "%%f" move /Y "%%f" "!RESULT_DIR!\" >nul 2>&1
+                                        )
+                                        
+                                        echo    Completed.
+                                        echo.
+                                    )
+                                )
+                            )
                         )
-                        
-                        echo    Completed.
-                        echo.
                     )
                 )
             )
@@ -227,7 +303,7 @@ REM Subroutines
 REM ============================================================================
 
 :generate_geometry_mac
-REM Generate geometry.mac with parameters: Nx Ny Nz Gap Size SizeY
+REM Generate geometry.mac with parameters: Nx Ny Nz Gap Size SizeY FillterRatioY FillterRatioZ FillterPosRatioY FillterPosRatioZ
 (
 echo # Geometry macro: crystal array and gap ^(run before /run/initialize^)
 echo # Auto-generated by run_batch.bat
@@ -245,6 +321,14 @@ echo /detector/crystalSize %5 mm
 echo #
 echo # Single crystal size in y, in mm
 echo /detector/crystalSizeY %6 mm
+echo #
+echo # Fillter ^(gap filler^) parameters ^(ratios 0-1^)
+echo /detector/fillterRatioY %7
+echo /detector/fillterRatioZ %8
+echo /detector/fillterPosRatioY %9
+echo # Note: %~9 cannot be used in batch, using shift workaround
+shift
+echo /detector/fillterPosRatioZ %9
 ) > geometry.mac
 exit /b 0
 

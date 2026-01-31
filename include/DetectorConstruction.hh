@@ -74,6 +74,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     void SetCrystalGap(G4double v) { fCrystal_gap = (v > 0.) ? v : 0.1; }
     void SetCrystalSize(G4double v) { fcrystal_l = (v > 0.) ? v : 3.; }
     void SetCrystalSizeY(G4double v) { fcrystal_ly = (v > 0.) ? v : fcrystal_l; }
+    void SetFillterRatioY(G4double v) { fFillter_Gap_Ratio_Y = (v >= 0. && v <= 1.) ? v : 0.3; }
+    void SetFillterRatioZ(G4double v) { fFillter_Gap_Ratio_Z = (v >= 0. && v <= 1.) ? v : 1.0; }
+    void SetFillterPosRatioY(G4double v) { fFillter_Gap_PosRatio_Y = (v >= 0. && v <= 1.) ? v : 0.7; }
+    void SetFillterPosRatioZ(G4double v) { fFillter_Gap_PosRatio_Z = (v >= 0. && v <= 1.) ? v : 0.0; }
 
   protected:
     G4LogicalVolume* fScoringVolume = nullptr;
@@ -94,6 +98,12 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4double fCrystal_x; // Crystal size in x direction
     G4double fCrystal_y; // Crystal size in y direction
     G4double fCrystal_z; // Crystal size in z direction
+
+    // Fillter (gap filler) parameters
+    G4double fFillter_Gap_Ratio_Y = 0.3;      // Fillter size ratio in Y (0-1)
+    G4double fFillter_Gap_Ratio_Z = 1.0;      // Fillter size ratio in Z (0-1)
+    G4double fFillter_Gap_PosRatio_Y = 0.7;   // Fillter position ratio in Y (0-1)
+    G4double fFillter_Gap_PosRatio_Z = 0.0;   // Fillter position ratio in Z (0-1)
 
     // Messenger 指针
     DetectorMessenger* fMessenger = nullptr;

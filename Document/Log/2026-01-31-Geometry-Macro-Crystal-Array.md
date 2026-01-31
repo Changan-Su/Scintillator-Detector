@@ -2,13 +2,13 @@
 
 **日期**: 2026-01-31  
 **项目**: Scintillator-Detector-Single Rod  
-**版本**: v1.2
+**版本**: v1.3
 
 ---
 
 ## 开发内容
 
-通过**一个配置文件脚本**（Geant4 宏文件 `geometry.mac`）在 `/run/initialize` 之前设置晶体阵列（nx, ny, nz）和晶体间隙（Crystal_gap），以及可选单晶尺寸（crystalSize / crystalSizeY），无需修改 C++ 代码即可切换几何。同时支持在 Qt 可视化界面里交互修改参数并实时重建几何。
+通过**一个配置文件脚本**（Geant4 宏文件 `geometry.mac`）在 `/run/initialize` 之前设置晶体阵列（nx, ny, nz）、晶体间隙（Crystal_gap）、单晶尺寸（crystalSize / crystalSizeY）、以及晶体间填充物（Fillter）的尺寸比例和位置比例，无需修改 C++ 代码即可切换几何。同时支持在 Qt 可视化界面里交互修改参数并实时重建几何。
 
 ---
 
@@ -20,6 +20,11 @@
 - `fPar_ny`、`fPar_nz` 默认值改为 7，与原有 Construct() 行为一致
 - `fcrystal_l`、`fcrystal_ly` 增加默认值 3.0（mm）
 - 增加 setter：`SetCrystalGap(G4double)`、`SetCrystalSize(G4double)`、`SetCrystalSizeY(G4double)`，内部做 >0 保护
+- 新增 Fillter 参数成员变量及 setter：
+  - `fFillter_Gap_Ratio_Y`（默认 0.3）→ `SetFillterRatioY`
+  - `fFillter_Gap_Ratio_Z`（默认 1.0）→ `SetFillterRatioZ`
+  - `fFillter_Gap_PosRatio_Y`（默认 0.7）→ `SetFillterPosRatioY`
+  - `fFillter_Gap_PosRatio_Z`（默认 0.0）→ `SetFillterPosRatioZ`
 - `GetCrystal_gap()` 返回类型改为 `G4double`
 - 构造函数/析构函数改为非 default，以便在构造函数中创建 DetectorMessenger、析构中释放
 - 在 `B1` 命名空间内前向声明 `DetectorConstruction` 使用的 `DetectorMessenger` 类型
@@ -31,6 +36,7 @@
 - 实现析构函数：`delete fMessenger`
 - 在 `Construct()` 中删除局部常量，改为使用成员变量：
   - `Crystal_gap = fCrystal_gap * mm`，`Crystal_nx/ny/nz = fPar_nx/ny/nz`，`crystal_l = fcrystal_l * mm`，`crystal_ly = fcrystal_ly * mm`
+  - `Fillter_Gap_Ratio_Y/Z = fFillter_Gap_Ratio_Y/Z`，`Fillter_Gap_PosRatio_Y/Z = fFillter_Gap_PosRatio_Y/Z`
 - 几何构建完成后，将长度写回成员时统一为 mm 数值（如 `fCrystal_gap = Crystal_gap / mm`）
 
 ### 3. 新增 `include/DetectorMessenger.hh` 与 `src/DetectorMessenger.cc`
@@ -40,6 +46,8 @@
 - 命令：
   - `/detector/arrayNx`、`arrayNy`、`arrayNz`（整数）
   - `/detector/crystalGap`、`crystalSize`、`crystalSizeY`（带单位，默认 mm）
+  - `/detector/fillterRatioY`、`fillterRatioZ`（无单位，0-1 范围，填充物尺寸占晶体尺寸的比例）
+  - `/detector/fillterPosRatioY`、`fillterPosRatioZ`（无单位，0-1 范围，填充物位置从晶体中心的偏移比例）
   - `/detector/update`（无参数）：调用 `G4RunManager::ReinitializeGeometry()` 重建几何，使参数修改立即生效
 - `SetNewValue()` 中根据命令调用 `DetectorConstruction` 的对应 setter 或执行几何更新
 - CMake 使用 `file(GLOB ... src/*.cc)`，新增 `DetectorMessenger.cc` 会自动加入编译，无需改 CMakeLists 源列表

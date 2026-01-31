@@ -1,0 +1,5 @@
+#class tools::wcsv::ntuple
+#title PhotonCounts_Right
+#separator 44
+#vector_separator 59
+#column int PhotonCounts_Right

@@ -1,0 +1,25 @@
+#class tools::wcsv::ntuple
+#title Edep
+#separator 44
+#vector_separator 59
+#column double Eabs
+#column double Egap
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0.400951,0
+0,0
+0,0
+0.1827,0
+0,0
+0,0
+0,0
+0,0
+0,0
+0,0
