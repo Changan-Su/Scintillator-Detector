@@ -167,14 +167,22 @@ def analyze_one_rod(df: pd.DataFrame, iy: int, iz: int):
     plt.show()
 
     # 打印拟合结果（可选）
+        # 打印拟合结果 + 平均 FWHM
     if popt is not None:
         print("\n== Gaussian Peak Fit Results ==")
+        fwhm_list = []
         for i in range(0, len(popt), 3):
             A = popt[i]
             mu = popt[i+1]
             sigma = popt[i+2]
             fwhm = 2.354820045 * sigma
+            fwhm_list.append(fwhm)
             print(f"Peak {i//3 + 1:2d}: μ = {mu:.6f}, A = {A:.1f}, σ = {sigma:.6f}, FWHM = {fwhm:.6f}")
+
+        if fwhm_list:
+            mean_fwhm = float(np.mean(fwhm_list))
+            print(f"\nAverage FWHM over {len(fwhm_list)} peaks: {mean_fwhm:.6f}")
+
 
 def main():
     ap = argparse.ArgumentParser()

@@ -1,3 +1,6 @@
+
+# Geometry: crystal array and gap (must be before /run/initialize)
+/control/execute geometry.mac
 /control/verbose 0
 /run/verbose 1
 /event/verbose 0

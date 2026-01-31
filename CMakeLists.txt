@@ -36,6 +36,7 @@ target_link_libraries(exampleB1 PRIVATE ${Geant4_LIBRARIES})
 set(EXAMPLEB1_SCRIPTS
   exampleB1.in
   exampleB1.out
+  geometry.mac
   init_vis.mac
   run1.mac
   run2.mac
@@ -49,3 +50,31 @@ foreach(_script ${EXAMPLEB1_SCRIPTS})
     COPYONLY
     )
 endforeach()
+
+# Copy macros from SOURCE to executable dir so edits to .mac take effect without re-running cmake
+add_custom_command(TARGET exampleB1 POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${PROJECT_SOURCE_DIR}/geometry.mac
+    ${PROJECT_SOURCE_DIR}/init_vis.mac
+    ${PROJECT_SOURCE_DIR}/vis.mac
+    ${PROJECT_SOURCE_DIR}/run1.mac
+    ${PROJECT_SOURCE_DIR}/run2.mac
+    $<TARGET_FILE_DIR:exampleB1>
+  COMMENT "Copying macro files from project source to executable directory"
+)
+
+# Copy Geant4 and Qt DLLs so exampleB1.exe can run directly (double-click)
+get_filename_component(GEANT4_BIN "${Geant4_DIR}/../../bin" ABSOLUTE)
+find_package(Qt5 COMPONENTS Core QUIET)
+set(QT_BIN_FOR_DEPLOY "")
+if(Qt5_FOUND)
+  get_filename_component(QT_BIN_FOR_DEPLOY "${Qt5Core_DIR}/../../../bin" ABSOLUTE)
+endif()
+add_custom_command(TARGET exampleB1 POST_BUILD
+  COMMAND ${CMAKE_COMMAND}
+    "-DDEST_DIR=$<TARGET_FILE_DIR:exampleB1>"
+    "-DG4_BIN=${GEANT4_BIN}"
+    "-DQT_BIN=${QT_BIN_FOR_DEPLOY}"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/CopyDlls.cmake"
+  COMMENT "Copying Geant4 and Qt DLLs to executable directory"
+)

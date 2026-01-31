@@ -6,6 +6,8 @@
 # Change the default number of workers (in multi-threading mode) 
 #/run/numberOfThreads 4
 #
+# Geometry: crystal array and gap (must be before /run/initialize)
+/control/execute geometry.mac
 # Initialize kernel
 /run/initialize
 #

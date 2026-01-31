@@ -3,6 +3,7 @@
 /// \brief Implementation of the B1::DetectorConstruction class
 
 #include "DetectorConstruction.hh"
+#include "DetectorMessenger.hh"
 #include "G4OpticalSurface.hh"
 #include "G4LogicalBorderSurface.hh"
 #include "G4MaterialPropertiesTable.hh"
@@ -20,14 +21,23 @@
 #include "G4Region.hh"
 #include "G4ProductionCuts.hh"
 
-// #include "DetectorMessenger.hh"  
-
 namespace B1
 {
 
-  
   //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-  
+
+  DetectorConstruction::DetectorConstruction()
+  {
+    fMessenger = new DetectorMessenger(this);
+  }
+
+  DetectorConstruction::~DetectorConstruction()
+  {
+    delete fMessenger;
+  }
+
+  //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
   G4VPhysicalVolume* DetectorConstruction::Construct()
   {
     G4double Fillter_Gap_Ratio_Y = 0.3;
@@ -174,15 +184,13 @@ namespace B1
     yso_mt->AddConstProperty("SCINTILLATIONYIELD2", 0.0);
     YSO->SetMaterialPropertiesTable(yso_mt);
 
-    //LocCry
-    
-      G4double Crystal_gap = 0.1 * mm;
-      G4int Crystal_nx = 11;
-      G4int Crystal_ny = 1;
-      G4int Crystal_nz = 1;
-      G4double crystal_l = 3 * mm; // 单个晶体的边长
-      // G4double FuckGeant4 = 6 *cm;//是的，你没看错，加了这一行代码就不报错了
-      G4double crystal_ly = 1 * crystal_l;
+    // Crystal array and gap from member variables (set via geometry.mac / DetectorMessenger)
+    G4double Crystal_gap = fCrystal_gap * mm;
+    G4int Crystal_nx = fPar_nx;
+    G4int Crystal_ny = fPar_ny;
+    G4int Crystal_nz = fPar_nz;
+    G4double crystal_l = fcrystal_l * mm;
+    G4double crystal_ly = fcrystal_ly * mm;
 
       G4double Crystal_x = crystal_l * Crystal_nx + Crystal_gap * (Crystal_nx - 1);
       G4double Crystal_y = crystal_ly * Crystal_ny + Crystal_gap * (Crystal_ny - 1);
@@ -310,15 +318,15 @@ namespace B1
 
 
       fScoringVolume = logicCrystal;
-      fCrystal_gap = Crystal_gap; // Store crystal gap
-      fCrystal_nx = Crystal_nx; // Store number of crystals in one dimension
-      fCrystal_ny = Crystal_ny; // Store number of crystals in the other dimension
-      fCrystal_nz = Crystal_nz; // Store number of crystals in height
-      fcrystal_l = crystal_l; // Store crystal length
-      fcrystal_ly = crystal_ly; // Store crystal width
-      fCrystal_x = Crystal_x; // Store crystal size in x direction
-      fCrystal_y = Crystal_y; // Store crystal size in y direction
-      fCrystal_z = Crystal_z; // Store crystal size in z direction
+      fCrystal_gap = Crystal_gap / mm;
+      fCrystal_nx = Crystal_nx;
+      fCrystal_ny = Crystal_ny;
+      fCrystal_nz = Crystal_nz;
+      fcrystal_l = crystal_l / mm;
+      fcrystal_ly = crystal_ly / mm;
+      fCrystal_x = Crystal_x;
+      fCrystal_y = Crystal_y;
+      fCrystal_z = Crystal_z;
 
 
       // //Crystal Optical Surface

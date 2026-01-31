@@ -31,21 +31,23 @@
 #define B1DetectorConstruction_h 1
 
 #include "G4VUserDetectorConstruction.hh"
+#include <algorithm>
 
 class G4VPhysicalVolume;
 class G4LogicalVolume;
-class DetectorMessenger;
 
 namespace B1
 {
+
+class DetectorMessenger;
 
 /// Detector construction class to define materials and geometry.
 
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
   public:
-    DetectorConstruction() = default;
-    ~DetectorConstruction() override = default;
+    DetectorConstruction();
+    ~DetectorConstruction() override;
 
     G4VPhysicalVolume* Construct() override;
     G4VPhysicalVolume* fPhysCrystal = nullptr;  // Physical volume for the crystal
@@ -54,7 +56,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
     G4LogicalVolume* GetlogicSiPM() const { return flogicSiPM; }  // Getter for PMT logical volume
 
-    G4int GetCrystal_gap() const { return fCrystal_gap; } // Getter for crystal gap
+    G4double GetCrystal_gap() const { return fCrystal_gap; } // Getter for crystal gap (mm)
     G4double GetCrystal_x() const { return fCrystal_x; }
     G4double GetCrystal_y() const { return fCrystal_y; }
     G4double GetCrystal_z() const { return fCrystal_z; } // Getter for
@@ -65,10 +67,13 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4double Getcrystal_ly() const { return fcrystal_ly; } // Getter for crystal width
 
 
-      // —— 新增：供 Messenger 写入的 setter（做最基本的保护）
+    // Setters for Messenger / geometry.mac (values in mm for gap/size)
     void SetArrayNx(G4int v) { fPar_nx = std::max(1, v); }
     void SetArrayNy(G4int v) { fPar_ny = std::max(1, v); }
     void SetArrayNz(G4int v) { fPar_nz = std::max(1, v); }
+    void SetCrystalGap(G4double v) { fCrystal_gap = (v > 0.) ? v : 0.1; }
+    void SetCrystalSize(G4double v) { fcrystal_l = (v > 0.) ? v : 3.; }
+    void SetCrystalSizeY(G4double v) { fcrystal_ly = (v > 0.) ? v : fcrystal_l; }
 
   protected:
     G4LogicalVolume* fScoringVolume = nullptr;
@@ -77,15 +82,15 @@ class DetectorConstruction : public G4VUserDetectorConstruction
   private:
 
     G4int fPar_nx = 11;
-    G4int fPar_ny = 4;
-    G4int fPar_nz = 4;
+    G4int fPar_ny = 7;
+    G4int fPar_nz = 7;
 
-    G4int fCrystal_gap ; // Gap between crystals
+    G4double fCrystal_gap = 0.1;  // Gap between crystals (mm)
     G4int fCrystal_nx; // Number of crystals in one dimension
     G4int fCrystal_ny; // Number of crystals in the other dimension
     G4int fCrystal_nz; // Number of crystals in height
-    G4double fcrystal_l; // Length of the crystal
-    G4double fcrystal_ly; // Width of the crystal
+    G4double fcrystal_l = 3.;   // Crystal size x/z (mm)
+    G4double fcrystal_ly = 3.; // Crystal size y (mm)
     G4double fCrystal_x; // Crystal size in x direction
     G4double fCrystal_y; // Crystal size in y direction
     G4double fCrystal_z; // Crystal size in z direction

@@ -4,6 +4,8 @@
 # % exampleB1 run2.mac
 #
 #/run/numberOfThreads 4
+# Geometry: crystal array and gap (must be before /run/initialize)
+/control/execute geometry.mac
 /run/initialize
 #
 /control/verbose 2
