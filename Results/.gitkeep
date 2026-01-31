@@ -1,0 +1,4 @@
+# This directory stores batch simulation results
+# Each subdirectory contains:
+# - CSV data files from one simulation run
+# - geometry.mac copy showing the parameters used
