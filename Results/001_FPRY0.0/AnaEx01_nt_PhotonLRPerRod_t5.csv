@@ -1,0 +1,36 @@
+#class tools::wcsv::ntuple
+#title Per-rod Left/Right photon counts per event
+#separator 44
+#vector_separator 59
+#column int EventID
+#column int iz
+#column int iy
+#column int Left
+#column int Right
+3,0,0,0,0
+3,0,1,0,0
+3,0,2,0,0
+3,1,0,0,0
+3,1,1,0,0
+3,1,2,0,0
+3,2,0,0,0
+3,2,1,0,0
+3,2,2,0,0
+4,0,0,0,4
+4,0,1,12,12
+4,0,2,0,2
+4,1,0,13,16
+4,1,1,1080,2174
+4,1,2,12,31
+4,2,0,1,1
+4,2,1,15,13
+4,2,2,0,0
+5,0,0,23,4
+5,0,1,1353,283
+5,0,2,17,4
+5,1,0,6,1
+5,1,1,20,3
+5,1,2,657,139
+5,2,0,3,0
+5,2,1,8,1
+5,2,2,3,1

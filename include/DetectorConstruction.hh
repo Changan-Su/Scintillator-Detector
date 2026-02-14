@@ -71,7 +71,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     void SetArrayNx(G4int v) { fPar_nx = std::max(1, v); }
     void SetArrayNy(G4int v) { fPar_ny = std::max(1, v); }
     void SetArrayNz(G4int v) { fPar_nz = std::max(1, v); }
-    void SetCrystalGap(G4double v) { fCrystal_gap = (v > 0.) ? v : 0.1; }
+    void SetCrystalGap(G4double v) { fCrystal_gap = (v >= 0.) ? v : 0.1; }
     void SetCrystalSize(G4double v) { fcrystal_l = (v > 0.) ? v : 3.; }
     void SetCrystalSizeY(G4double v) { fcrystal_ly = (v > 0.) ? v : fcrystal_l; }
     void SetFillterRatioY(G4double v) { fFillter_Gap_Ratio_Y = (v >= 0. && v <= 1.) ? v : 0.3; }

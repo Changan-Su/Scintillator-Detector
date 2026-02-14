@@ -64,7 +64,7 @@ add_custom_command(TARGET exampleB1 POST_BUILD
 )
 
 # Copy Geant4 and Qt DLLs so exampleB1.exe can run directly (double-click)
-get_filename_component(GEANT4_BIN "${Geant4_DIR}/../../bin" ABSOLUTE)
+get_filename_component(GEANT4_BIN "${Geant4_DIR}/../../../bin" ABSOLUTE)
 find_package(Qt5 COMPONENTS Core QUIET)
 set(QT_BIN_FOR_DEPLOY "")
 if(Qt5_FOUND)

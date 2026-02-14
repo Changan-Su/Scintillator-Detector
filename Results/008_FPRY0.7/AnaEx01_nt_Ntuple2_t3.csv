@@ -1,0 +1,12 @@
+#class tools::wcsv::ntuple
+#title TrackL
+#separator 44
+#vector_separator 59
+#column double Labs
+#column double Lgap
+0,0
+1500.25,0
+0,0
+0,0
+2964.26,0
+0,0

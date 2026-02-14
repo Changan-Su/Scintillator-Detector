@@ -43,9 +43,9 @@ NZ_START=7
 NZ_END=7
 NZ_STEP=1
 
-# Crystal Gap (in mm)
-GAP_START=0.1
-GAP_END=0.5
+# Crystal Gap (in mm, 0 means continuous no-gap packing)
+GAP_START=0.0
+GAP_END=0.0
 GAP_STEP=0.1
 
 # Crystal Size (x/z dimension, in mm)
@@ -82,7 +82,7 @@ FILLTER_POS_RATIO_Z_STEP=0.1
 DEFAULT_NX=11
 DEFAULT_NY=7
 DEFAULT_NZ=7
-DEFAULT_GAP=0.1
+DEFAULT_GAP=0.0
 DEFAULT_SIZE=3
 DEFAULT_SIZE_Y=3
 DEFAULT_FILLTER_RATIO_Y=0.3
@@ -167,7 +167,7 @@ generate_geometry_mac() {
 /detector/arrayNy $ny
 /detector/arrayNz $nz
 #
-# Crystal gap (fill between crystals), in mm
+# Crystal gap in mm (0 means continuous no-gap packing)
 /detector/crystalGap $gap mm
 #
 # Single crystal size (x/z), in mm

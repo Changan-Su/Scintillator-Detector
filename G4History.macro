@@ -66,3 +66,7 @@
 /vis/modeling/trajectories/create/drawByParticleID
 /vis/modeling/trajectories/drawByParticleID-0/set opticalphoton yellow
 /vis/scene/notifyHandlers scene-0
+/run/beamOn 1
+/vis/scene/notifyHandlers scene-0
+/analysis/h1/getVector
+/analysis/h2/getVector

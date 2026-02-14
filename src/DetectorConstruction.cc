@@ -205,10 +205,13 @@ namespace B1
       G4double Fillter_y = crystal_ly * Fillter_Gap_Ratio_Y;
       G4double Fillter_z = crystal_l * Fillter_Gap_Ratio_Z;
 
-      G4bool IfFillter = true;
-
-      auto solidFillter = new G4Box("Fillter", Fillter_x/2, Fillter_y/2, Fillter_z/2);
-      auto logicFillter = new G4LogicalVolume(solidFillter, YSO, "Fillter");
+      // Disable fillter geometry when there is no crystal gap (continuous packing).
+      G4bool IfFillter = (Crystal_gap > 0.);
+      G4LogicalVolume* logicFillter = nullptr;
+      if (IfFillter) {
+        auto solidFillter = new G4Box("Fillter", Fillter_x/2, Fillter_y/2, Fillter_z/2);
+        logicFillter = new G4LogicalVolume(solidFillter, YSO, "Fillter");
+      }
 
 
       //SiPM Mat
@@ -249,7 +252,7 @@ namespace B1
                                                   false,  // no boolean operation
                                                   copyNo,  // copy number
                                                   checkOverlaps);  // overlaps checking
-            if(ix != 0 && IfFillter)
+            if(ix != 0 && IfFillter && logicFillter != nullptr)
             {
               G4double Fillter_Pos_X = -Crystal_x/2 + (crystal_l + Fillter_x) * ix - Fillter_x/2;
               G4ThreeVector pos_fillter = G4ThreeVector(Fillter_Pos_X, Fillter_Pos_Y, Fillter_Pos_Z);

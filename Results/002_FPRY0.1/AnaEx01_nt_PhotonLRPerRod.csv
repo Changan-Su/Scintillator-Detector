@@ -1,0 +1,9 @@
+#class tools::wcsv::ntuple
+#title Per-rod Left/Right photon counts per event
+#separator 44
+#vector_separator 59
+#column int EventID
+#column int iz
+#column int iy
+#column int Left
+#column int Right

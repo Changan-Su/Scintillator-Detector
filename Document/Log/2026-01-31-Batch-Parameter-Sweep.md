@@ -2,9 +2,21 @@
 
 **日期**: 2026-01-31  
 **项目**: Scintillator-Detector-Single Rod  
-**版本**: v1.1
+**版本**: v1.2
 
 ---
+
+## 更新日志
+
+### v1.2 (2026-01-31)
+- **修复 Windows 批处理脚本八进制错误**：`generate_decimal_list` 函数在处理 `0.0`、`0.1` 等以 0 开头的小数时，会触发 "无效数字" 错误（因为 `set /a` 会将 `00`、`01` 当作八进制）。修复方法：在 `set /a` 之前先去除前导零。
+- **修复 10 参数传递问题**：`generate_geometry_mac` 函数在处理第 10 个参数（fillterPosRatioZ）时，使用 `shift` 会影响其他参数。改用临时变量存储所有参数。
+
+### v1.1 (2026-01-31)
+- 添加 Fillter 参数循环支持（fillterRatioY/Z、fillterPosRatioY/Z）
+
+### v1.0 (2026-01-31)
+- 初始版本
 
 ## 开发内容
 
