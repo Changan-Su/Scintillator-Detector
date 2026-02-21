@@ -65,6 +65,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4int GetCrystal_nz() const { return fCrystal_nz; } // Getter for number of crystals in height
     G4double Getcrystal_l() const { return fcrystal_l; } // Getter for crystal length
     G4double Getcrystal_ly() const { return fcrystal_ly; } // Getter for crystal width
+    G4double GetFillterRatioY() const { return fFillter_Gap_Ratio_Y; }
+    G4double GetFillterRatioZ() const { return fFillter_Gap_Ratio_Z; }
+    G4double GetFillterPosRatioY() const { return fFillter_Gap_PosRatio_Y; }
+    G4double GetFillterPosRatioZ() const { return fFillter_Gap_PosRatio_Z; }
 
 
     // Setters for Messenger / geometry.mac (values in mm for gap/size)

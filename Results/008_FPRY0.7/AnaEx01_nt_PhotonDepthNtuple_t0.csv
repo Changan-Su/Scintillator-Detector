@@ -1,5 +1,0 @@
-#class tools::wcsv::ntuple
-#title Depth index of each captured photon
-#separator 44
-#vector_separator 59
-#column int DepthIndex

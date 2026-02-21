@@ -167,7 +167,7 @@ namespace B1
     std::vector<G4double> yso_SCINT = {1.0, 1.0, 1.0, 1.0, 1.0}; // 简单设定恒定发光强度
     G4int Fukkkk = 0.6 *cm;
     std::vector<G4double> yso_RIND = {1.8, 1.8, 1.8, 1.8, 1.8};  // 折射率 ~1.8
-    std::vector<G4double> yso_ABSL = {40. * cm, 40. * cm, 40. * cm, 40. * cm, 40. * cm}; // 吸收长度
+    std::vector<G4double> yso_ABSL = {1.5 * cm, 1.5 * cm, 1.5 * cm, 1.5 * cm, 1.5 * cm}; // 吸收长度
 
     auto yso_mt = new G4MaterialPropertiesTable();
     yso_mt->AddProperty("SCINTILLATIONCOMPONENT1", yso_Energy, yso_SCINT);

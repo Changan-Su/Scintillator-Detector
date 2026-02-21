@@ -26,7 +26,7 @@ set LOOP_CRYSTAL_SIZE=false
 set LOOP_CRYSTAL_SIZE_Y=false
 set LOOP_FILLTER_RATIO_Y=false
 set LOOP_FILLTER_RATIO_Z=false
-set LOOP_FILLTER_POS_RATIO_Y=true
+set LOOP_FILLTER_POS_RATIO_Y=false
 set LOOP_FILLTER_POS_RATIO_Z=false
 
 REM --- Parameter Range Configuration ---
@@ -81,9 +81,9 @@ set FILLTER_POS_RATIO_Z_END=0.0
 set FILLTER_POS_RATIO_Z_STEP=0.1
 
 REM --- Default Values (used when parameter is not looping) ---
-set DEFAULT_NX=11
-set DEFAULT_NY=3
-set DEFAULT_NZ=3
+set DEFAULT_NX=9
+set DEFAULT_NY=1
+set DEFAULT_NZ=1
 set DEFAULT_GAP=0.0
 set DEFAULT_SIZE=3
 set DEFAULT_SIZE_Y=3
@@ -255,26 +255,24 @@ for %%x in (%NX_LIST%) do (
                                         if "%NAME_INCLUDE_FILLTER_POS_RATIO_Y%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_FPRY%%3"
                                         if "%NAME_INCLUDE_FILLTER_POS_RATIO_Z%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_FPRZ%%4"
                                         
-                                        set "RESULT_DIR=Results\!FOLDER_NAME!"
-                                        
                                         echo [!LOOP_COUNT!] Running: Nx=%%x Ny=%%y Nz=%%z Gap=%%g Size=%%s SizeY=%%t FillterY=%%1 FillterZ=%%2 FPosY=%%3 FPosZ=%%4
-                                        echo    Output: !RESULT_DIR!
+                                        echo    Output: Results\^<timestamp+params^>
                                         
                                         REM Generate geometry.mac
                                         call :generate_geometry_mac %%x %%y %%z %%g %%s %%t %%1 %%2 %%3 %%4
                                         
-                                        REM Create result folder
-                                        if not exist "!RESULT_DIR!\" mkdir "!RESULT_DIR!"
-                                        
-                                        REM Copy geometry.mac to result folder
-                                        copy /Y geometry.mac "!RESULT_DIR!\geometry.mac" >nul
-                                        
                                         REM Run simulation
-                                        "%EXE_PATH%" "%RUN_MACRO%" >nul 2>&1
-                                        
-                                        REM Move CSV files to result folder
-                                        for %%f in (AnaEx01_nt_*.csv) do (
-                                            if exist "%%f" move /Y "%%f" "!RESULT_DIR!\" >nul 2>&1
+                                        "%EXE_PATH%" "%RUN_MACRO%"
+                                        if errorlevel 1 (
+                                            echo    ERROR: Simulation failed for this parameter set.
+                                        ) else (
+                                            set "LATEST_RESULT_DIR="
+                                            for /f "delims=" %%D in ('dir /b /ad /o-d "Results"') do (
+                                                if not defined LATEST_RESULT_DIR set "LATEST_RESULT_DIR=%%D"
+                                            )
+                                            if defined LATEST_RESULT_DIR (
+                                                echo    Latest output dir: Results\!LATEST_RESULT_DIR!
+                                            )
                                         )
                                         
                                         echo    Completed.

@@ -7,7 +7,7 @@
 /detector/arrayNz 1
 #
 # Crystal gap in mm (0 means continuous no-gap packing)
-/detector/crystalGap 0 mm
+/detector/crystalGap 0.0 mm
 #
 # Single crystal size (x/z), in mm
 /detector/crystalSize 3 mm
@@ -16,8 +16,7 @@
 /detector/crystalSizeY 3 mm
 #
 # Fillter (gap filler) parameters (ratios 0-1)
-# Note: when crystalGap is 0, fillter is automatically disabled in geometry build.
 /detector/fillterRatioY 0.3
 /detector/fillterRatioZ 1.0
-/detector/fillterPosRatioY 0.9
+/detector/fillterPosRatioY 0.7
 /detector/fillterPosRatioZ 0.0
