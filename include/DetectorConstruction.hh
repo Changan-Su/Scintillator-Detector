@@ -83,6 +83,20 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     void SetFillterPosRatioY(G4double v) { fFillter_Gap_PosRatio_Y = (v >= 0. && v <= 1.) ? v : 0.7; }
     void SetFillterPosRatioZ(G4double v) { fFillter_Gap_PosRatio_Z = (v >= 0. && v <= 1.) ? v : 0.0; }
 
+    // Crystal array source: true = geometry.mac (UI), false = manual parameters
+    void SetUseGeometryMac(G4bool v) { fUseGeometryMac = v; }
+    G4bool GetUseGeometryMac() const { return fUseGeometryMac; }
+    void SetManualArrayNx(G4int v) { fManual_nx = std::max(1, v); }
+    void SetManualArrayNy(G4int v) { fManual_ny = std::max(1, v); }
+    void SetManualArrayNz(G4int v) { fManual_nz = std::max(1, v); }
+    void SetManualCrystalGap(G4double v) { fManual_crystal_gap = (v >= 0.) ? v : 0.; }
+    void SetManualCrystalSize(G4double v) { fManual_crystal_l = (v > 0.) ? v : 3.; }
+    void SetManualCrystalSizeY(G4double v) { fManual_crystal_ly = (v > 0.) ? v : fManual_crystal_l; }
+    void SetManualFillterRatioY(G4double v) { fManual_fillter_ratio_y = (v >= 0. && v <= 1.) ? v : 0.3; }
+    void SetManualFillterRatioZ(G4double v) { fManual_fillter_ratio_z = (v >= 0. && v <= 1.) ? v : 1.0; }
+    void SetManualFillterPosRatioY(G4double v) { fManual_fillter_pos_y = (v >= 0. && v <= 1.) ? v : 0.7; }
+    void SetManualFillterPosRatioZ(G4double v) { fManual_fillter_pos_z = (v >= 0. && v <= 1.) ? v : 0.0; }
+
   protected:
     G4LogicalVolume* fScoringVolume = nullptr;
     G4LogicalVolume* flogicSiPM = nullptr;  // PMT logical volume for optical photon tracking
@@ -108,6 +122,18 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4double fFillter_Gap_Ratio_Z = 1.0;      // Fillter size ratio in Z (0-1)
     G4double fFillter_Gap_PosRatio_Y = 0.7;   // Fillter position ratio in Y (0-1)
     G4double fFillter_Gap_PosRatio_Z = 0.0;   // Fillter position ratio in Z (0-1)
+
+    G4bool fUseGeometryMac = true;  // true: use geometry.mac (UI) params; false: use manual params
+    G4int fManual_nx = 9;
+    G4int fManual_ny = 1;
+    G4int fManual_nz = 1;
+    G4double fManual_crystal_gap = 0.;   // mm
+    G4double fManual_crystal_l = 3.;     // mm
+    G4double fManual_crystal_ly = 3.;    // mm
+    G4double fManual_fillter_ratio_y = 0.3;
+    G4double fManual_fillter_ratio_z = 1.0;
+    G4double fManual_fillter_pos_y = 0.7;
+    G4double fManual_fillter_pos_z = 0.0;
 
     // Messenger 指针
     DetectorMessenger* fMessenger = nullptr;

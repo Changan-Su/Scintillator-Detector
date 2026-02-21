@@ -21,6 +21,7 @@
 #include "G4UIcmdWithADoubleAndUnit.hh"
 #include "G4UIcmdWithADouble.hh"
 #include "G4UIcmdWithoutParameter.hh"
+#include "G4UIcmdWithABool.hh"
 #include "G4RunManager.hh"
 #include "G4SystemOfUnits.hh"
 
@@ -99,11 +100,81 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction* det)
   fUpdateCmd = new G4UIcmdWithoutParameter("/detector/update", this);
   fUpdateCmd->SetGuidance("Update geometry: rebuild detector with current parameters.");
   fUpdateCmd->SetGuidance("Use this after changing array size, gap, or crystal dimensions.");
+
+  fUseGeometryMacCmd = new G4UIcmdWithABool("/detector/useGeometryMac", this);
+  fUseGeometryMacCmd->SetGuidance("If true, crystal array uses geometry from geometry.mac (UI commands). If false, uses manual parameters.");
+  fUseGeometryMacCmd->SetParameterName("useMac", false);
+  fUseGeometryMacCmd->SetDefaultValue(true);
+
+  fManualArrayNxCmd = new G4UIcmdWithAnInteger("/detector/manualArrayNx", this);
+  fManualArrayNxCmd->SetGuidance("Manual: number of crystals in x (used when useGeometryMac false).");
+  fManualArrayNxCmd->SetParameterName("Nx", false);
+  fManualArrayNxCmd->SetRange("Nx >= 1");
+  fManualArrayNxCmd->SetDefaultValue(9);
+  fManualArrayNyCmd = new G4UIcmdWithAnInteger("/detector/manualArrayNy", this);
+  fManualArrayNyCmd->SetGuidance("Manual: number of crystals in y.");
+  fManualArrayNyCmd->SetParameterName("Ny", false);
+  fManualArrayNyCmd->SetRange("Ny >= 1");
+  fManualArrayNyCmd->SetDefaultValue(1);
+  fManualArrayNzCmd = new G4UIcmdWithAnInteger("/detector/manualArrayNz", this);
+  fManualArrayNzCmd->SetGuidance("Manual: number of crystals in z.");
+  fManualArrayNzCmd->SetParameterName("Nz", false);
+  fManualArrayNzCmd->SetRange("Nz >= 1");
+  fManualArrayNzCmd->SetDefaultValue(1);
+  fManualCrystalGapCmd = new G4UIcmdWithADoubleAndUnit("/detector/manualCrystalGap", this);
+  fManualCrystalGapCmd->SetGuidance("Manual: gap between crystals (mm).");
+  fManualCrystalGapCmd->SetParameterName("Gap", false);
+  fManualCrystalGapCmd->SetRange("Gap >= 0.");
+  fManualCrystalGapCmd->SetDefaultValue(0.);
+  fManualCrystalGapCmd->SetDefaultUnit("mm");
+  fManualCrystalSizeCmd = new G4UIcmdWithADoubleAndUnit("/detector/manualCrystalSize", this);
+  fManualCrystalSizeCmd->SetGuidance("Manual: crystal size x/z (mm).");
+  fManualCrystalSizeCmd->SetParameterName("Size", false);
+  fManualCrystalSizeCmd->SetRange("Size > 0.");
+  fManualCrystalSizeCmd->SetDefaultValue(3.);
+  fManualCrystalSizeCmd->SetDefaultUnit("mm");
+  fManualCrystalSizeYCmd = new G4UIcmdWithADoubleAndUnit("/detector/manualCrystalSizeY", this);
+  fManualCrystalSizeYCmd->SetGuidance("Manual: crystal size y (mm).");
+  fManualCrystalSizeYCmd->SetParameterName("SizeY", false);
+  fManualCrystalSizeYCmd->SetRange("SizeY > 0.");
+  fManualCrystalSizeYCmd->SetDefaultValue(3.);
+  fManualCrystalSizeYCmd->SetDefaultUnit("mm");
+  fManualFillterRatioYCmd = new G4UIcmdWithADouble("/detector/manualFillterRatioY", this);
+  fManualFillterRatioYCmd->SetGuidance("Manual: fillter size ratio Y (0-1).");
+  fManualFillterRatioYCmd->SetParameterName("RatioY", false);
+  fManualFillterRatioYCmd->SetRange("RatioY >= 0. && RatioY <= 1.");
+  fManualFillterRatioYCmd->SetDefaultValue(0.3);
+  fManualFillterRatioZCmd = new G4UIcmdWithADouble("/detector/manualFillterRatioZ", this);
+  fManualFillterRatioZCmd->SetGuidance("Manual: fillter size ratio Z (0-1).");
+  fManualFillterRatioZCmd->SetParameterName("RatioZ", false);
+  fManualFillterRatioZCmd->SetRange("RatioZ >= 0. && RatioZ <= 1.");
+  fManualFillterRatioZCmd->SetDefaultValue(1.0);
+  fManualFillterPosRatioYCmd = new G4UIcmdWithADouble("/detector/manualFillterPosRatioY", this);
+  fManualFillterPosRatioYCmd->SetGuidance("Manual: fillter position ratio Y (0-1).");
+  fManualFillterPosRatioYCmd->SetParameterName("PosRatioY", false);
+  fManualFillterPosRatioYCmd->SetRange("PosRatioY >= 0. && PosRatioY <= 1.");
+  fManualFillterPosRatioYCmd->SetDefaultValue(0.7);
+  fManualFillterPosRatioZCmd = new G4UIcmdWithADouble("/detector/manualFillterPosRatioZ", this);
+  fManualFillterPosRatioZCmd->SetGuidance("Manual: fillter position ratio Z (0-1).");
+  fManualFillterPosRatioZCmd->SetParameterName("PosRatioZ", false);
+  fManualFillterPosRatioZCmd->SetRange("PosRatioZ >= 0. && PosRatioZ <= 1.");
+  fManualFillterPosRatioZCmd->SetDefaultValue(0.0);
 }
 
 DetectorMessenger::~DetectorMessenger()
 {
   delete fUpdateCmd;
+  delete fUseGeometryMacCmd;
+  delete fManualFillterPosRatioZCmd;
+  delete fManualFillterPosRatioYCmd;
+  delete fManualFillterRatioZCmd;
+  delete fManualFillterRatioYCmd;
+  delete fManualCrystalSizeYCmd;
+  delete fManualCrystalSizeCmd;
+  delete fManualCrystalGapCmd;
+  delete fManualArrayNzCmd;
+  delete fManualArrayNyCmd;
+  delete fManualArrayNxCmd;
   delete fFillterPosRatioZCmd;
   delete fFillterPosRatioYCmd;
   delete fFillterRatioZCmd;
@@ -139,6 +210,28 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
     fDetector->SetFillterPosRatioY(fFillterPosRatioYCmd->GetNewDoubleValue(newValue));
   else if (command == fFillterPosRatioZCmd)
     fDetector->SetFillterPosRatioZ(fFillterPosRatioZCmd->GetNewDoubleValue(newValue));
+  else if (command == fUseGeometryMacCmd)
+    fDetector->SetUseGeometryMac(fUseGeometryMacCmd->GetNewBoolValue(newValue));
+  else if (command == fManualArrayNxCmd)
+    fDetector->SetManualArrayNx(fManualArrayNxCmd->GetNewIntValue(newValue));
+  else if (command == fManualArrayNyCmd)
+    fDetector->SetManualArrayNy(fManualArrayNyCmd->GetNewIntValue(newValue));
+  else if (command == fManualArrayNzCmd)
+    fDetector->SetManualArrayNz(fManualArrayNzCmd->GetNewIntValue(newValue));
+  else if (command == fManualCrystalGapCmd)
+    fDetector->SetManualCrystalGap(fManualCrystalGapCmd->GetNewDoubleValue(newValue));
+  else if (command == fManualCrystalSizeCmd)
+    fDetector->SetManualCrystalSize(fManualCrystalSizeCmd->GetNewDoubleValue(newValue));
+  else if (command == fManualCrystalSizeYCmd)
+    fDetector->SetManualCrystalSizeY(fManualCrystalSizeYCmd->GetNewDoubleValue(newValue));
+  else if (command == fManualFillterRatioYCmd)
+    fDetector->SetManualFillterRatioY(fManualFillterRatioYCmd->GetNewDoubleValue(newValue));
+  else if (command == fManualFillterRatioZCmd)
+    fDetector->SetManualFillterRatioZ(fManualFillterRatioZCmd->GetNewDoubleValue(newValue));
+  else if (command == fManualFillterPosRatioYCmd)
+    fDetector->SetManualFillterPosRatioY(fManualFillterPosRatioYCmd->GetNewDoubleValue(newValue));
+  else if (command == fManualFillterPosRatioZCmd)
+    fDetector->SetManualFillterPosRatioZ(fManualFillterPosRatioZCmd->GetNewDoubleValue(newValue));
   else if (command == fUpdateCmd) {
     G4RunManager::GetRunManager()->ReinitializeGeometry();
     G4cout << "Geometry updated with current parameters." << G4endl;

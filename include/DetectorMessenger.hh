@@ -23,6 +23,7 @@ class G4UIcmdWithAnInteger;
 class G4UIcmdWithADoubleAndUnit;
 class G4UIcmdWithADouble;
 class G4UIcmdWithoutParameter;
+class G4UIcmdWithABool;
 
 namespace B1
 {
@@ -51,6 +52,17 @@ class DetectorMessenger : public G4UImessenger
     G4UIcmdWithADouble* fFillterPosRatioYCmd = nullptr;
     G4UIcmdWithADouble* fFillterPosRatioZCmd = nullptr;
     G4UIcmdWithoutParameter* fUpdateCmd = nullptr;
+    G4UIcmdWithABool* fUseGeometryMacCmd = nullptr;
+    G4UIcmdWithAnInteger* fManualArrayNxCmd = nullptr;
+    G4UIcmdWithAnInteger* fManualArrayNyCmd = nullptr;
+    G4UIcmdWithAnInteger* fManualArrayNzCmd = nullptr;
+    G4UIcmdWithADoubleAndUnit* fManualCrystalGapCmd = nullptr;
+    G4UIcmdWithADoubleAndUnit* fManualCrystalSizeCmd = nullptr;
+    G4UIcmdWithADoubleAndUnit* fManualCrystalSizeYCmd = nullptr;
+    G4UIcmdWithADouble* fManualFillterRatioYCmd = nullptr;
+    G4UIcmdWithADouble* fManualFillterRatioZCmd = nullptr;
+    G4UIcmdWithADouble* fManualFillterPosRatioYCmd = nullptr;
+    G4UIcmdWithADouble* fManualFillterPosRatioZCmd = nullptr;
 };
 
 }  // namespace B1
