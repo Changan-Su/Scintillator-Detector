@@ -64,6 +64,9 @@ class HistoManager
     void FillPhotonLeft(G4int photonCounts);
     void FillPhotonRight(G4int photonCounts);
     void FillPhotonLRPerRod(G4int iz, G4int iy, G4int left, G4int right, G4int eventId);
+    void FillPhotonFaceBlockEvent(G4int eventId, G4int crystalId, G4int iy, G4int iz,
+                                  G4int face, G4int j, G4int k, G4int sipmBlockId,
+                                  G4int photonCount);
 
 
 
@@ -72,6 +75,7 @@ class HistoManager
     G4bool fFactoryOn = false;
     G4int fDepthNtupleId = -1;  // Add this to your HistoManager class
     G4int fPhotonLRNtupleId = -1;
+    G4int fPhotonFaceEventNtupleId = -1;
     G4bool fOutputPathInitialized = false;
     std::string fOutputFileBasePath;
 };

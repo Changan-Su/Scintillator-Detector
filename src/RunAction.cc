@@ -198,6 +198,9 @@ void RunAction::EndOfRunAction(const G4Run* run)
          << " Cumulated dose per run, in scoring volume : " << G4BestUnit(dose, "Dose")
          << " rms = " << G4BestUnit(rmsDose, "Dose") << G4endl
          << "------------------------------------------------------------" << G4endl << G4endl;
+
+  // Persist ntuple/histogram data for normal (nofEvents > 0) runs.
+  fHistoManager->Save();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

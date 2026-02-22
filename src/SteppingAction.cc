@@ -93,18 +93,11 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     // }
 
     if (volName.contains("SiPM")) {
-    const G4int copyNo = step->GetPreStepPoint()->GetTouchableHandle()->GetCopyNumber();
-    const G4int iz = copyNo / 1000000;
-    const G4int iy = (copyNo - iz*1000000) / 100;   // 提取 iy
-    const G4int endTag = copyNo % 100;          // 1=Left, 2=Right
-
-    if (endTag == 1) {
-        fEventAction->AddPhotonLeftAt(iy, iz);
-    } else if (endTag == 2) {
-        fEventAction->AddPhotonRightAt(iy, iz);
+      const G4int sipmBlockId =
+          step->GetPreStepPoint()->GetTouchableHandle()->GetCopyNumber();
+      fEventAction->AddPhotonAtFaceBlock(sipmBlockId);
+      track->SetTrackStatus(fStopAndKill);
     }
-    track->SetTrackStatus(fStopAndKill);
-}
 
     // G4ThreeVector pos = track->GetPosition();
     // // 你可以根据晶体阵列的实际大小设置阈值，比如 ±Crystal_x/2 ±1cm 边界

@@ -79,6 +79,7 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
   fPhotonCountGenerated = 0;
   fPhotonCountLeft = 0;
   fPhotonCountRight = 0;
+  fEventSiPMCounts.clear();
 
 
   G4int evtNb = evt->GetEventID();
@@ -90,8 +91,6 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
     G4RunManager::GetRunManager()->GetUserDetectorConstruction());
     fNy = det->GetCrystal_ny();
     fNz = det->GetCrystal_nz();
-    fLeftPerRod.assign(fNy*fNz, 0);
-    fRightPerRod.assign(fNy*fNz, 0);
 
 }
 
@@ -112,10 +111,11 @@ void EventAction::EndOfEventAction(const G4Event* evt)
     }
 
 
-    for (auto d : fPhotonDOIs) 
-    {
-    fHistoManager->FillPhotonDepth(d);
-    }
+    // Legacy photon-depth CSV output is temporarily disabled.
+    // for (auto d : fPhotonDOIs)
+    // {
+    //   fHistoManager->FillPhotonDepth(d);
+    // }
     fPhotonDOIs.clear();
 
 
@@ -125,22 +125,34 @@ void EventAction::EndOfEventAction(const G4Event* evt)
     fHistoManager->FillHisto(0, edepToRecord);          // 展宽or不展宽
     fHistoManager->FillHisto(1, fTrackLAbs);
     fHistoManager->FillNtuple(edepToRecord, fTrackLAbs); 
-    //Photon统计
-    G4int photonToRecord = fPhotonCountPMT; 
+    // Legacy photon CSV outputs are temporarily disabled:
+    // PhotonNtuple / PhotonGenerated / PhotonLeft / PhotonRight / PhotonLRPerRod / PhotonDepthNtuple
+    // G4int photonToRecord = fPhotonCountPMT;
+    // fHistoManager->FillPhotonHisto(photonToRecord);
+    // fHistoManager->FillPhotonNtuple(fPhotonCountPMT);
+    // fHistoManager->FillPhotonGeneratedNtuple(fPhotonCountGenerated);
+    // fHistoManager->FillPhotonLeft(fPhotonCountLeft);
+    // fHistoManager->FillPhotonRight(fPhotonCountRight);
 
-    fHistoManager->FillPhotonHisto(photonToRecord); 
-    fHistoManager->FillPhotonNtuple(fPhotonCountPMT);
-    fHistoManager->FillPhotonGeneratedNtuple(fPhotonCountGenerated);
-    fHistoManager->FillPhotonLeft(fPhotonCountLeft);
-    fHistoManager->FillPhotonRight(fPhotonCountRight);
-
-    const int eventId = evt->GetEventID();
-    for (int iz=0; iz<fNz; ++iz)
-      for (int iy=0; iy<fNy; ++iy) {
-        int L = fLeftPerRod[RodIndex(iy,iz)];
-        int R = fRightPerRod[RodIndex(iy,iz)];
-        fHistoManager->FillPhotonLRPerRod(iz, iy, L, R, eventId);
+    const G4int eventId = evt->GetEventID();
+    const G4int blocksPerCrystal = 6 * 16;
+    const G4int crystalPlane = fNy * fNz;
+    for (const auto& kv : fEventSiPMCounts) {
+      const G4int sipmBlockId = kv.first;
+      const G4int photonCount = kv.second;
+      if (photonCount <= 0) {
+        continue;
       }
+
+      const G4int crystalId = sipmBlockId / blocksPerCrystal;
+      const G4int face = (sipmBlockId % blocksPerCrystal) / 16;
+      const G4int j = (sipmBlockId % 16) / 4;
+      const G4int k = sipmBlockId % 4;
+      const G4int iy = (crystalId % crystalPlane) / fNz;
+      const G4int iz = crystalId % fNz;
+      fHistoManager->FillPhotonFaceBlockEvent(eventId, crystalId, iy, iz, face, j, k,
+                                              sipmBlockId, photonCount);
+    }
 
   }
 

@@ -112,7 +112,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
   G4double y0 = -ry/2 + ry * G4UniformRand();
   
   G4double z0 = -20 * cm;
-  G4double r0 = 20 * cm;
+  G4double r0 = 5 * cm;
 
   G4double Pos_x = G4UniformRand()-0.5;
   G4double Pos_y = G4UniformRand()-0.5;
@@ -128,8 +128,18 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
   G4ThreeVector Ram_Dir = G4ThreeVector(Dir_x,Dir_y,Dir_z);
   G4ThreeVector URam_Dir = Ram_Dir / Ram_Dir.mag();
   
+
+  //Planar source
   G4ThreeVector Pos_Planar = G4ThreeVector(x0, y0, z0);
   G4ThreeVector Dir_Planar = G4ThreeVector(0,0, -z0);
+
+  //Sphere source
+  // G4ThreeVector Pos_Sphere = r0 * URam_Pos;
+  // G4ThreeVector Dir_Sphere = URam_Dir;
+
+  // fParticleGun->SetParticlePosition(Pos_Sphere);
+  // fParticleGun->SetParticleMomentumDirection(Dir_Sphere);
+  // fParticleGun->GeneratePrimaryVertex(event);
 
 
   fParticleGun->SetParticlePosition(Pos_Planar);

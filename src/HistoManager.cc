@@ -193,46 +193,50 @@ void HistoManager::Book()
     analysisManager->CreateNtupleDColumn("Lgap");  // column Id = 1
     analysisManager->FinishNtuple();
 
-    analysisManager->CreateNtuple("PhotonNtuple", "PhotonCounts");
-    analysisManager->CreateNtupleIColumn("PhotonCounts");
-    analysisManager->FinishNtuple();
+    // Legacy photon-related CSV outputs are temporarily disabled.
+    // Kept here as commented code for easy rollback if needed.
+    //
+    // analysisManager->CreateNtuple("PhotonNtuple", "PhotonCounts");
+    // analysisManager->CreateNtupleIColumn("PhotonCounts");
+    // analysisManager->FinishNtuple();
+    //
+    // analysisManager->CreateNtuple("PhotonGenerated", "GeneratedCounts");
+    // analysisManager->CreateNtupleIColumn("GeneratedCounts");
+    // analysisManager->FinishNtuple();
+    //
+    // fDepthNtupleId = analysisManager->CreateNtuple("PhotonDepthNtuple", "Depth index of each captured photon");
+    // analysisManager->CreateNtupleIColumn("DepthIndex");
+    // analysisManager->FinishNtuple();
+    //
+    // analysisManager->CreateNtuple("PhotonLeft", "PhotonCounts_Left");
+    // analysisManager->CreateNtupleIColumn("PhotonCounts_Left");
+    // analysisManager->FinishNtuple();
+    //
+    // analysisManager->CreateNtuple("PhotonRight", "PhotonCounts_Right");
+    // analysisManager->CreateNtupleIColumn("PhotonCounts_Right");
+    // analysisManager->FinishNtuple();
+    //
+    // fPhotonLRNtupleId = analysisManager->CreateNtuple("PhotonLRPerRod",
+    //                                               "Per-rod Left/Right photon counts per event");
+    // analysisManager->CreateNtupleIColumn("EventID");
+    // analysisManager->CreateNtupleIColumn("iz");
+    // analysisManager->CreateNtupleIColumn("iy");
+    // analysisManager->CreateNtupleIColumn("Left");
+    // analysisManager->CreateNtupleIColumn("Right");
+    // analysisManager->FinishNtuple();
 
-    analysisManager->CreateNtuple("PhotonGenerated", "GeneratedCounts");
-    analysisManager->CreateNtupleIColumn("GeneratedCounts");
-    analysisManager->FinishNtuple();
-
-    
-
-    // 假设最深 20 层够用；如果想用实际层数，可在 DetectorConstruction 构造好后把层数传进来
-
-    fDepthNtupleId = analysisManager->CreateNtuple("PhotonDepthNtuple", "Depth index of each captured photon");
-    analysisManager->CreateNtupleIColumn("DepthIndex");
-    analysisManager->FinishNtuple();
-    // analysisManager->FillNtupleIColumn(4, 0, -999);
-    // analysisManager->AddNtupleRow(4);
-
-
-    // G4cout << "[DEBUG] PhotonDepthNtuple index is: " 
-    //    << analysisManager->GetNtuple("PhotonDepthNtuple")->GetId() 
-    //    << G4endl;
-    analysisManager->CreateNtuple("PhotonLeft", "PhotonCounts_Left");
-    analysisManager->CreateNtupleIColumn("PhotonCounts_Left");
-    analysisManager->FinishNtuple();
-
-    analysisManager->CreateNtuple("PhotonRight", "PhotonCounts_Right");
-    analysisManager->CreateNtupleIColumn("PhotonCounts_Right");
-    analysisManager->FinishNtuple();
-
-
-    fPhotonLRNtupleId = analysisManager->CreateNtuple("PhotonLRPerRod",
-                                                  "Per-rod Left/Right photon counts per event");
+    fPhotonFaceEventNtupleId = analysisManager->CreateNtuple(
+        "PhotonFaceBlockEvent", "Per-event photon counts on each SiPM block");
     analysisManager->CreateNtupleIColumn("EventID");
-    analysisManager->CreateNtupleIColumn("iz");
+    analysisManager->CreateNtupleIColumn("CrystalID");
     analysisManager->CreateNtupleIColumn("iy");
-    analysisManager->CreateNtupleIColumn("Left");
-    analysisManager->CreateNtupleIColumn("Right");
+    analysisManager->CreateNtupleIColumn("iz");
+    analysisManager->CreateNtupleIColumn("Face");
+    analysisManager->CreateNtupleIColumn("j");
+    analysisManager->CreateNtupleIColumn("k");
+    analysisManager->CreateNtupleIColumn("SiPMBlockID");
+    analysisManager->CreateNtupleIColumn("PhotonCount");
     analysisManager->FinishNtuple();
-
 
     fFactoryOn = true;
   }
@@ -254,17 +258,16 @@ void HistoManager::Book()
 
 void HistoManager::FillPhotonNtuple(G4int photonCounts)
 {
-  
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    analysisManager->FillNtupleIColumn(2, 0, photonCounts); 
-    analysisManager->AddNtupleRow(2);
+    // Legacy output path is disabled.
+    (void)photonCounts;
+    return;
 }
 
 void HistoManager::FillPhotonGeneratedNtuple(G4int photonGenerated)
 {
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    analysisManager->FillNtupleIColumn(3, 0, photonGenerated); // 新增ntuple编号为3
-    analysisManager->AddNtupleRow(3);
+    // Legacy output path is disabled.
+    (void)photonGenerated;
+    return;
 }
 
 void HistoManager::FillPhotonHisto(G4int photonCounts)
@@ -278,6 +281,7 @@ void HistoManager::Save()
   }
 
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
   analysisManager->Write();
   analysisManager->CloseFile();
 
@@ -370,13 +374,9 @@ void HistoManager::PrintStatistic()
 
 void HistoManager::FillPhotonDepth(G4int depthIdx)
 {   
-    // auto* analysisManager = G4AnalysisManager::Instance();
-
-    // // 加一句 debug 看是不是 depthIdx 就是 0
-    // G4cout << "[DEBUG] Writing DOI_iz to ntuple: " << depthIdx << G4endl;
-    // G4AnalysisManager::Instance()->FillH1(5, depthIdx);   // 5 是上面那条 H1 的序号
-    // G4AnalysisManager::Instance()->FillNtupleIColumn(4,0,depthIdx); // 4 是新 ntuple
-    // G4AnalysisManager::Instance()->AddNtupleRow(4);
+    if (fDepthNtupleId < 0) {
+      return;
+    }
     auto* analysisManager = G4AnalysisManager::Instance();
     analysisManager->FillNtupleIColumn(fDepthNtupleId, 0, depthIdx);  // 填写 depth
     analysisManager->AddNtupleRow(fDepthNtupleId);                    // 添加到 ntuple       
@@ -386,16 +386,14 @@ void HistoManager::FillPhotonDepth(G4int depthIdx)
 
 void HistoManager::FillPhotonLeft(G4int photonCounts)
 {
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    analysisManager->FillNtupleIColumn(5, 0, photonCounts); // 第5个ntuple
-    analysisManager->AddNtupleRow(5);
+    (void)photonCounts;
+    // Legacy output path is disabled.
 }
 
 void HistoManager::FillPhotonRight(G4int photonCounts)
 {
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    analysisManager->FillNtupleIColumn(6, 0, photonCounts); // 第6个ntuple
-    analysisManager->AddNtupleRow(6);
+    (void)photonCounts;
+    // Legacy output path is disabled.
 }
 
 
@@ -403,11 +401,35 @@ void HistoManager::FillPhotonLRPerRod(G4int iz, G4int iy,
                                       G4int left, G4int right,
                                       G4int eventId)
 {
+    (void)iz;
+    (void)iy;
+    (void)left;
+    (void)right;
+    (void)eventId;
+    // Legacy output path is disabled.
+}
+
+void HistoManager::FillPhotonFaceBlockEvent(G4int eventId, G4int crystalId, G4int iy, G4int iz,
+                                            G4int face, G4int j, G4int k, G4int sipmBlockId,
+                                            G4int photonCount)
+{
+    if (photonCount <= 0) {
+      return;
+    }
+
     auto* am = G4AnalysisManager::Instance();
-    am->FillNtupleIColumn(fPhotonLRNtupleId, 0, eventId);
-    am->FillNtupleIColumn(fPhotonLRNtupleId, 1, iz);
-    am->FillNtupleIColumn(fPhotonLRNtupleId, 2, iy);
-    am->FillNtupleIColumn(fPhotonLRNtupleId, 3, left);
-    am->FillNtupleIColumn(fPhotonLRNtupleId, 4, right);
-    am->AddNtupleRow(fPhotonLRNtupleId);
+    if (fPhotonFaceEventNtupleId >= 0) {
+      am->FillNtupleIColumn(fPhotonFaceEventNtupleId, 0, eventId);
+      am->FillNtupleIColumn(fPhotonFaceEventNtupleId, 1, crystalId);
+      am->FillNtupleIColumn(fPhotonFaceEventNtupleId, 2, iy);
+      am->FillNtupleIColumn(fPhotonFaceEventNtupleId, 3, iz);
+      am->FillNtupleIColumn(fPhotonFaceEventNtupleId, 4, face);
+      am->FillNtupleIColumn(fPhotonFaceEventNtupleId, 5, j);
+      am->FillNtupleIColumn(fPhotonFaceEventNtupleId, 6, k);
+      am->FillNtupleIColumn(fPhotonFaceEventNtupleId, 7, sipmBlockId);
+      am->FillNtupleIColumn(fPhotonFaceEventNtupleId, 8, photonCount);
+      am->AddNtupleRow(fPhotonFaceEventNtupleId);
+    }
+
+    // Block total CSV has been removed by request.
 }

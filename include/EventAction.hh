@@ -34,6 +34,8 @@
 #include "G4UserEventAction.hh"
 #include "globals.hh"
 #include "HistoManager.hh"
+#include <unordered_map>
+#include <vector>
 
 
 
@@ -82,8 +84,7 @@ class EventAction : public G4UserEventAction
     void AddPhotonGenerated(G4int n = 1) { fPhotonCountGenerated += n; }// 统计生成的光子数量
     G4int GetPhotonGenerated() const { return fPhotonCountGenerated; }// 获取生成的光子数量
     G4int Fuckrigt = 2;
-    void AddPhotonLeftAt(G4int iy, G4int iz)  { fLeftPerRod[RodIndex(iy,iz)]++; }
-    void AddPhotonRightAt(G4int iy, G4int iz) { fRightPerRod[RodIndex(iy,iz)]++; }
+    void AddPhotonAtFaceBlock(G4int sipmBlockId) { fEventSiPMCounts[sipmBlockId]++; }
     
 
     private:
@@ -101,7 +102,7 @@ class EventAction : public G4UserEventAction
     G4int fPhotonCountRight = 0;
 
 
-    std::vector<int> fLeftPerRod, fRightPerRod;
+    std::unordered_map<G4int, G4int> fEventSiPMCounts;
     G4int fNy=0, fNz=0;
     inline int RodIndex(int iy, int iz) const { return iz*fNy + iy; }
 
