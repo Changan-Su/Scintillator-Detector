@@ -30,6 +30,7 @@ Histo10_Cubic：立方体晶体六面 SiPM 光子计数批处理与热力图脚�
 ----------------------------------------------
   merged_event.csv       各线程事件行合并（原始 9 列）
   merged_face_jk.csv     按 (Face, j, k) 聚合后的计数表，用于绘图
+  reconstructed_position.csv  六面总计数与重建坐标（含两种重建公式）
   sipm_6faces_heatmap.png  6 面 4×4 热力图（Face 0..5：+X,-X,+Y,-Y,+Z,-Z）
 
 示例
@@ -50,6 +51,17 @@ import pandas as pd
 # 六面编号与几何方向对应（与 DetectorConstruction 中 face 定义一致）
 FACE_NAMES = {0: "+X", 1: "-X", 2: "+Y", 3: "-Y", 4: "+Z", 5: "-Z"}
 
+# 每个面的热力图坐标语义：
+# imshow 中横轴对应 k，纵轴对应 j；这里补充其在世界坐标中的方向含义。
+FACE_AXIS_LABELS = {
+    0: ("k ( +Z )", "j ( +Y )"),  # +X 面：offset=(0,u,v)
+    1: ("k ( +Z )", "j ( +Y )"),  # -X 面：offset=(0,u,v)
+    2: ("k ( +Z )", "j ( +X )"),  # +Y 面：offset=(u,0,v)
+    3: ("k ( +Z )", "j ( +X )"),  # -Y 面：offset=(u,0,v)
+    4: ("k ( +Y )", "j ( +X )"),  # +Z 面：offset=(u,v,0)
+    5: ("k ( +Y )", "j ( +X )"),  # -Z 面：offset=(u,v,0)
+}
+
 # Geant4 PhotonFaceBlockEvent CSV 的列名（9 列）
 EVENT_COLUMNS = ["EventID", "CrystalID", "iy", "iz", "Face", "j", "k", "SiPMBlockID", "PhotonCount"]
 
@@ -63,15 +75,15 @@ def parse_event_csv(csv_path: Path) -> pd.DataFrame:
     df = pd.read_csv(csv_path, comment="#", header=None, sep=",")
     if df.empty or df.shape[1] < 9:
         raise ValueError(f"Invalid or empty event CSV: {csv_path}")
-    df = df.iloc[:, :9].copy()
-    df.columns = EVENT_COLUMNS
+    df = df.iloc[:, :9].copy()#按整数位置（行号、列号）选取数据，和列名无关。
+    df.columns = EVENT_COLUMNS#列名赋值
     for col in EVENT_COLUMNS:
-        df[col] = pd.to_numeric(df[col], errors="coerce")
-    df = df.dropna(subset=["Face", "j", "k", "PhotonCount"]).copy()
-    df["Face"] = df["Face"].astype(int)
-    df["j"] = df["j"].astype(int)
-    df["k"] = df["k"].astype(int)
-    return df
+        df[col] = pd.to_numeric(df[col], errors="coerce")#将指定列转换为数值类型，遇到错误时替换为NaN
+    df = df.dropna(subset=["Face", "j", "k", "PhotonCount"]).copy()#删除包含NaN的行
+    df["Face"] = df["Face"].astype(int)#将指定列转换为整数类型
+    df["j"] = df["j"].astype(int)#将指定列转换为整数类型
+    df["k"] = df["k"].astype(int)#将指定列转换为整数类型
+    return df#返回处理后的DataFrame 
 
 
 def aggregate_for_heatmap(df_event: pd.DataFrame) -> pd.DataFrame:
@@ -113,12 +125,59 @@ def build_face_matrix(agg: pd.DataFrame, face: int) -> np.ndarray:
     j、k 为 0..3，矩阵[i,j] 对应 j 行 k 列（与热力图 imshow 一致）。
     """
     matrix = np.zeros((4, 4), dtype=float)
-    face_df = agg[agg["Face"] == face]
-    for _, row in face_df.iterrows():
+    face_df = agg[agg["Face"] == face]#根据Face列的值等于face的行，返回一个DataFrame
+    for _, row in face_df.iterrows():#遍历face_df的每一行
         j, k = int(row["j"]), int(row["k"])
         if 0 <= j < 4 and 0 <= k < 4:
             matrix[j, k] = float(row["Count"])
     return matrix
+
+
+def compute_reconstructed_position(face_totals: dict[int, float]) -> tuple[float, float, float]:
+    """
+    用六面总光子数重建归一化坐标：
+      x = (N(+X)-N(-X)) / (N(+X)+N(-X))
+      y = (N(+Y)-N(-Y)) / (N(+Y)+N(-Y))
+      z = (N(+Z)-N(-Z)) / (N(+Z)+N(-Z))
+    分母为 0 时返回 0，避免除零。
+    """
+    n_px, n_nx = face_totals.get(0, 0.0), face_totals.get(1, 0.0)
+    n_py, n_ny = face_totals.get(2, 0.0), face_totals.get(3, 0.0)
+    n_pz, n_nz = face_totals.get(4, 0.0), face_totals.get(5, 0.0)
+
+    x_denom = n_px + n_nx
+    y_denom = n_py + n_ny
+    z_denom = n_pz + n_nz
+
+    x_rec = (n_px - n_nx) / x_denom if x_denom > 0 else 0.0
+    y_rec = (n_py - n_ny) / y_denom if y_denom > 0 else 0.0
+    z_rec = (n_pz - n_nz) / z_denom if z_denom > 0 else 0.0
+    return x_rec, y_rec, z_rec
+
+def compute_reconstructed_position_2(face_totals: dict[int, float]) -> tuple[float, float, float]:
+
+    L = 2.5
+    n_px, n_nx = face_totals.get(0, 0.0), face_totals.get(1, 0.0)
+    n_py, n_ny = face_totals.get(2, 0.0), face_totals.get(3, 0.0)
+    n_pz, n_nz = face_totals.get(4, 0.0), face_totals.get(5, 0.0)
+
+    x_denom = np.sqrt(n_px + n_nx)
+    y_denom = np.sqrt(n_py + n_ny)
+    z_denom = np.sqrt(n_pz + n_nz)
+
+    x_rec =L/2* (np.sqrt(n_px) - np.sqrt(n_nx)) / x_denom if x_denom > 0 else 0.0
+    y_rec =L/2* (np.sqrt(n_py) - np.sqrt(n_ny)) / y_denom if y_denom > 0 else 0.0
+    z_rec =L/2* (np.sqrt(n_pz) - np.sqrt(n_nz)) / z_denom if z_denom > 0 else 0.0
+    return x_rec, y_rec, z_rec
+
+
+def compute_face_totals(agg: pd.DataFrame) -> dict[int, float]:
+    """
+    从聚合表（Face, j, k, Count）计算六面总光子数。
+    返回字典键为 Face 0..5，缺失面自动补 0。
+    """
+    totals_series = agg.groupby("Face")["Count"].sum()
+    return {face: float(totals_series.get(face, 0.0)) for face in range(6)}
 
 
 def plot_6_faces(
@@ -136,6 +195,8 @@ def plot_6_faces(
     """
     fig, axes = plt.subplots(2, 3, figsize=(14, 9), constrained_layout=True)
     matrices = [build_face_matrix(agg, face) for face in range(6)]
+    face_totals = compute_face_totals(agg)
+    x_rec, y_rec, z_rec = compute_reconstructed_position(face_totals)
     stacked = np.stack(matrices)
     draw_vmin = float(np.min(stacked)) if vmin is None else vmin
     draw_vmax = float(np.max(stacked)) if vmax is None else vmax
@@ -144,9 +205,12 @@ def plot_6_faces(
     for face, ax in enumerate(axes.flat):
         mat = matrices[face]
         last_im = ax.imshow(mat, cmap=cmap, vmin=draw_vmin, vmax=draw_vmax, origin="lower")
-        ax.set_title(f"Face {face} ({FACE_NAMES.get(face, 'Unknown')})")
-        ax.set_xlabel("k")
-        ax.set_ylabel("j")
+        ax.set_title(
+            f"Face {face} ({FACE_NAMES.get(face, 'Unknown')}, normal) | Total={int(face_totals[face])}"
+        )
+        x_label, y_label = FACE_AXIS_LABELS.get(face, ("k", "j"))
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
         ax.set_xticks(range(4))
         ax.set_yticks(range(4))
         for j in range(4):
@@ -158,6 +222,18 @@ def plot_6_faces(
     if last_im is not None:
         cbar = fig.colorbar(last_im, ax=axes.ravel().tolist(), shrink=0.9)
         cbar.set_label("Photon Count")
+
+    fig.text(
+        0.5,
+        0.01,
+        (
+            "Reconstructed position (normalized): "
+            f"(x,y,z)=({x_rec:.4f}, {y_rec:.4f}, {z_rec:.4f})"
+        ),
+        ha="center",
+        va="bottom",
+        fontsize=10,
+    )
     fig.suptitle(title)
     fig.savefig(output_path, dpi=180)
     plt.close(fig)
@@ -183,6 +259,32 @@ def process_one_config(
     merged_agg_path = output_dir / "merged_face_jk.csv"
     agg.to_csv(merged_agg_path, index=False)
 
+    face_totals = compute_face_totals(agg)
+    x_rec, y_rec, z_rec = compute_reconstructed_position(face_totals)
+    x_rec_sqrt, y_rec_sqrt, z_rec_sqrt = compute_reconstructed_position_2(face_totals)
+    reconstructed_path = output_dir / "reconstructed_position.csv"
+    reconstructed_df = pd.DataFrame(
+        [
+            {
+                "ConfigName": config_dir.name,
+                "N_plusX": face_totals.get(0, 0.0),
+                "N_minusX": face_totals.get(1, 0.0),
+                "N_plusY": face_totals.get(2, 0.0),
+                "N_minusY": face_totals.get(3, 0.0),
+                "N_plusZ": face_totals.get(4, 0.0),
+                "N_minusZ": face_totals.get(5, 0.0),
+                "x_rec": x_rec,
+                "y_rec": y_rec,
+                "z_rec": z_rec,
+                "x_rec_sqrt": x_rec_sqrt,
+                "y_rec_sqrt": y_rec_sqrt,
+                "z_rec_sqrt": z_rec_sqrt,
+                "PhotonTotal": float(sum(face_totals.values())),
+            }
+        ]
+    )
+    reconstructed_df.to_csv(reconstructed_path, index=False)
+
     heatmap_path = output_dir / "sipm_6faces_heatmap.png"
     plot_6_faces(
         agg=agg,
@@ -195,6 +297,7 @@ def process_one_config(
     print(f"[OK] {config_dir.name}")
     print(f"     merged_event.csv:   {merged_event_path}")
     print(f"     merged_face_jk.csv: {merged_agg_path}")
+    print(f"     reconstructed.csv:  {reconstructed_path}")
     print(f"     heatmap:            {heatmap_path}")
 
 

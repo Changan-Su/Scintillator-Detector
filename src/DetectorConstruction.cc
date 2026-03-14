@@ -43,7 +43,7 @@ namespace B1
 
   G4VPhysicalVolume* DetectorConstruction::Construct()
   {
-    G4double Surface_Sigma = 0.5;
+    G4double Surface_Sigma = fSurfaceSigma;
 
     // Get nist material manager
     G4NistManager* nist = G4NistManager::Instance();
@@ -198,7 +198,7 @@ namespace B1
     std::vector<G4double> gagg_Energy = {2.07 * eV, 2.34 * eV, 2.62 * eV, 2.89 * eV, 3.10 * eV};
     std::vector<G4double> gagg_SCINT = {1.0, 1.0, 1.0, 1.0, 1.0};
     std::vector<G4double> gagg_RIND = {1.91, 1.91, 1.91, 1.91, 1.91};
-    std::vector<G4double> gagg_ABSL = {1.5 * cm, 1.5 * cm, 1.5 * cm, 1.5 * cm, 1.5 * cm};
+    std::vector<G4double> gagg_ABSL = {2.5 * cm, 2.5 * cm, 2.5 * cm, 2.5 * cm, 2.5 * cm};
     auto gagg_mt = new G4MaterialPropertiesTable();
     gagg_mt->AddProperty("SCINTILLATIONCOMPONENT1", gagg_Energy, gagg_SCINT);
     gagg_mt->AddProperty("SCINTILLATIONCOMPONENT2", gagg_Energy, gagg_SCINT);
@@ -263,7 +263,7 @@ namespace B1
     G4Material* SiPM_mat = nist->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
     G4double sipm_l = 6. * mm;
     G4double sipm_t = 0.6 * mm;
-    G4double SiPm_gap = 0.2 * mm;
+    G4double SiPm_gap = 0. * mm;
     const G4int SiPm_np = 4;
     G4Box* solidSiPM = new G4Box("SiPM", sipm_t / 2, sipm_l / 2, sipm_l / 2);
     std::vector<G4double> energy = {2.0*eV, 3.5*eV};
@@ -272,6 +272,35 @@ namespace B1
     auto sipm_mt = new G4MaterialPropertiesTable();
     sipm_mt->AddProperty("RINDEX", energy, rindex_sipm);
     SiPM_mat->SetMaterialPropertiesTable(sipm_mt);
+
+    // Optical grease (硅脂, PDMS-based): n≈1.46, fills crystal-SiPM interface.
+    // No explicit G4OpticalSurface is needed: Geant4 G4OpBoundaryProcess performs
+    // automatic Fresnel reflection/refraction at any boundary where both materials
+    // carry RINDEX (crystal n=1.91 → grease n=1.46 → SiPM n=1.5).
+    G4Element* elC   = G4NistManager::Instance()->FindOrBuildElement("C");
+    G4Element* elH   = G4NistManager::Instance()->FindOrBuildElement("H");
+    G4Element* elSi  = G4NistManager::Instance()->FindOrBuildElement("Si");
+    G4double   grease_t   = 0.1 * mm;
+    G4Material* grease_mat = new G4Material("OpticalGrease", 1.06 * g/cm3, 4);
+    grease_mat->AddElement(elC,  2);
+    grease_mat->AddElement(elH,  6);
+    grease_mat->AddElement(elSi, 1);
+    grease_mat->AddElement(elO,  1);
+    std::vector<G4double> grease_Energy = {2.0 * eV, 3.5 * eV};
+    std::vector<G4double> grease_RIND   = {1.46, 1.46};
+    std::vector<G4double> grease_ABSL   = {1000. * cm, 1000. * cm};
+    auto grease_mt = new G4MaterialPropertiesTable();
+    grease_mt->AddProperty("RINDEX",    grease_Energy, grease_RIND);
+    grease_mt->AddProperty("ABSLENGTH", grease_Energy, grease_ABSL);
+    grease_mat->SetMaterialPropertiesTable(grease_mt);
+    // One grease slab per crystal face; two shapes because crystal_ly may differ from crystal_l.
+    // Rotation convention mirrors SiPM: X-axis of the solid becomes the face-normal in world.
+    //   Faces 0,1 (X±) and 4,5 (Z±): local YZ covers crystal_ly × crystal_l
+    //   Faces 2,3 (Y±):               local YZ covers crystal_l  × crystal_l
+    G4Box* solidGrease_XZ = new G4Box("Grease_XZ", grease_t / 2, crystal_ly / 2, crystal_l / 2);
+    G4Box* solidGrease_Y  = new G4Box("Grease_Y",  grease_t / 2, crystal_l  / 2, crystal_l / 2);
+    G4LogicalVolume* logicGrease_XZ = new G4LogicalVolume(solidGrease_XZ, grease_mat, "Grease_XZ");
+    G4LogicalVolume* logicGrease_Y  = new G4LogicalVolume(solidGrease_Y,  grease_mat, "Grease_Y");
 
     // Keep rotation matrices alive during all placements.
     G4RotationMatrix* rotSiPM_mX = new G4RotationMatrix();
@@ -308,25 +337,46 @@ namespace B1
           G4int crystalId = ix * Crystal_ny * Crystal_nz + iy * Crystal_nz + iz;
           for (G4int face = 0; face < 6; ++face) {
             G4ThreeVector faceCenter;
+            G4ThreeVector greaseCenter;
             G4RotationMatrix* rot = nullptr;
-            if (face == 0) {
-              faceCenter = G4ThreeVector(posX + crystal_l/2 + sipm_t/2, posY, posZ);
-            } else if (face == 1) {
-              faceCenter = G4ThreeVector(posX - crystal_l/2 - sipm_t/2, posY, posZ);
-              rot = rotSiPM_mX;
-            } else if (face == 2) {
-              faceCenter = G4ThreeVector(posX, posY + crystal_ly/2 + sipm_t/2, posZ);
-              rot = rotSiPM_pY;
-            } else if (face == 3) {
-              faceCenter = G4ThreeVector(posX, posY - crystal_ly/2 - sipm_t/2, posZ);
-              rot = rotSiPM_mY;
-            } else if (face == 4) {
-              faceCenter = G4ThreeVector(posX, posY, posZ + crystal_l/2 + sipm_t/2);
-              rot = rotSiPM_pZ;
-            } else {
-              faceCenter = G4ThreeVector(posX, posY, posZ - crystal_l/2 - sipm_t/2);
-              rot = rotSiPM_mZ;
+            G4LogicalVolume* logicGreaseFace = nullptr;
+            if (face == 0) {//X+
+              greaseCenter    = G4ThreeVector(posX + crystal_l/2 + grease_t/2, posY, posZ);
+              faceCenter      = G4ThreeVector(posX + crystal_l/2 + grease_t + sipm_t/2, posY, posZ);
+              logicGreaseFace = logicGrease_XZ;
+            } else if (face == 1) {//X-
+              greaseCenter    = G4ThreeVector(posX - crystal_l/2 - grease_t/2, posY, posZ);
+              faceCenter      = G4ThreeVector(posX - crystal_l/2 - grease_t - sipm_t/2, posY, posZ);
+              rot             = rotSiPM_mX;
+              logicGreaseFace = logicGrease_XZ;
+            } else if (face == 2) {//Y+
+              greaseCenter    = G4ThreeVector(posX, posY + crystal_ly/2 + grease_t/2, posZ);
+              faceCenter      = G4ThreeVector(posX, posY + crystal_ly/2 + grease_t + sipm_t/2, posZ);
+              rot             = rotSiPM_pY;
+              logicGreaseFace = logicGrease_Y;
+            } else if (face == 3) {//Y-
+              greaseCenter    = G4ThreeVector(posX, posY - crystal_ly/2 - grease_t/2, posZ);
+              faceCenter      = G4ThreeVector(posX, posY - crystal_ly/2 - grease_t - sipm_t/2, posZ);
+              rot             = rotSiPM_mY;
+              logicGreaseFace = logicGrease_Y;
+            } else if (face == 4) {//Z+
+              greaseCenter    = G4ThreeVector(posX, posY, posZ + crystal_l/2 + grease_t/2);
+              faceCenter      = G4ThreeVector(posX, posY, posZ + crystal_l/2 + grease_t + sipm_t/2);
+              rot             = rotSiPM_pZ;
+              logicGreaseFace = logicGrease_XZ;
+            } else {//Z-  face == 5
+              greaseCenter    = G4ThreeVector(posX, posY, posZ - crystal_l/2 - grease_t/2);
+              faceCenter      = G4ThreeVector(posX, posY, posZ - crystal_l/2 - grease_t - sipm_t/2);
+              rot             = rotSiPM_mZ;
+              logicGreaseFace = logicGrease_XZ;
             }
+
+            // One grease slab covering the entire crystal face
+            char greaseNameBuf[64];
+            std::snprintf(greaseNameBuf, sizeof(greaseNameBuf), "Grease_c%d_f%d", crystalId, face);
+            new G4PVPlacement(rot, greaseCenter, logicGreaseFace, G4String(greaseNameBuf), logicEnv, false, crystalId * 6 + face, checkOverlaps);
+
+            // 4×4 SiPM pixels on this face
             for (G4int j = 0; j < SiPm_np; ++j) {
               for (G4int k = 0; k < SiPm_np; ++k) {
                 G4double u = (j - 1.5) * pitch;
@@ -359,15 +409,14 @@ namespace B1
     fCrystal_z = Crystal_z;
 
 
-      // //Crystal Optical Surface
-      // G4OpticalSurface* crystalsurface = new G4OpticalSurface("CrystalSurface");
-      // crystalsurface->SetType(dielectric_dielectric);
-      // crystalsurface->SetModel(unified);
-      // crystalsurface->SetFinish(polished);
-      // crystalsurface->SetSigmaAlpha(Surface_Sigma);
-      // G4cout << "DEBUG: CrystalSurface SigmaAlpha = "
-      //  << crystalsurface->GetSigmaAlpha() << G4endl;
-      // new G4LogicalSkinSurface("CrystalSurface",logicCrystal, crystalsurface);
+      //Crystal Optical Surface
+      G4OpticalSurface* crystalsurface = new G4OpticalSurface("CrystalSurface");
+      crystalsurface->SetType(dielectric_dielectric);
+      crystalsurface->SetModel(unified); 
+      crystalsurface->SetFinish(polished);
+      // crystalsurface->SetFinish(ground);
+      crystalsurface->SetSigmaAlpha(Surface_Sigma);
+      new G4LogicalSkinSurface("CrystalSurface",logicCrystal, crystalsurface);
 
       //SurfSiP
        // 1) 皮肤光学表面，只创建一次

@@ -69,7 +69,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4double GetFillterRatioZ() const { return fFillter_Gap_Ratio_Z; }
     G4double GetFillterPosRatioY() const { return fFillter_Gap_PosRatio_Y; }
     G4double GetFillterPosRatioZ() const { return fFillter_Gap_PosRatio_Z; }
-
+    G4double GetSurfaceSigma() const { return fSurfaceSigma; }
 
     // Setters for Messenger / geometry.mac (values in mm for gap/size)
     void SetArrayNx(G4int v) { fPar_nx = std::max(1, v); }
@@ -82,7 +82,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     void SetFillterRatioZ(G4double v) { fFillter_Gap_Ratio_Z = (v >= 0. && v <= 1.) ? v : 1.0; }
     void SetFillterPosRatioY(G4double v) { fFillter_Gap_PosRatio_Y = (v >= 0. && v <= 1.) ? v : 0.7; }
     void SetFillterPosRatioZ(G4double v) { fFillter_Gap_PosRatio_Z = (v >= 0. && v <= 1.) ? v : 0.0; }
-
+    void SetSurfaceSigma(G4double v) { fSurfaceSigma = (v >= 0. && v <= 1.) ? v : 0.5; }
     // Crystal array source: true = geometry.mac (UI), false = manual parameters
     void SetUseGeometryMac(G4bool v) { fUseGeometryMac = v; }
     G4bool GetUseGeometryMac() const { return fUseGeometryMac; }
@@ -134,7 +134,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4double fManual_fillter_ratio_z = 1.0;
     G4double fManual_fillter_pos_y = 0.7;
     G4double fManual_fillter_pos_z = 0.0;
-
+    G4double fSurfaceSigma = 0.5;
     // Messenger 指针
     DetectorMessenger* fMessenger = nullptr;
   };

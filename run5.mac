@@ -1,0 +1,19 @@
+
+# Geometry: crystal array and gap (must be before /run/initialize)
+/control/execute geometry.mac
+/control/verbose 0
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+/run/printProgress 100
+
+# /run/numberOfThreads 4
+
+/vis/disable       
+/detector/surfaceSigma 0.9
+/run/initialize     
+
+/source/mode optical
+/source/distribution Point
+/source/fp_source 10 -7.5 3
+/run/beamOn 100000

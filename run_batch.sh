@@ -26,6 +26,7 @@ LOOP_FILLTER_RATIO_Y=false
 LOOP_FILLTER_RATIO_Z=false
 LOOP_FILLTER_POS_RATIO_Y=false
 LOOP_FILLTER_POS_RATIO_Z=false
+LOOP_SURFACE_SIGMA=false
 
 # --- Parameter Range Configuration ---
 # Array Nx (crystal count in x direction)
@@ -78,6 +79,11 @@ FILLTER_POS_RATIO_Z_START=0.0
 FILLTER_POS_RATIO_Z_END=0.0
 FILLTER_POS_RATIO_Z_STEP=0.1
 
+# Surface Sigma (0-1, crystal optical surface roughness)
+SIGMA_START=0.5
+SIGMA_END=0.7
+SIGMA_STEP=0.1
+
 # --- Default Values (used when parameter is not looping) ---
 DEFAULT_NX=11
 DEFAULT_NY=7
@@ -89,6 +95,7 @@ DEFAULT_FILLTER_RATIO_Y=0.3
 DEFAULT_FILLTER_RATIO_Z=1.0
 DEFAULT_FILLTER_POS_RATIO_Y=0.7
 DEFAULT_FILLTER_POS_RATIO_Z=0.0
+DEFAULT_SURFACE_SIGMA=0.5
 
 # --- Run Configuration ---
 RUN_MACRO=run4.mac
@@ -105,6 +112,7 @@ NAME_INCLUDE_FILLTER_RATIO_Y=false
 NAME_INCLUDE_FILLTER_RATIO_Z=false
 NAME_INCLUDE_FILLTER_POS_RATIO_Y=false
 NAME_INCLUDE_FILLTER_POS_RATIO_Z=false
+NAME_INCLUDE_SURFACE_SIGMA=false
 
 # --- Geant4 Environment (adjust to your installation) ---
 # Uncomment and adjust the path if needed:
@@ -157,6 +165,7 @@ generate_geometry_mac() {
     local fillter_ratio_z=$8
     local fillter_pos_ratio_y=$9
     local fillter_pos_ratio_z=${10}
+    local surface_sigma=${11}
     
     cat > geometry.mac <<EOF
 # Geometry macro: crystal array and gap (run before /run/initialize)
@@ -181,6 +190,9 @@ generate_geometry_mac() {
 /detector/fillterRatioZ $fillter_ratio_z
 /detector/fillterPosRatioY $fillter_pos_ratio_y
 /detector/fillterPosRatioZ $fillter_pos_ratio_z
+#
+# Crystal optical surface roughness (0-1)
+/detector/surfaceSigma $surface_sigma
 EOF
 }
 
@@ -249,7 +261,14 @@ else
     FILLTER_POS_RATIO_Z_LIST=$DEFAULT_FILLTER_POS_RATIO_Z
 fi
 
+if [ "$LOOP_SURFACE_SIGMA" = "true" ]; then
+    SIGMA_LIST=$(generate_decimal_seq $SIGMA_START $SIGMA_END $SIGMA_STEP)
+else
+    SIGMA_LIST=$DEFAULT_SURFACE_SIGMA
+fi
+
 # Nested loops through all parameter combinations
+for surface_sigma in $SIGMA_LIST; do
 for nx in $NX_LIST; do
     for ny in $NY_LIST; do
         for nz in $NZ_LIST; do
@@ -275,14 +294,15 @@ for nx in $NX_LIST; do
                                         [ "$NAME_INCLUDE_FILLTER_RATIO_Z" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_FRZ${fillter_ratio_z}"
                                         [ "$NAME_INCLUDE_FILLTER_POS_RATIO_Y" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_FPRY${fillter_pos_ratio_y}"
                                         [ "$NAME_INCLUDE_FILLTER_POS_RATIO_Z" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_FPRZ${fillter_pos_ratio_z}"
+                                        [ "$NAME_INCLUDE_SURFACE_SIGMA" = "true" ] && FOLDER_NAME="${FOLDER_NAME}_Sigma${surface_sigma//./p}"
                                         
                                         RESULT_DIR="Results/$FOLDER_NAME"
                                         
-                                        echo "[$LOOP_COUNT] Running: Nx=$nx Ny=$ny Nz=$nz Gap=$gap Size=$size SizeY=$size_y FillterY=$fillter_ratio_y FillterZ=$fillter_ratio_z FPosY=$fillter_pos_ratio_y FPosZ=$fillter_pos_ratio_z"
+                                        echo "[$LOOP_COUNT] Running: Nx=$nx Ny=$ny Nz=$nz Gap=$gap Size=$size SizeY=$size_y FillterY=$fillter_ratio_y FillterZ=$fillter_ratio_z FPosY=$fillter_pos_ratio_y FPosZ=$fillter_pos_ratio_z Sigma=$surface_sigma"
                                         echo "   Output: $RESULT_DIR"
                                         
                                         # Generate geometry.mac
-                                        generate_geometry_mac $nx $ny $nz $gap $size $size_y $fillter_ratio_y $fillter_ratio_z $fillter_pos_ratio_y $fillter_pos_ratio_z
+                                        generate_geometry_mac $nx $ny $nz $gap $size $size_y $fillter_ratio_y $fillter_ratio_z $fillter_pos_ratio_y $fillter_pos_ratio_z $surface_sigma
                                         
                                         # Create result folder
                                         mkdir -p "$RESULT_DIR"
@@ -311,6 +331,7 @@ for nx in $NX_LIST; do
             done
         done
     done
+done
 done
 
 echo "============================================================================"

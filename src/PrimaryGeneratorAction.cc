@@ -33,31 +33,41 @@
 #include "G4LogicalVolume.hh"
 #include "G4LogicalVolumeStore.hh"
 #include "G4ParticleGun.hh"
+#include "G4OpticalPhoton.hh"
 #include "G4ParticleTable.hh"
 #include "G4SystemOfUnits.hh"
 #include "Randomize.hh"
+#include "G4GenericMessenger.hh"
 
 
 namespace B1
 {
-
-  
-
-
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 PrimaryGeneratorAction::PrimaryGeneratorAction(const DetectorConstruction* det)
   : fDetectorConstruction(det), G4VUserPrimaryGeneratorAction()
 {
   G4int n_particle = 1;
+  //gamma source
   fParticleGun = new G4ParticleGun(n_particle);
-
+  // fOpticalGun = G4OpticalPhoton::OpticalPhotonDefinition();//OpticalPhotonDefinition() is a function that returns a pointer to the G4OpticalPhoton definition.·   
   // default particle kinematic
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4String particleName;
   G4ParticleDefinition* particle = particleTable->FindParticle(particleName = "gamma");
   fParticleGun->SetParticleDefinition(particle);
   fParticleGun->SetParticleEnergy(662 * keV);
+
+  //optical source
+  fOpticalGun = new G4ParticleGun(n_particle);
+  fOpticalGun->SetParticleDefinition(G4OpticalPhoton::OpticalPhotonDefinition());
+  fOpticalGun->SetParticleEnergy(2.95 * eV);//Approximately 420 nm
+
+  //messenger
+  fMessenger = new G4GenericMessenger(this, "/source/", "source control");
+  fMessenger->DeclareProperty("mode", fSourceMode, "gamma|optical|both");
+  fMessenger->DeclareProperty("distribution", fSource_Distribution, "Planar|Sphere");
+  fMessenger->DeclareProperty("fp_source", fp_Source, "x|y|z");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -65,6 +75,8 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const DetectorConstruction* det)
 PrimaryGeneratorAction::~PrimaryGeneratorAction()
 {
   delete fParticleGun;
+  delete fOpticalGun;
+  delete fMessenger;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -127,25 +139,51 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
   // Build a random 3D vector from Dir_x, Dir_y, Dir_z and normalize it.
   G4ThreeVector Ram_Dir = G4ThreeVector(Dir_x,Dir_y,Dir_z);
   G4ThreeVector URam_Dir = Ram_Dir / Ram_Dir.mag();
+
+
+  G4ThreeVector Pos_Source(0, 0, 0);
+  G4ThreeVector Dir_Source(0, 0, 1);
+
   
+  if (fSource_Distribution == "Planar") {
+    Pos_Source = G4ThreeVector(x0, y0, z0);
+    Dir_Source = G4ThreeVector(0, 0, -z0).unit();
+  }
+  else if (fSource_Distribution == "Sphere") {
+    Pos_Source = r0 * URam_Pos;
+    Dir_Source = URam_Dir;
+  }
+  else if (fSource_Distribution == "Point") {
+    Pos_Source = fp_Source;
+    Dir_Source = G4ThreeVector(URam_Dir);
+  }
+  else {
+    G4cout << "Invalid source type: " << fSource_Distribution << G4endl;
+  }
 
-  //Planar source
-  G4ThreeVector Pos_Planar = G4ThreeVector(x0, y0, z0);
-  G4ThreeVector Dir_Planar = G4ThreeVector(0,0, -z0);
 
-  //Sphere source
-  // G4ThreeVector Pos_Sphere = r0 * URam_Pos;
-  // G4ThreeVector Dir_Sphere = URam_Dir;
-
-  // fParticleGun->SetParticlePosition(Pos_Sphere);
-  // fParticleGun->SetParticleMomentumDirection(Dir_Sphere);
-  // fParticleGun->GeneratePrimaryVertex(event);
-
-
-  fParticleGun->SetParticlePosition(Pos_Planar);
-  fParticleGun->SetParticleMomentumDirection(Dir_Planar);
-  fParticleGun->GeneratePrimaryVertex(event);
+  //source mode
+  if (fSourceMode == "gamma") { //gamma source
+  fParticleGun->SetParticlePosition(Pos_Source);
+    fParticleGun->SetParticleMomentumDirection(Dir_Source);
+    fParticleGun->GeneratePrimaryVertex(event);
+  }
+  else if (fSourceMode == "optical") { //optical source
+    fOpticalGun->SetParticlePosition(Pos_Source);
+    fOpticalGun->SetParticleMomentumDirection(Dir_Source);
+    fOpticalGun->GeneratePrimaryVertex(event);
+  }
+  else if (fSourceMode == "both") { //both source
+    fParticleGun->SetParticlePosition(Pos_Source);
+    fParticleGun->SetParticleMomentumDirection(Dir_Source);
+    fParticleGun->GeneratePrimaryVertex(event);
+    fOpticalGun->SetParticlePosition(Pos_Source);
+    fOpticalGun->SetParticleMomentumDirection(Dir_Source);
+    fOpticalGun->GeneratePrimaryVertex(event);
+  }
+  else {
+    G4cout << "Invalid source mode: " << fSourceMode << G4endl;
+  }
 }
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-}  // namespace B1
+}
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......  // namespace B1

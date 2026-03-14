@@ -28,6 +28,7 @@ set LOOP_FILLTER_RATIO_Y=false
 set LOOP_FILLTER_RATIO_Z=false
 set LOOP_FILLTER_POS_RATIO_Y=false
 set LOOP_FILLTER_POS_RATIO_Z=false
+set LOOP_SURFACE_SIGMA=false
 
 REM --- Parameter Range Configuration ---
 REM Array Nx (crystal count in x direction)
@@ -80,6 +81,11 @@ set FILLTER_POS_RATIO_Z_START=0.0
 set FILLTER_POS_RATIO_Z_END=0.0
 set FILLTER_POS_RATIO_Z_STEP=0.1
 
+REM Surface Sigma (0-1, crystal optical surface roughness)
+set SIGMA_START=0.5
+set SIGMA_END=0.7
+set SIGMA_STEP=0.1
+
 REM --- Default Values (used when parameter is not looping) ---
 set DEFAULT_NX=9
 set DEFAULT_NY=1
@@ -91,6 +97,7 @@ set DEFAULT_FILLTER_RATIO_Y=0.3
 set DEFAULT_FILLTER_RATIO_Z=1.0
 set DEFAULT_FILLTER_POS_RATIO_Y=0.7
 set DEFAULT_FILLTER_POS_RATIO_Z=0.0
+set DEFAULT_SURFACE_SIGMA=0.5
 
 REM --- Run Configuration ---
 set RUN_MACRO=run4.mac
@@ -107,6 +114,7 @@ set NAME_INCLUDE_FILLTER_RATIO_Y=false
 set NAME_INCLUDE_FILLTER_RATIO_Z=false
 set NAME_INCLUDE_FILLTER_POS_RATIO_Y=true
 set NAME_INCLUDE_FILLTER_POS_RATIO_Z=false
+set NAME_INCLUDE_SURFACE_SIGMA=false
 
 REM ============================================================================
 REM END OF CONFIGURATION - Do not edit below unless you know what you're doing
@@ -226,9 +234,18 @@ if "%LOOP_FILLTER_POS_RATIO_Z%"=="true" (
     set "FILLTER_POS_RATIO_Z_LIST=%DEFAULT_FILLTER_POS_RATIO_Z%"
 )
 
+REM Loop through Surface Sigma
+set "SIGMA_LIST="
+if "%LOOP_SURFACE_SIGMA%"=="true" (
+    call :generate_decimal_list SIGMA_LIST %SIGMA_START% %SIGMA_END% %SIGMA_STEP%
+) else (
+    set "SIGMA_LIST=%DEFAULT_SURFACE_SIGMA%"
+)
+
 REM Nested loops through all parameter combinations
-for %%x in (%NX_LIST%) do (
-    for %%y in (%NY_LIST%) do (
+for %%5 in (%SIGMA_LIST%) do (
+    for %%x in (%NX_LIST%) do (
+        for %%y in (%NY_LIST%) do (
         for %%z in (%NZ_LIST%) do (
             for %%g in (%GAP_LIST%) do (
                 for %%s in (%SIZE_LIST%) do (
@@ -254,12 +271,17 @@ for %%x in (%NX_LIST%) do (
                                         if "%NAME_INCLUDE_FILLTER_RATIO_Z%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_FRZ%%2"
                                         if "%NAME_INCLUDE_FILLTER_POS_RATIO_Y%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_FPRY%%3"
                                         if "%NAME_INCLUDE_FILLTER_POS_RATIO_Z%"=="true" set "FOLDER_NAME=!FOLDER_NAME!_FPRZ%%4"
+                                        if "%NAME_INCLUDE_SURFACE_SIGMA%"=="true" (
+                                            set "SIGMA_STR=%%5"
+                                            set "SIGMA_STR=!SIGMA_STR:.=p!"
+                                            set "FOLDER_NAME=!FOLDER_NAME!_Sigma!SIGMA_STR!"
+                                        )
                                         
-                                        echo [!LOOP_COUNT!] Running: Nx=%%x Ny=%%y Nz=%%z Gap=%%g Size=%%s SizeY=%%t FillterY=%%1 FillterZ=%%2 FPosY=%%3 FPosZ=%%4
+                                        echo [!LOOP_COUNT!] Running: Nx=%%x Ny=%%y Nz=%%z Gap=%%g Size=%%s SizeY=%%t FillterY=%%1 FillterZ=%%2 FPosY=%%3 FPosZ=%%4 Sigma=%%5
                                         echo    Output: Results\^<timestamp+params^>
                                         
                                         REM Generate geometry.mac
-                                        call :generate_geometry_mac %%x %%y %%z %%g %%s %%t %%1 %%2 %%3 %%4
+                                        call :generate_geometry_mac %%x %%y %%z %%g %%s %%t %%1 %%2 %%3 %%4 %%5
                                         
                                         REM Run simulation
                                         "%EXE_PATH%" "%RUN_MACRO%"
@@ -277,6 +299,7 @@ for %%x in (%NX_LIST%) do (
                                         
                                         echo    Completed.
                                         echo.
+                                        )
                                     )
                                 )
                             )
@@ -301,7 +324,7 @@ REM Subroutines
 REM ============================================================================
 
 :generate_geometry_mac
-REM Generate geometry.mac with parameters: Nx Ny Nz Gap Size SizeY FillterRatioY FillterRatioZ FillterPosRatioY FillterPosRatioZ
+REM Generate geometry.mac with parameters: Nx Ny Nz Gap Size SizeY FillterRatioY FillterRatioZ FillterPosRatioY FillterPosRatioZ SurfaceSigma
 REM Workaround for %10+ parameters: store them first
 set "GM_NX=%1"
 set "GM_NY=%2"
@@ -314,6 +337,8 @@ set "GM_FRZ=%8"
 set "GM_FPRY=%9"
 shift
 set "GM_FPRZ=%9"
+shift
+set "GM_SIGMA=%9"
 
 (
 echo # Geometry macro: crystal array and gap ^(run before /run/initialize^)
@@ -338,6 +363,9 @@ echo /detector/fillterRatioY %GM_FRY%
 echo /detector/fillterRatioZ %GM_FRZ%
 echo /detector/fillterPosRatioY %GM_FPRY%
 echo /detector/fillterPosRatioZ %GM_FPRZ%
+echo #
+echo # Crystal optical surface roughness ^(0-1^)
+echo /detector/surfaceSigma %GM_SIGMA%
 ) > geometry.mac
 exit /b 0
 

@@ -116,9 +116,46 @@ Results/
   009_Ny7_Gap0.3/
 ```
 
-## 示例 4：单次运行（指定特定参数）
+## 示例 4：扫描 Surface Sigma（晶体光学表面粗糙度）
 
-不循环任何参数，只用指定的默认值运行一次
+扫描晶体表面 Sigma 从 0.3 到 0.7，步长 0.1（共 5 次运行）
+
+```bat
+REM Windows 配置
+set LOOP_SURFACE_SIGMA=true
+set SIGMA_START=0.3
+set SIGMA_END=0.7
+set SIGMA_STEP=0.1
+set NAME_INCLUDE_SURFACE_SIGMA=true
+
+REM 其他参数关闭
+set LOOP_ARRAY_NX=false
+set LOOP_ARRAY_NY=false
+set LOOP_ARRAY_NZ=false
+set LOOP_CRYSTAL_GAP=false
+set LOOP_CRYSTAL_SIZE=false
+set LOOP_CRYSTAL_SIZE_Y=false
+set LOOP_FILLTER_RATIO_Y=false
+set LOOP_FILLTER_RATIO_Z=false
+set LOOP_FILLTER_POS_RATIO_Y=false
+set LOOP_FILLTER_POS_RATIO_Z=false
+```
+
+**结果**：
+```
+Results/
+  001_Sigma0p3/
+  002_Sigma0p4/
+  003_Sigma0p5/
+  004_Sigma0p6/
+  005_Sigma0p7/
+```
+
+> 说明：Sigma 为 0～1 的晶体光学表面粗糙度参数，通过 `/detector/surfaceSigma` 宏命令传入。详见 `Document/Notes/Note-2026-03-14-Surface-Sigma-Parameterization.md`。
+
+## 示例 5：单次运行（指定特定参数）
+
+不循环任何参数，只用指定的默认值运行一次。可设置 `DEFAULT_SURFACE_SIGMA` 指定 Sigma 值。
 
 ```bat
 set LOOP_ARRAY_NX=false

@@ -32,7 +32,8 @@
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "DetectorConstruction.hh"
-
+#include "G4GenericMessenger.hh"
+#include "G4SystemOfUnits.hh"
 class G4ParticleGun;
 class G4Event;
 class G4Box;
@@ -61,9 +62,18 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 
   private:
     G4ParticleGun* fParticleGun = nullptr;  // pointer a to G4 gun class
+    G4ParticleGun* fOpticalGun = nullptr;
     G4Box* fEnvelopeBox = nullptr;
     const DetectorConstruction* fDetectorConstruction ;  // Pointer to the detector construction
-};
+    
+    
+    G4GenericMessenger *fMessenger = nullptr;
+    G4String fSourceMode = "gamma";
+    G4String fSource_Distribution = "Planar";
+    G4ThreeVector fp_Source = G4ThreeVector(1*cm, -0.75*cm, 0.3*cm);
+
+
+  };
 
 }  // namespace B1
 

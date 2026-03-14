@@ -2,6 +2,7 @@
 
 | 日期 | 标题 | 文件 |
 |------|------|------|
+| 2026-03-14 | Surface Sigma 参数化与 run_batch 集成 | [2026-03-14-Surface-Sigma-Parameterization-Batch](2026-03-14-Surface-Sigma-Parameterization-Batch.md) |
 | 2026-02-21 | GAGG 唯一闪烁体、SiPM 六面 4×4、几何参数开关与可视化修复 | [2026-02-21-GAGG-SiPM-Six-Faces-Geometry-Switch](2026-02-21-GAGG-SiPM-Six-Faces-Geometry-Switch.md) |
 | 2026-02-14 | G4Tree.dll 找不到 — CopyDlls 路径修复 | [2026-02-14-G4Tree-DLL-CopyDlls-Path-Fix](2026-02-14-G4Tree-DLL-CopyDlls-Path-Fix.md) |
 | 2026-02-14 | 连续无空隙晶体条实现 | [2026-02-14-Continuous-No-Gap-Crystal-Strip](2026-02-14-Continuous-No-Gap-Crystal-Strip.md) |

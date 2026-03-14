@@ -63,6 +63,7 @@ class DetectorMessenger : public G4UImessenger
     G4UIcmdWithADouble* fManualFillterRatioZCmd = nullptr;
     G4UIcmdWithADouble* fManualFillterPosRatioYCmd = nullptr;
     G4UIcmdWithADouble* fManualFillterPosRatioZCmd = nullptr;
+    G4UIcmdWithADouble* fSurfaceSigmaCmd = nullptr;
 };
 
 }  // namespace B1

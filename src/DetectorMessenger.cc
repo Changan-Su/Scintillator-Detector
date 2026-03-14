@@ -159,6 +159,12 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction* det)
   fManualFillterPosRatioZCmd->SetParameterName("PosRatioZ", false);
   fManualFillterPosRatioZCmd->SetRange("PosRatioZ >= 0. && PosRatioZ <= 1.");
   fManualFillterPosRatioZCmd->SetDefaultValue(0.0);
+
+  fSurfaceSigmaCmd = new G4UIcmdWithADouble("/detector/surfaceSigma", this);
+  fSurfaceSigmaCmd->SetGuidance("Surface sigma for crystal surface.");
+  fSurfaceSigmaCmd->SetParameterName("Sigma", false);
+  fSurfaceSigmaCmd->SetRange("Sigma >= 0. && Sigma <= 1.");
+  fSurfaceSigmaCmd->SetDefaultValue(0.5);
 }
 
 DetectorMessenger::~DetectorMessenger()
@@ -186,6 +192,7 @@ DetectorMessenger::~DetectorMessenger()
   delete fCrystalSizeCmd;
   delete fCrystalSizeYCmd;
   delete fDetDir;
+  delete fSurfaceSigmaCmd;
 }
 
 void DetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
@@ -232,6 +239,8 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
     fDetector->SetManualFillterPosRatioY(fManualFillterPosRatioYCmd->GetNewDoubleValue(newValue));
   else if (command == fManualFillterPosRatioZCmd)
     fDetector->SetManualFillterPosRatioZ(fManualFillterPosRatioZCmd->GetNewDoubleValue(newValue));
+  else if (command == fSurfaceSigmaCmd)
+    fDetector->SetSurfaceSigma(fSurfaceSigmaCmd->GetNewDoubleValue(newValue));
   else if (command == fUpdateCmd) {
     G4RunManager::GetRunManager()->ReinitializeGeometry();
     G4cout << "Geometry updated with current parameters." << G4endl;

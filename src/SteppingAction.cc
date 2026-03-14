@@ -66,7 +66,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
         fEventAction->AddPhotonGenerated(1);
     }
     G4LogicalVolume* volume =
-        step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
+        step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();//建议改成PostPoint
     G4String volName = volume->GetName();
     // G4cout << "[DEBUG] Optical photon at volume: " << volName << G4endl;
     // if (volName.contains("SiPM")) {
