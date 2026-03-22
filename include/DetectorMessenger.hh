@@ -24,6 +24,7 @@ class G4UIcmdWithADoubleAndUnit;
 class G4UIcmdWithADouble;
 class G4UIcmdWithoutParameter;
 class G4UIcmdWithABool;
+class G4UIcmdWithAString;
 
 namespace B1
 {
@@ -64,6 +65,8 @@ class DetectorMessenger : public G4UImessenger
     G4UIcmdWithADouble* fManualFillterPosRatioYCmd = nullptr;
     G4UIcmdWithADouble* fManualFillterPosRatioZCmd = nullptr;
     G4UIcmdWithADouble* fSurfaceSigmaCmd = nullptr;
+    G4UIdirectory* fResultsDir = nullptr;
+    G4UIcmdWithAString* fResultsPrefixCmd = nullptr;
 };
 
 }  // namespace B1

@@ -73,7 +73,7 @@ class HistoManager
 
   private:
     G4bool fFactoryOn = false;
-    G4int fDepthNtupleId = -1;  // Add this to your HistoManager class
+    G4int fDepthNtupleId = -1;
     G4int fPhotonLRNtupleId = -1;
     G4int fPhotonFaceEventNtupleId = -1;
     G4bool fOutputPathInitialized = false;

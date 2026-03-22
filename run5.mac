@@ -11,6 +11,7 @@
 
 /vis/disable       
 /detector/surfaceSigma 0.9
+/results/prefix Test
 /run/initialize     
 
 /source/mode optical

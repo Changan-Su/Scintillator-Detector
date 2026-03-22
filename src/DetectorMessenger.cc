@@ -22,6 +22,7 @@
 #include "G4UIcmdWithADouble.hh"
 #include "G4UIcmdWithoutParameter.hh"
 #include "G4UIcmdWithABool.hh"
+#include "G4UIcmdWithAString.hh"
 #include "G4RunManager.hh"
 #include "G4SystemOfUnits.hh"
 
@@ -165,6 +166,15 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction* det)
   fSurfaceSigmaCmd->SetParameterName("Sigma", false);
   fSurfaceSigmaCmd->SetRange("Sigma >= 0. && Sigma <= 1.");
   fSurfaceSigmaCmd->SetDefaultValue(0.5);
+
+  fResultsDir = new G4UIdirectory("/results/");
+  fResultsDir->SetGuidance("Output results directory commands.");
+
+  fResultsPrefixCmd = new G4UIcmdWithAString("/results/prefix", this);
+  fResultsPrefixCmd->SetGuidance("Prefix for the Results subdirectory name (optional).");
+  fResultsPrefixCmd->SetGuidance("Final folder name: <prefix>_<timestamp>  (empty = <timestamp> only).");
+  fResultsPrefixCmd->SetParameterName("Prefix", true);
+  fResultsPrefixCmd->SetDefaultValue("");
 }
 
 DetectorMessenger::~DetectorMessenger()
@@ -193,6 +203,8 @@ DetectorMessenger::~DetectorMessenger()
   delete fCrystalSizeYCmd;
   delete fDetDir;
   delete fSurfaceSigmaCmd;
+  delete fResultsPrefixCmd;
+  delete fResultsDir;
 }
 
 void DetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
@@ -241,6 +253,8 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
     fDetector->SetManualFillterPosRatioZ(fManualFillterPosRatioZCmd->GetNewDoubleValue(newValue));
   else if (command == fSurfaceSigmaCmd)
     fDetector->SetSurfaceSigma(fSurfaceSigmaCmd->GetNewDoubleValue(newValue));
+  else if (command == fResultsPrefixCmd)
+    fDetector->SetResultsPrefix(newValue);
   else if (command == fUpdateCmd) {
     G4RunManager::GetRunManager()->ReinitializeGeometry();
     G4cout << "Geometry updated with current parameters." << G4endl;

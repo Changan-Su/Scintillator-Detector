@@ -59,6 +59,11 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     const G4ParticleGun* GetParticleGun() const { return fParticleGun; }
     PrimaryGeneratorAction(const DetectorConstruction* det);
 
+    // getters for macro-configured source parameters
+    G4String GetSourceMode() const { return fSourceMode; }
+    G4String GetSourceDistribution() const { return fSource_Distribution; }
+    G4ThreeVector GetFpSource() const { return fp_Source; }
+
 
   private:
     G4ParticleGun* fParticleGun = nullptr;  // pointer a to G4 gun class

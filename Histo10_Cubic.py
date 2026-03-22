@@ -40,6 +40,7 @@ Histo10_Cubic：立方体晶体六面 SiPM 光子计数批处理与热力图脚�
 """
 
 import argparse
+import shutil
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -251,6 +252,13 @@ def process_one_config(
     config_dir：Results 下某一配置子目录；output_dir：Output 下同名子目录。
     """
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    metadata_src = config_dir / "metadata.csv"
+    metadata_dst = output_dir / "metadata.csv"
+    metadata_copied = False
+    if metadata_src.exists() and metadata_src.is_file():
+        shutil.copy2(metadata_src, metadata_dst)
+        metadata_copied = True
     merged_event = merge_thread_event_csvs(config_dir)
     merged_event_path = output_dir / "merged_event.csv"
     merged_event.to_csv(merged_event_path, index=False)
@@ -298,6 +306,8 @@ def process_one_config(
     print(f"     merged_event.csv:   {merged_event_path}")
     print(f"     merged_face_jk.csv: {merged_agg_path}")
     print(f"     reconstructed.csv:  {reconstructed_path}")
+    if metadata_copied:
+        print(f"     metadata.csv:       {metadata_dst}")
     print(f"     heatmap:            {heatmap_path}")
 
 

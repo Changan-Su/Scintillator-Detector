@@ -33,8 +33,10 @@
 
 #include "HistoManager.hh"
 #include "DetectorConstruction.hh"
+#include "PrimaryGeneratorAction.hh"
 
 #include "G4RunManager.hh"
+#include "G4ParticleGun.hh"
 
 #include "G4SystemOfUnits.hh"
 #include "G4UnitsTable.hh"
@@ -42,6 +44,7 @@
 #include <chrono>
 #include <ctime>
 #include <filesystem>
+#include <fstream>
 #include <iomanip>
 #include <mutex>
 #include <sstream>
@@ -50,6 +53,8 @@ namespace {
 std::mutex gOutputPathMutex;
 bool gSharedOutputPathInitialized = false;
 std::string gSharedOutputFileBasePath;
+std::string gSharedOutputDir;
+bool gMetadataSourceWritten = false;
 
 std::string FormatDoubleForFolder(G4double value)
 {
@@ -136,35 +141,76 @@ void HistoManager::Book()
       const auto* detConstruction = static_cast<const B1::DetectorConstruction*>(
         G4RunManager::GetRunManager()->GetUserDetectorConstruction());
 
-      std::ostringstream folderName;
-      folderName << BuildTimestamp()
-                 << "_Nx" << detConstruction->GetCrystal_nx()
-                 << "_Ny" << detConstruction->GetCrystal_ny()
-                 << "_Nz" << detConstruction->GetCrystal_nz()
-                 << "_Gap" << FormatDoubleForFolder(detConstruction->GetCrystal_gap())
-                 << "_Size" << FormatDoubleForFolder(detConstruction->Getcrystal_l())
-                 << "_SizeY" << FormatDoubleForFolder(detConstruction->Getcrystal_ly())
-                 << "_FRY" << FormatDoubleForFolder(detConstruction->GetFillterRatioY())
-                 << "_FRZ" << FormatDoubleForFolder(detConstruction->GetFillterRatioZ())
-                 << "_FPRY" << FormatDoubleForFolder(detConstruction->GetFillterPosRatioY())
-                 << "_FPRZ" << FormatDoubleForFolder(detConstruction->GetFillterPosRatioZ());
+      // Build folder name: [prefix_]<timestamp>
+      std::string ts = BuildTimestamp();
+      std::string prefix = detConstruction->GetResultsPrefix();
+      std::string folderName = prefix.empty() ? ts : (prefix + "_" + ts);
 
-      std::filesystem::path outputDir = std::filesystem::path("Results") / folderName.str();
+      std::filesystem::path outputDir = std::filesystem::path("Results") / folderName;
       if (std::filesystem::exists(outputDir)) {
         int dupIdx = 1;
         while (std::filesystem::exists(outputDir)) {
           outputDir = std::filesystem::path("Results")
-                    / (folderName.str() + "_dup" + std::to_string(dupIdx));
+                    / (folderName + "_dup" + std::to_string(dupIdx));
           ++dupIdx;
         }
       }
       std::filesystem::create_directories(outputDir);
+
+      // Write metadata.csv with detector parameters (source params appended later by worker thread)
+      std::filesystem::path metaPath = outputDir / "metadata.csv";
+      std::ofstream meta(metaPath.string());
+      if (meta.is_open()) {
+        meta << "Key,Value\n";
+        // detector parameters
+        meta << "detector.surfaceSigma," << detConstruction->GetSurfaceSigma() << "\n";
+        meta << "detector.arrayNx," << detConstruction->GetCrystal_nx() << "\n";
+        meta << "detector.arrayNy," << detConstruction->GetCrystal_ny() << "\n";
+        meta << "detector.arrayNz," << detConstruction->GetCrystal_nz() << "\n";
+        meta << "detector.crystalGap_mm," << detConstruction->GetCrystal_gap() / mm << "\n";
+        meta << "detector.crystalSize_mm," << detConstruction->Getcrystal_l() / mm << "\n";
+        meta << "detector.crystalSizeY_mm," << detConstruction->Getcrystal_ly() / mm << "\n";
+        meta << "detector.fillterRatioY," << detConstruction->GetFillterRatioY() << "\n";
+        meta << "detector.fillterRatioZ," << detConstruction->GetFillterRatioZ() << "\n";
+        meta << "detector.fillterPosRatioY," << detConstruction->GetFillterPosRatioY() << "\n";
+        meta << "detector.fillterPosRatioZ," << detConstruction->GetFillterPosRatioZ() << "\n";
+        meta << "results.prefix," << prefix << "\n";
+        // source.* params are appended by the first worker thread (genAction is null on master)
+        meta.close();
+        G4cout << "\n----> metadata.csv written to " << metaPath.string() << G4endl;
+      }
+
       gSharedOutputFileBasePath = (outputDir / "AnaEx01").string();
+      gSharedOutputDir = outputDir.string();
       gSharedOutputPathInitialized = true;
     }
 
     fOutputFileBasePath = gSharedOutputFileBasePath;
     fOutputPathInitialized = true;
+  }
+
+  // Append source params to metadata once a worker thread is available
+  // (PrimaryGeneratorAction is null on the master thread)
+  {
+    std::lock_guard<std::mutex> lock(gOutputPathMutex);
+    if (!gMetadataSourceWritten) {
+      const auto* genAction = static_cast<const B1::PrimaryGeneratorAction*>(
+        G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction());
+      if (genAction && !gSharedOutputDir.empty()) {
+        std::filesystem::path metaPath = std::filesystem::path(gSharedOutputDir) / "metadata.csv";
+        std::ofstream meta(metaPath.string(), std::ios::app);
+        if (meta.is_open()) {
+          meta << "source.mode," << genAction->GetSourceMode() << "\n";
+          meta << "source.distribution," << genAction->GetSourceDistribution() << "\n";
+          G4ThreeVector fp = genAction->GetFpSource();
+          meta << "source.fp_source_x_mm," << fp.x() / mm << "\n";
+          meta << "source.fp_source_y_mm," << fp.y() / mm << "\n";
+          meta << "source.fp_source_z_mm," << fp.z() / mm << "\n";
+          meta.close();
+        }
+        gMetadataSourceWritten = true;
+      }
+    }
   }
 
   G4bool fileOpen = analysisManager->OpenFile(fOutputFileBasePath);
