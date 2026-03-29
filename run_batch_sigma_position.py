@@ -3,6 +3,9 @@
 """
 Batch sweep script (Python): only source position + surfaceSigma.
 
+Default preset: sigma=0.3 fixed; x/y/z each sweep -12.5 → 12.5 in 5 equal steps (step=6.25).
+Total default runs: 5 × 5 × 5 = 125.
+
 Examples:
   python run_batch_sigma_position.py --dry-run
   python run_batch_sigma_position.py --sigma-start 0.3 --sigma-end 0.7 --sigma-step 0.1
@@ -31,21 +34,23 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--prefix-base", default="", help="Optional fixed prefix before auto sweep suffix.")
     parser.add_argument("--results-dir", default="Results", help="Results directory.")
 
-    parser.add_argument("--sigma-start", default="0.1")
-    parser.add_argument("--sigma-end", default="0.9")
-    parser.add_argument("--sigma-step", default="0.1")
+    # Sigma: fixed at 0.3 by default (start=end=0.3, step=1 → single value)
+    parser.add_argument("--sigma-start", default="0.3")
+    parser.add_argument("--sigma-end", default="0.3")
+    parser.add_argument("--sigma-step", default="1.0")
 
-    parser.add_argument("--x-start", default="10.0")
-    parser.add_argument("--x-end", default="10.0")
-    parser.add_argument("--x-step", default="1.0")
+    # xyz: -12.5 → 12.5 in 5 equal steps (step=6.25 → -12.5, -6.25, 0, 6.25, 12.5)
+    parser.add_argument("--x-start", default="-12.5")
+    parser.add_argument("--x-end", default="12.5")
+    parser.add_argument("--x-step", default="6.25")
 
-    parser.add_argument("--y-start", default="-7.5")
-    parser.add_argument("--y-end", default="-7.5")
-    parser.add_argument("--y-step", default="1.0")
+    parser.add_argument("--y-start", default="-12.5")
+    parser.add_argument("--y-end", default="12.5")
+    parser.add_argument("--y-step", default="6.25")
 
-    parser.add_argument("--z-start", default="3.0")
-    parser.add_argument("--z-end", default="3.0")
-    parser.add_argument("--z-step", default="1.0")
+    parser.add_argument("--z-start", default="-12.5")
+    parser.add_argument("--z-end", default="12.5")
+    parser.add_argument("--z-step", default="6.25")
 
     parser.add_argument("--dry-run", action="store_true", help="Print combinations only, do not run simulation.")
     return parser.parse_args()

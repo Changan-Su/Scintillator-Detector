@@ -203,3 +203,55 @@ python run_batch_sigma_position.py --sigma-start 0.3 --sigma-end 0.7 --sigma-ste
 
 - `--dry-run` 仅打印参数组合和前缀，不执行 Geant4。
 - 前缀自动编码格式：`S..._X..._Y..._Z...`（小数点转 `p`，负号转 `m`）。
+
+---
+
+## 增量更新：Histo10 同时输出多种可行重建算法
+
+### 本次开发内容
+
+- 将 `Histo10_Cubic.py` 中原先的两种重建结果扩展为一组统一输出的多算法框架。
+- `reconstructed_position.csv` 现在会对每个配置目录输出多行，每行对应一种算法：
+  - `linear_scaled`
+  - `sqrt_scaled`
+  - `log_scaled`
+  - `centroid_mean`
+  - `centroid_weighted`
+  - `hybrid_sqrt_centroid`
+
+### 实现方式
+
+- 新增 `read_half_lengths_cm(...)`：优先从 `metadata.csv` 读取晶体尺寸，统一换算为 cm 半长。
+- 新增三类“只用六面总光子数”的算法：
+  - `linear_scaled`
+  - `sqrt_scaled`
+  - `log_scaled`
+- 新增两类“利用每个面 4×4 分布质心”的算法：
+  - `centroid_mean`
+  - `centroid_weighted`
+- 新增混合算法：
+  - `hybrid_sqrt_centroid`（`sqrt_scaled` 与 `centroid_weighted` 各占 50%）
+- 通过 `compute_reconstruction_rows(...)` 统一收集全部算法结果，后续若继续加算法，只需补函数并加入此列表。
+
+### 热力图显示
+
+- 热力图底部不再固定显示旧的单一公式结果，改为显示一个参考算法：
+  - `hybrid_sqrt_centroid`
+- 其余完整算法结果保存在 `reconstructed_position.csv` 中，供 `analyze_position_accuracy.py` 自动读取和评估。
+
+### 增量更新（可读性）：差分三类算法改为“整函数展开”
+
+- **原因**：原先 `linear_scaled` / `sqrt_scaled` / `log_scaled` 共用一个 `axis_component_from_pair(..., transform)`，公式上正确但阅读时需跳转到通用函数才能看清每轴在算什么。
+- **改动**：删除该通用函数；在 `reconstruct_linear_scaled`、`reconstruct_sqrt_scaled`、`reconstruct_log_scaled` 三个函数内分别完整写出 +X/-X、+Y/-Y、+Z/-Z 的变量名与分母判零逻辑，并在 docstring 中写出对应数学式。**数值行为与改前一致**（仍为 `half * (F(p)-F(n))/(F(p)+F(n))`，无信号轴为 0）。
+
+### 增量更新：half_side_ratio（按半空间选取 SiPM 格子求和）
+
+- **内容**：新增算法 `half_side_ratio`：对每一轴用「+ 侧 / − 侧」两组 **(Face, j, k)** 列表（`HALF_SIDE_X_PLUS_CELLS` 等）对 `sum_sipm_cells` 求和，再按 `half * (N+−N−)/(N++N−)` 映射到 cm（与整面对比的 `linear_scaled` 同形，但分子分母来自选定格子而非整面总和）。
+- **默认 X 侧**：+X 面上一行 4 格 + 四个侧面靠 ±X 各 2 格（共 8 格）；Y/Z 为对称默认，可只改列表不改比值函数。
+- **辅助**：`sum_sipm_cells(matrices, cells)` 供后续自定义半空间定义时复用。
+
+### 增量更新：half_side_ratio 半侧定义改为“主面整面 + 侧面半面”
+
+- 根据后续确认，`half_side_ratio` 的默认半侧定义已调整为：某轴正侧 = **正向主面整面 4x4** + 四个相关侧面中**靠该正侧的 2x4 半面**；负侧同理。
+- 例如 X 轴：`+X` 侧现在是 `Face 0` 的全部 16 格，再加 `Face 2/3/4/5` 上靠 `+X` 的 `j=2,3` 两列（每面 8 格）；`-X` 侧对应 `Face 1` 全部 16 格 + 四个侧面的 `j=0,1` 两列。
+- Y/Z 轴按各自局部坐标的同样规则对称推广；比值公式本身不变，仍为 `half * (N+−N−)/(N++N−)`。
