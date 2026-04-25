@@ -1,3 +1,11 @@
+# Build artifacts
 build/
+
+# Runtime and analysis outputs
 Results/
+Results_*/
 Output/
+
+# Geant4 analysis files that may be emitted in the repo root
+AnaEx01*.csv
+*.root

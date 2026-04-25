@@ -259,6 +259,8 @@ namespace B1
       logicFillter = new G4LogicalVolume(solidFillter, GAGG, "Fillter");
     }
 
+
+  
     // SiPM: 6mm pixel, 0.2mm gap, 4x4 per face, 6 faces per crystal
     G4Material* SiPM_mat = nist->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
     G4double sipm_l = 6. * mm;
@@ -277,18 +279,39 @@ namespace B1
     // No explicit G4OpticalSurface is needed: Geant4 G4OpBoundaryProcess performs
     // automatic Fresnel reflection/refraction at any boundary where both materials
     // carry RINDEX (crystal n=1.91 → grease n=1.46 → SiPM n=1.5).
+    // The EGJ-SD280 settings below supersede the generic grease note above.
+    // Approximate EGJ-SD280 with a PDMS-like composition while matching the
+    // datasheet thickness, density, refractive index and 1 mm transmission trend.
     G4Element* elC   = G4NistManager::Instance()->FindOrBuildElement("C");
     G4Element* elH   = G4NistManager::Instance()->FindOrBuildElement("H");
     G4Element* elSi  = G4NistManager::Instance()->FindOrBuildElement("Si");
-    G4double   grease_t   = 0.1 * mm;
-    G4Material* grease_mat = new G4Material("OpticalGrease", 1.06 * g/cm3, 4);
+    G4double   grease_t   = 1.0 * mm;
+    G4Material* grease_mat = new G4Material("OpticalGrease", 1.03 * g/cm3, 4);
     grease_mat->AddElement(elC,  2);
     grease_mat->AddElement(elH,  6);
     grease_mat->AddElement(elSi, 1);
     grease_mat->AddElement(elO,  1);
-    std::vector<G4double> grease_Energy = {2.0 * eV, 3.5 * eV};
-    std::vector<G4double> grease_RIND   = {1.46, 1.46};
-    std::vector<G4double> grease_ABSL   = {1000. * cm, 1000. * cm};
+    std::vector<G4double> grease_Energy = {
+      2.48 * eV, // 500 nm
+      2.76 * eV, // 450 nm
+      3.10 * eV, // 400 nm
+      3.54 * eV, // 350 nm
+      3.87 * eV, // 320 nm
+      4.13 * eV, // 300 nm
+      4.43 * eV, // 280 nm
+      4.96 * eV  // 250 nm
+    };
+    std::vector<G4double> grease_RIND(grease_Energy.size(), 1.43);
+    std::vector<G4double> grease_ABSL = {
+      19.5 * mm, // T ~ 0.95
+      16.9 * mm, // T ~ 0.94
+      14.8 * mm, // T ~ 0.935
+      10.5 * mm, // T ~ 0.91
+       6.2 * mm, // T ~ 0.85
+       3.5 * mm, // T ~ 0.75
+       1.1 * mm, // T ~ 0.40
+       0.26 * mm // T ~ 0.02
+    };
     auto grease_mt = new G4MaterialPropertiesTable();
     grease_mt->AddProperty("RINDEX",    grease_Energy, grease_RIND);
     grease_mt->AddProperty("ABSLENGTH", grease_Energy, grease_ABSL);
@@ -481,3 +504,5 @@ namespace B1
     return physWorld;
   }
 }
+
+
