@@ -63,6 +63,8 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     G4String GetSourceMode() const { return fSourceMode; }
     G4String GetSourceDistribution() const { return fSource_Distribution; }
     G4ThreeVector GetFpSource() const { return fp_Source; }
+    G4ThreeVector GetFpSourceB() const { return fp_Source_b; }
+    G4double GetFractionA() const { return fFractionA; }
 
 
   private:
@@ -70,12 +72,16 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     G4ParticleGun* fOpticalGun = nullptr;
     G4Box* fEnvelopeBox = nullptr;
     const DetectorConstruction* fDetectorConstruction ;  // Pointer to the detector construction
-    
-    
+
+
     G4GenericMessenger *fMessenger = nullptr;
     G4String fSourceMode = "gamma";
     G4String fSource_Distribution = "Planar";
     G4ThreeVector fp_Source = G4ThreeVector(1*cm, -0.75*cm, 0.3*cm);
+    // Optional second point source for the double-point branch.
+    // Default fFractionA=1.0 → every primary fires from fp_Source (single-point compat).
+    G4ThreeVector fp_Source_b = G4ThreeVector(0, 0, 0);
+    G4double fFractionA = 1.0;
 
 
   };

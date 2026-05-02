@@ -1,0 +1,1 @@
+本artifacts采用600组 最大距离为10mm的 double

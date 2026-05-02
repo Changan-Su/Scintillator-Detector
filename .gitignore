@@ -9,3 +9,5 @@ Output/
 # Geant4 analysis files that may be emitted in the repo root
 AnaEx01*.csv
 *.root
+
+data/

@@ -7,7 +7,7 @@
 
 1. [先决条件](#1-先决条件)
 2. [脚本分工](#2-脚本分工)
-3. [端到端跑一遍](#3-端到端跑一遍)
+3. [端到端跑一遍](#3-端到端跑一遍)（含 [Stage 0：从仿真开始](#30-stage-0--从仿真开始生成训练数据flow2-脚本的本目录副本)）
 4. [每个脚本内部在做什么（逐步讲解）](#4-每个脚本内部在做什么逐步讲解)
 5. [关键概念词典](#5-关键概念词典)
 6. [排错 checklist](#6-排错-checklist)
@@ -36,8 +36,13 @@ uv run python -c "import torch; print(torch.cuda.is_available(), torch.cuda.get_
 
 ## 2. 脚本分工
 
+> **2026-04-25 起 flow3_NN 已自包含上游仿真脚本**：原本在 `workflow/flow2/` 下的 `run_batch_sigma_position.py`、`split_events.py`、`Histo10_Cubic.py` 都拷了一份到本目录，参数和行为完全一致。这样你无需在 flow2 / flow3_NN 之间来回切换，单独看 `flow3_NN/` 一个目录就能"从 Geant4 仿真一路跑到 NN 推理"。详细用法见 [Stage 0](#30-stage-0--从仿真开始生成训练数据flow2-脚本的本目录副本)。
+
 | 脚本 | 作用 | 输入 | 产物 |
 |---|---|---|---|
+| `run_batch_sigma_position.py` | 批量调用 `exampleB1.exe`，扫描 `surfaceSigma` + 源位置 | `build/Release/exampleB1.exe` + `geometry.mac` | `Results/<config>/...t*.csv` + `metadata.csv` |
+| `split_events.py`     | 按 EventID 等分大批量仿真为多个 batch                | `Results/`                              | `Results_split/<config>_batch_NNNN/` |
+| `Histo10_Cubic.py`    | 合并线程 CSV + 6 面聚合 + 经典算法重建               | `Results_split/`                        | `Output/SiPM6_Output_<时间戳>/<config>/merged_event.csv` 等 |
 | `build_dataset.py`    | 仿真 CSV → `(X, y)`，支持**光子聚合**和**归一化** | `Output/SiPM6_Output_*/<config>/`      | `artifacts/dataset.npz` |
 | `inspect_dataset.py`  | 快速体检 `dataset.npz`（样本数、光子分布、y 范围）| `dataset.npz`                          | 终端打印 |
 | `train.py`            | 常规 DataLoader 训练                              | `dataset.npz`                          | `artifacts/best.pt` 等 |
@@ -49,11 +54,17 @@ uv run python -c "import torch; print(torch.cuda.is_available(), torch.cuda.get_
 | `model.py`            | 模型定义（被其它脚本 import）                     | -                                      | - |
 
 ```
-build_dataset.py  →  dataset.npz
-                         ↓
-          train.py / train2.py  →  best.pt + norm.npz + split_idx.npz
-                         ↓
-    evaluate.py   predict.py   predict2.py   predict3.py(批量+汇总)
+run_batch_sigma_position.py  →  Results/<config>/...t*.csv + metadata.csv
+                                            ↓
+split_events.py              →  Results_split/<config>_batch_NNNN/
+                                            ↓
+Histo10_Cubic.py             →  Output/SiPM6_Output_<ts>/<config>/merged_event.csv
+                                            ↓
+build_dataset.py             →  artifacts/dataset.npz
+                                            ↓
+                          train.py / train2.py  →  best.pt + norm.npz + split_idx.npz
+                                            ↓
+                    evaluate.py   predict.py   predict2.py   predict3.py(批量+汇总)
 ```
 
 **train vs train2 怎么选**
@@ -191,7 +202,119 @@ EventID, CrystalID, iy, iz, Face, j, k, SiPMBlockID, PhotonCount
 
 ---
 
-下面是四步具体命令。
+下面是具体命令。Stage 0 是上游仿真+经典重建，对应 flow2 的内容；Stage 1–4 是 NN 自己的部分。
+
+### 3.0 Stage 0 · 从仿真开始生成训练数据（flow2 脚本的本目录副本）
+
+> **什么时候要走 Stage 0？**
+> - 你刚刚改了 Geant4 几何 / 物理列表 / `surfaceSigma` 等，需要重新生成数据。
+> - 你想换一组源位置网格（比如从 5×5×5 加密到 11×11×11）。
+> - 你已经有 `Output/SiPM6_Output_<ts>/` 目录了，可以直接跳到 [Step 1](#step-1--构建数据集)。
+
+#### 0.1 前置条件
+
+- `build/Release/exampleB1.exe` 已经编好（CMake build 流程见仓库根 `README.md`）
+- `geometry.mac` 在项目根目录（仿真启动时会先 execute 它）
+- 在**项目根目录**运行所有命令
+
+#### 0.2 三步走
+
+**Step 0a · 批量仿真**（最耗时，几小时到一天）
+
+```powershell
+uv run python workflow/flow3_NN/run_batch_sigma_position.py `
+    --beam-on 100000
+```
+
+默认行为：`sigma=0.3` 固定，x/y/z 各扫 `0 → 10 mm` 步长 `2`（即每轴 6 个点 → 共 216 个 config，每个 config 跑 100000 个事件）。常用参数：
+
+| 参数 | 说明 | 默认 |
+|---|---|---|
+| `--beam-on N` | 每个 config 的事件数 | `700000` |
+| `--exe PATH` | 可执行路径 | `build\Release\exampleB1.exe` |
+| `--geometry-mac PATH` | 几何宏文件 | `geometry.mac` |
+| `--sigma-start/-end/-step` | surfaceSigma 扫描 | `0.3 / 0.3 / 1.0`（固定 0.3） |
+| `--x-start/-end/-step` | X 位置扫描 (mm) | `0 / 10 / 2` |
+| `--y-start/-end/-step` | Y 位置扫描 (mm) | `0 / 10 / 2` |
+| `--z-start/-end/-step` | Z 位置扫描 (mm) | `0 / 10 / 2` |
+| `--results-dir DIR` | 输出根目录 | `Results` |
+| `--dry-run` | 只打印计划不跑 | `False` |
+
+> NN 训练对**覆盖度**比对单 config 事件数更敏感。如果时间紧，先把网格铺满（更多 config）、把 `--beam-on` 调小（如 50000–100000），再用下面的 split 切成多个 batch。
+
+产物：
+```
+Results/
+  S0p3_X0_Y0_Z0/
+    AnaEx01_nt_PhotonFaceBlockEvent_t0.csv
+    AnaEx01_nt_PhotonFaceBlockEvent_t1.csv
+    ...
+    metadata.csv
+  S0p3_X0_Y0_Z2/
+    ...
+```
+
+**Step 0b · 拆分事件**
+
+```powershell
+uv run python workflow/flow3_NN/split_events.py Results --batch-size 10000
+```
+
+把每个 config 100000 个事件按 EventID 顺序切成 10 个 `_batch_NNNN/` 子目录，每个 10000 个事件 + 拷一份 `metadata.csv`。这步**对 NN 训练几乎是必须的**：把"少量大 config"变成"大量小 config"，相当于免费扩 N 倍训练样本（每个 batch 就是一个独立"位置真值标签"的样本组）。
+
+参数：
+
+| 参数 | 说明 | 默认 |
+|---|---|---|
+| `results` | Results 根目录 | （必填） |
+| `--batch-size N` | 每批事件数 | `10000` |
+| `--output PATH` | 输出根目录 | `Results_split` |
+| `--dry-run` | 只打印计划 | `False` |
+
+产物：
+```
+Results_split/
+  S0p3_X0_Y0_Z0_batch_0001/
+    AnaEx01_nt_PhotonFaceBlockEvent.csv   (events 1..10000)
+    metadata.csv
+  S0p3_X0_Y0_Z0_batch_0002/  ...
+  ...
+```
+
+**Step 0c · 经典算法重建 + 6 面聚合**
+
+```powershell
+uv run python workflow/flow3_NN/Histo10_Cubic.py Results_split
+```
+
+对 `Results_split/` 下每个 `_batch_NNNN/` 子目录：合并多线程 CSV → 按事件聚合到 6 个面 × 4×4 SiPM 块 → 跑 7 种经典重建算法（half_side / linear / linear_scaled / log_ratio / centroid_2d_3d / mlp_unscaled / mlp_scaled）→ 把所有产物写到一个**带时间戳的总输出文件夹**：
+
+```
+Output/SiPM6_Output_<YYYYMMDD_HHMMSS>/
+  S0p3_X0_Y0_Z0_batch_0001/
+    merged_event.csv             ← NN 训练的核心输入
+    merged_face_jk.csv           ← config 级聚合
+    reconstructed_position.csv   ← 经典算法的位置（每算法 1 行）
+    metadata.csv                 ← 真值位置等参数
+    sipm_6faces_heatmap.png
+  ...（每个 batch 一个）
+  metadata.csv                   ← 批级汇总，可选
+```
+
+**记下时间戳**——后面 `build_dataset.py --output-root` 就传这个 `Output/SiPM6_Output_<时间戳>/`。
+
+#### 0.3 Stage 0 → Stage 1 衔接
+
+```
+                                   ↓ 这个时间戳目录
+Output/SiPM6_Output_20260425_220000/
+                                   ↓ build_dataset.py 扫这个目录
+                          artifacts/dataset.npz
+```
+
+通常一次 Stage 0 跑出的数据可以反复用很多次 Stage 1+ 的训练实验。**只有在你要换数据源（不同 sigma、不同网格、不同 beam-on）时才回头跑 Stage 0**。
+
+---
 
 ### Step 1 · 构建数据集
 
@@ -602,6 +725,15 @@ err = y_pred - y_test         # 真值也用 cm
 ## 附：最常见的命令
 
 ```powershell
+# 0a. 批量仿真（Stage 0，重新生成数据时才跑）
+uv run python workflow/flow3_NN/run_batch_sigma_position.py --beam-on 100000
+
+# 0b. 把每个 config 100k 事件切成 10 个 10k batch
+uv run python workflow/flow3_NN/split_events.py Results --batch-size 10000
+
+# 0c. 经典算法重建 + 6 面聚合（产出 NN 要的 merged_event.csv）
+uv run python workflow/flow3_NN/Histo10_Cubic.py Results_split
+
 # 1. 建数据集（推荐设置：光子聚合 + 归一化）
 uv run python workflow/flow3_NN/build_dataset.py `
     --output-root Output/SiPM6_Output_20260404_234359 `

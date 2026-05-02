@@ -206,6 +206,12 @@ void HistoManager::Book()
           meta << "source.fp_source_x_mm," << fp.x() / mm << "\n";
           meta << "source.fp_source_y_mm," << fp.y() / mm << "\n";
           meta << "source.fp_source_z_mm," << fp.z() / mm << "\n";
+          // Double-point branch: always emitted; fraction_a==1.0 → single-point compat.
+          G4ThreeVector fpb = genAction->GetFpSourceB();
+          meta << "source.fp_source_b_x_mm," << fpb.x() / mm << "\n";
+          meta << "source.fp_source_b_y_mm," << fpb.y() / mm << "\n";
+          meta << "source.fp_source_b_z_mm," << fpb.z() / mm << "\n";
+          meta << "source.fraction_a," << genAction->GetFractionA() << "\n";
           meta.close();
         }
         gMetadataSourceWritten = true;

@@ -1,0 +1,36 @@
+# vis_double_point.mac
+# 在 Qt 交互界面里看双点光源效果。
+#
+# 用法：
+#   1. 启动 Qt 模式：直接双击 build/Release/exampleB1.exe 或者命令行
+#        cd build/Release
+#        exampleB1.exe                # 不带参数 = Qt 交互模式
+#      启动后会自动跑 init_vis.mac（执行 geometry.mac + /run/initialize + vis.mac）。
+#   2. 在 Qt 底部 Session 输入框里：
+#        /control/execute ../../vis_double_point.mac
+#      （如果你是从项目根目录手动启动 exe，则 /control/execute vis_double_point.mac）
+#   3. 想换 A/B 位置或比例，直接在 Session 里再输对应命令然后再 /run/beamOn N。
+#
+# 为什么事件数设这么少（默认 200）：每个 optical 模式 event 只是 1 个光子，
+# 但开了 trajectories smooth 后画线累计内存涨得快，几千就开始卡。看相对位置和分布
+# 200 ~ 1000 足够。
+
+# --- 减少 verbose，避免 Qt 控制台被刷屏 ---
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+
+# --- 双点参数（按需要改） ---
+/source/mode optical
+/source/distribution Point
+/source/fp_source    3 -2  5      # 点 A，单位 cm
+/source/fp_source_b -4  6 -1      # 点 B，单位 cm
+/source/fraction_a   0.4          # 每个 primary 从 A 发射的概率（B 概率 = 1-0.4 = 0.6）
+
+# --- 让两个点的位置在视图里直接可见（红=A, 绿=B） ---
+/vis/scene/add/text  3 -2  5 cm 18 4 4 A
+/vis/scene/add/text -4  6 -1 cm 18 4 4 B
+
+# --- 跑一次小的 beamOn，看光子从哪里出发 ---
+/run/beamOn 200

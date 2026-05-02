@@ -68,6 +68,11 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const DetectorConstruction* det)
   fMessenger->DeclareProperty("mode", fSourceMode, "gamma|optical|both");
   fMessenger->DeclareProperty("distribution", fSource_Distribution, "Planar|Sphere");
   fMessenger->DeclareProperty("fp_source", fp_Source, "x|y|z");
+  // Double-point branch: optional second source + per-event mixing fraction.
+  // fraction_a in [0,1]: probability of firing from fp_source (vs fp_source_b).
+  // Default 1.0 keeps single-point macros unchanged.
+  fMessenger->DeclareProperty("fp_source_b", fp_Source_b, "x|y|z");
+  fMessenger->DeclareProperty("fraction_a", fFractionA, "0..1, prob of firing from A");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -154,7 +159,12 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
     Dir_Source = URam_Dir;
   }
   else if (fSource_Distribution == "Point") {
-    Pos_Source = fp_Source;
+    // Single-point when fFractionA >= 1.0; otherwise pick A vs B per event.
+    if (fFractionA >= 1.0 || G4UniformRand() < fFractionA) {
+      Pos_Source = fp_Source;
+    } else {
+      Pos_Source = fp_Source_b;
+    }
     Dir_Source = G4ThreeVector(URam_Dir);
   }
   else {
